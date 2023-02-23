@@ -68,6 +68,7 @@
 		DC6C1B1A29A774640058EA12 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DC6C1B1929A774640058EA12 /* FirebaseAuth */; };
 		DC6C1B1C29A774640058EA12 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DC6C1B1B29A774640058EA12 /* FirebaseFirestore */; };
 		DC6C1B1E29A775300058EA12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC6C1B1D29A775300058EA12 /* GoogleService-Info.plist */; };
+		DC6C1B2029A778B90058EA12 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */; };
 		DC6E484229118285006199E3 /* Label+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6E484129118285006199E3 /* Label+Extensions.swift */; };
 		DC6E4844291191FC006199E3 /* InfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6E4843291191FC006199E3 /* InfoLabel.swift */; };
 		DCB330632902F73600536E95 /* ProfileContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB3305E2902F73600536E95 /* ProfileContract.swift */; };
@@ -168,6 +169,7 @@
 		DC5BD36828FD91C2000C9D4E /* SignUpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInteractor.swift; sourceTree = "<group>"; };
 		DC5BD37028FDAF98000C9D4E /* TextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Extensions.swift"; sourceTree = "<group>"; };
 		DC6C1B1D29A775300058EA12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		DC6E484129118285006199E3 /* Label+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Extensions.swift"; sourceTree = "<group>"; };
 		DC6E4843291191FC006199E3 /* InfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
 		DCA1E9B228FDB967002207C4 /* EventPasser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EventPasser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -257,6 +259,7 @@
 				DCE2D5E12923B2E90001D905 /* LoginService.swift */,
 				DC3EFC24293F4AB000312170 /* KeychainService.swift */,
 				DC2A0DD22954454B004EE1DC /* NetworkService.swift */,
+				DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -707,6 +710,7 @@
 				DC5BD35F28FD91B7000C9D4E /* SignInContract.swift in Sources */,
 				DC5BD36B28FD91C2000C9D4E /* SignUpRouter.swift in Sources */,
 				DC5BD36C28FD91C2000C9D4E /* SignUpViewController.swift in Sources */,
+				DC6C1B2029A778B90058EA12 /* FirebaseService.swift in Sources */,
 				DC433E76294275C800740B0E /* TicketEntity+CoreDataClass.swift in Sources */,
 				DC09FD802916BC7D0037DD6B /* EditProfileViewController.swift in Sources */,
 				DC1B0BBE2928E0FA0045F8C4 /* EventsClassification.swift in Sources */,
@@ -928,6 +932,7 @@
 				DEVELOPMENT_TEAM = H2WTHY4GCS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "EventPasser/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PolyVent;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Для сканирования кодов пользователя";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -958,6 +963,7 @@
 				DEVELOPMENT_TEAM = H2WTHY4GCS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "EventPasser/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PolyVent;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Для сканирования кодов пользователя";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

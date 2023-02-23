@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
         if #available(iOS 13.0, *) {
             return true
         } else {
@@ -26,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             self.window?.rootViewController = mainView
             self.window?.makeKeyAndVisible()
-            FirebaseApp.configure()
             return true
         }
     }

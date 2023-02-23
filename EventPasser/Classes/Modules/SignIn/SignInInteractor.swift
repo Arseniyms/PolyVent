@@ -22,28 +22,19 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
     
     func signIn(email: String, password: String) {
         
-        NetworkService.shared.signIn(username: email, password: password) { [weak self] result in
-            guard let self else {
-                self?.presenter?.signInFailure(error: NetworkErrors.serverError)
-                return
-            }
+        FirebaseService.shared.signIn(email: email, password: password) { result in
             switch result {
             case .success(let success):
                 switch success {
                 case .OK:
                     self.loginWithUser(email: email)
-                case .unathorized:
-                    self.presenter?.signInFailure(error: AuthorizationError.invalidEmailOrPassword)
-                case .badRequest:
-                    self.presenter?.signInFailure(error: AuthorizationError.blankField)
-                case .serverError:
-                    self.presenter?.signInFailure(error: NetworkErrors.serverError)
                 default:
                     self.presenter?.signInFailure(error: AuthorizationError.unknownError)
                 }
-            case .failure(let error):
-                self.presenter?.signInFailure(error: error)
+            case .failure(let failure):
+                self.presenter?.signInFailure(error: failure)
             }
+
         }
     }
     

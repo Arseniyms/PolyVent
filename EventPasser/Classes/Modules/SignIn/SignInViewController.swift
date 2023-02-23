@@ -263,11 +263,11 @@ extension SignInViewController: PresenterToViewSignInProtocol {
     }
     
     func signInFailed() {
-        self.emailTextField.text = ""
-        self.passwordTextField.text = ""
+//        self.emailTextField.text = ""
+//        self.passwordTextField.text = ""
         self.signingIn = false
-        updateEmailValidation(isEmailValid: false)
-        updatePasswordValidation(isPassValid: false)
+//        updateEmailValidation(isEmailValid: false)
+//        updatePasswordValidation(isPassValid: false)
     }
 
     

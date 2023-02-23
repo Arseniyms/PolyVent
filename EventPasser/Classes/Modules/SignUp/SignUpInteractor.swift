@@ -34,20 +34,16 @@ class SignUpInteractor: PresenterToInteractorSignUpProtocol {
     }
 
     func signUp(email: String, password: String) {
-        NetworkService.shared.registerNewUser(id: UUID(), email: email, password: password) { result in
+        FirebaseService.shared.registerNewUser(email: email, password: password) { result in
             switch result {
-            case let .success(success):
+            case .success(let success):
                 switch success {
                 case .created:
                     self.presenter?.signUpSuccess()
-                case .badRequest:
-                    self.presenter?.signUpFailure(error: AuthorizationError.emailAlreadyExist)
-                case .serverError:
-                    self.presenter?.signUpFailure(error: NetworkErrors.serverError)
                 default:
                     self.presenter?.signUpFailure(error: AuthorizationError.saveError)
                 }
-            case let .failure(error):
+            case .failure(let error):
                 self.presenter?.signUpFailure(error: error)
             }
         }
