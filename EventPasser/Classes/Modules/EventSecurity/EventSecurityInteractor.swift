@@ -69,8 +69,10 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
             presenter?.userCodeError(message: "Пользователь уже внутри")
             return
         }
-        let isOkay = DataService.shared.isUserAlreadySetToEvent(userId: user.wrappedId, eventId: event.wrappedId)
-        presenter?.validUserFound(user: user, isOkay: isOkay)
+        
+        // TODO: Исправить
+//        let isOkay = DataService.shared.isUserAlreadySetToEvent(userId: user.wrappedId, eventId: event.wrappedId)
+//        presenter?.validUserFound(user: user, isOkay: isOkay)
     }
 
     func userPass(_ user: UserEntity, isInside: Bool, isOkay: Bool) {

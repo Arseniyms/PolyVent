@@ -23,8 +23,7 @@ public class UserEntity: NSManagedObject, Decodable {
         self.init(context: context)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let stringId = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: stringId)
+        self.id = try container.decode(String.self, forKey: .id)
 //        self.email = try container.decode(String?.self, forKey: .email)
         self.first_name = try container.decode(String?.self, forKey: .first_name)
         self.last_name = try container.decode(String?.self, forKey: .last_name)

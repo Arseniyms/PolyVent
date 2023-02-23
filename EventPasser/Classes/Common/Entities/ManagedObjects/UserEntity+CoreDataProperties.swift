@@ -18,7 +18,7 @@ extension UserEntity {
 
     @NSManaged public var age: Int16
     @NSManaged public var email: String?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var last_name: String?
     @NSManaged public var first_name: String?
     @NSManaged public var tickets: NSSet?
@@ -27,11 +27,7 @@ extension UserEntity {
     @NSManaged public var group: String?
     
     public var wrappedStringId: String {
-        id?.uuidString ?? "wrong id"
-    }
-    
-    public var wrappedId: UUID {
-        id ?? UUID()
+        id ?? "wrong id"
     }
     
     public var wrappedAge: Int {
