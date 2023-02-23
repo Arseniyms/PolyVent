@@ -20,11 +20,12 @@ extension UserEntity {
     @NSManaged public var email: String?
     @NSManaged public var id: UUID?
     @NSManaged public var last_name: String?
-    @NSManaged public var name: String?
+    @NSManaged public var first_name: String?
     @NSManaged public var tickets: NSSet?
-    @NSManaged public var is_superuser: Bool
     @NSManaged public var is_staff: Bool
-
+    @NSManaged public var is_teacher: Bool
+    @NSManaged public var group: String?
+    
     public var wrappedStringId: String {
         id?.uuidString ?? "wrong id"
     }
@@ -46,7 +47,7 @@ extension UserEntity {
     }
     
     public var wrappedName: String {
-        name ?? "Введите имя"
+        first_name ?? "Введите имя"
     }
     
     public var wrappedFullName: String {

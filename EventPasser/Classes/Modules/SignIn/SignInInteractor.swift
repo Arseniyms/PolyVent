@@ -46,17 +46,20 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
 //            }
 //        }
         NetworkService.shared.loadUsersToCoreData { result in
-            switch result {
-            case .success(let success):
-                guard let user = success.first(where: { $0.email == email }) else {
-                    self.presenter?.signInFailure(error: NetworkErrors.wrongParameters)
-                    return
-                }
-                LoginService.shared.saveLoggedUser(id: user.wrappedId)
-                self.presenter?.signInSuccess()
-            case .failure(let error):
-                self.presenter?.signInFailure(error: error)
+            FirebaseService.shared.loadUsersToCoreData { result in
+                
             }
+//            switch result {
+//            case .success(let success):
+//                guard let user = success.first(where: { $0.email == email }) else {
+//                    self.presenter?.signInFailure(error: NetworkErrors.wrongParameters)
+//                    return
+//                }
+//                LoginService.shared.saveLoggedUser(id: user.wrappedId)
+//                self.presenter?.signInSuccess()
+//            case .failure(let error):
+//                self.presenter?.signInFailure(error: error)
+//            }
         }
     }
     

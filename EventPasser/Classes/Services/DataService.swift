@@ -41,7 +41,7 @@ class DataService {
 
         let result = try DataService.context.fetch(request)
         let updateUser = result.first
-        updateUser?.name = name
+        updateUser?.first_name = name
         if let email {
             updateUser?.email = email
         }

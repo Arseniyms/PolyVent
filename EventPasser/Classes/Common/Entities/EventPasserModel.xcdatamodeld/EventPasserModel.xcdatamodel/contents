@@ -28,11 +28,12 @@
     <entity name="UserEntity" representedClassName="UserEntity" syncable="YES">
         <attribute name="age" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="150" usesScalarValueType="YES"/>
         <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="first_name" optional="YES" attributeType="String"/>
+        <attribute name="group" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="is_staff" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="is_superuser" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="is_teacher" optional="YES" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="last_name" optional="YES" attributeType="String"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="tickets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TicketEntity" inverseName="user" inverseEntity="TicketEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

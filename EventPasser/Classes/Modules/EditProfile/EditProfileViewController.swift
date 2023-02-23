@@ -192,7 +192,7 @@ extension EditProfileViewController: PresenterToViewEditProfileProtocol {
         self.lastNameTextField.placeholder = user.wrappedLastName
         self.ageTextField.placeholder = "Введите возраст"
         
-        if let _ = user.name, let _ = user.last_name {
+        if let _ = user.first_name, let _ = user.last_name {
             self.nameTextField.text = user.wrappedName
             self.lastNameTextField.text = user.wrappedLastName
             self.ageTextField.text = "\(user.wrappedAge)"
