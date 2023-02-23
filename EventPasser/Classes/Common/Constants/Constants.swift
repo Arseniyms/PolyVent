@@ -48,4 +48,10 @@ struct Constants {
     enum NetworkURL {
         static let baseURL = "http://178.128.137.157/api/v1"
     }
+    
+    enum FireCollections {
+        static let users = "users"
+        static let events = "events"
+        static let tickets = "tickets"
+    }
 }

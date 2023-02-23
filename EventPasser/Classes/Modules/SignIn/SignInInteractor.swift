@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class SignInInteractor: PresenterToInteractorSignInProtocol {
     // MARK: Properties
@@ -39,6 +40,11 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
     }
     
     private func loginWithUser(email: String) {
+//        Auth.auth().addStateDidChangeListener { auth, user in
+//            if user != nil {
+//
+//            }
+//        }
         NetworkService.shared.loadUsersToCoreData { result in
             switch result {
             case .success(let success):
