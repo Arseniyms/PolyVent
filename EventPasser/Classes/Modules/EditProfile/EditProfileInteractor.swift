@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     // MARK: Properties
@@ -41,8 +42,8 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     }
 
     func getUser() {
-        let loggedId = LoginService.shared.getLoggedUser() ?? UUID()
-        let predicate = NSPredicate(format: "id = %@", loggedId as CVarArg)
+        let loggedId = Auth.auth().currentUser?.uid ?? ""
+        let predicate = NSPredicate(format: "id = %@", loggedId)
         let user = DataService.shared.getUser(predicate: predicate)
 
         if let user {

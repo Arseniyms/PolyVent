@@ -17,27 +17,34 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
     weak var presenter: InteractorToPresenterProfileProtocol?
 
     func getUser() {
-        guard let loggedId = LoginService.shared.getLoggedUser() else {
+        guard let loggedUser = Auth.auth().currentUser else {
             self.presenter?.loggedUserError()
             return
         }
-        let predicate = NSPredicate(format: "id = %@", loggedId as CVarArg)
+        let predicate = NSPredicate(format: "id = %@", loggedUser.uid)
         
-        NetworkService.shared.loadUsersToCoreData { result in
+        FirebaseService.shared.loadUsersToCoreData { result in
             switch result {
             case .success:
                 let user = DataService.shared.getUser(predicate: predicate)
-                
+                user?.email = loggedUser.email
                 if let user {
                     self.presenter?.fetchUserInfo(user)
                     self.generateQRCode(with: user.wrappedStringId)
                 } else {
                     self.presenter?.fetchQrImageFailure()
                 }
+                do {
+                    try DataService.shared.saveContext()
+                } catch {
+                    self.presenter?.loadNetworkError()
+                }
+                
             case .failure:
                 let user = DataService.shared.getUser(predicate: predicate)
                 if let user {
-                    self.generateQRCode(with: loggedId.uuidString)
+                    user.email = loggedUser.email
+                    self.generateQRCode(with: loggedUser.uid)
                     self.presenter?.fetchUserInfo(user)
                 } else {
                     self.presenter?.loadNetworkError()
@@ -47,8 +54,11 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
     }
 
     func deleteLoggedUser() {
-        LoginService.shared.deleteLoggedUser()
-        try? Auth.auth().signOut()
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            presenter?.loadNetworkError()
+        }
     }
 
     func generateQRCode(with string: String) {

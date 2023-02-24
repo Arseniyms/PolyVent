@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(*, deprecated)
 struct LoginService {
     private init() {
         

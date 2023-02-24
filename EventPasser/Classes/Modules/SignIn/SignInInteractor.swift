@@ -38,26 +38,11 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
         Auth.auth().addStateDidChangeListener { auth, user in
             if user != nil {
                 print("User login")
-                //                            LoginService.shared.saveLoggedUser(id: user?.uid)
             } else {
                 print("User logout")
-                LoginService.shared.deleteLoggedUser()
             }
         }
-        FirebaseService.shared.loadUsersToCoreData { result in
-            switch result {
-            case .success(let success):
-                guard let user = success.first(where: { $0.id == id }) else {
-                    self.presenter?.signInFailure(error: NetworkErrors.wrongParameters)
-                    return
-                }
-                user.email = email
-//                    LoginService.shared.saveLoggedUser(id: user.wrappedStringId)
-                self.presenter?.signInSuccess()
-            case .failure(let failure):
-                self.presenter?.signInFailure(error: failure)
-            }
-        }
+        self.presenter?.signInSuccess()
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class AddEventInteractor: PresenterToInteractorAddEventProtocol {
 
@@ -14,8 +15,8 @@ class AddEventInteractor: PresenterToInteractorAddEventProtocol {
     weak var presenter: InteractorToPresenterAddEventProtocol?
     
     func isUserStaff() {
-        let loggedId = LoginService.shared.getLoggedUser() ?? UUID()
-        let predicate = NSPredicate(format: "id = %@", loggedId as CVarArg)
+        let loggedId = Auth.auth().currentUser?.uid ?? ""
+        let predicate = NSPredicate(format: "id = %@", loggedId)
         let user = DataService.shared.getUser(predicate: predicate)
         
         if !(user?.is_staff ?? false) {

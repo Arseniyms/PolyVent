@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -17,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             let navViewController: UIViewController
-            if let _ = LoginService.shared.getLoggedUser() {
+            if let _ = Auth.auth().currentUser {
                 navViewController = TabBarRouter.createModule()
             } else {
                 navViewController = SignInRouter.createModule()

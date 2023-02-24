@@ -8,6 +8,7 @@
 import CoreData
 import UIKit
 import FirebaseCore
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             var mainView = UIViewController()
-            if let _ = LoginService.shared.getLoggedUser() {
+            if Auth.auth().currentUser != nil {
                 mainView = TabBarRouter.createModule()
             } else {
                 mainView = SignInRouter.createModule()
