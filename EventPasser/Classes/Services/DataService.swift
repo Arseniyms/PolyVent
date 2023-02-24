@@ -34,17 +34,15 @@ class DataService {
         return try? DataService.context.fetch(request).first
     }
 
-    func updateUser(id: UUID, email: String? = nil, name: String, lastname: String, age: Int?) throws {
+    func updateUser(id: String, email: String, name: String, lastname: String, age: Int?) throws {
         let request = NSFetchRequest<UserEntity>(entityName: Constants.CoreDataEntities.userEntityName)
-        request.predicate = NSPredicate(format: "id = %@", id as CVarArg)
+        request.predicate = NSPredicate(format: "id = %@", id)
         request.returnsObjectsAsFaults = false
 
         let result = try DataService.context.fetch(request)
         let updateUser = result.first
         updateUser?.first_name = name
-        if let email {
-            updateUser?.email = email
-        }
+        updateUser?.email = email
         updateUser?.last_name = lastname
         if let age {
             updateUser?.age = Int16(age)

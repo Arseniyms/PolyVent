@@ -8,8 +8,8 @@
 
 import CoreData
 import CoreImage.CIFilterBuiltins
-import UIKit
 import Firebase
+import UIKit
 
 class ProfileInteractor: PresenterToInteractorProfileProtocol {
     // MARK: Properties
@@ -22,7 +22,7 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
             return
         }
         let predicate = NSPredicate(format: "id = %@", loggedUser.uid)
-        
+
         FirebaseService.shared.loadUsersToCoreData { result in
             switch result {
             case .success:
@@ -39,7 +39,7 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
                 } catch {
                     self.presenter?.loadNetworkError()
                 }
-                
+
             case .failure:
                 let user = DataService.shared.getUser(predicate: predicate)
                 if let user {

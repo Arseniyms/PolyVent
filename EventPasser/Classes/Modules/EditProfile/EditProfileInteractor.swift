@@ -6,8 +6,8 @@
 //
 //
 
-import Foundation
 import Firebase
+import Foundation
 
 class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     // MARK: Properties
@@ -34,7 +34,7 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     }
 
     func validateAge(_ age: String) {
-        if let age = Int(age), age > 0 {
+        if let age = Int(age), age > 0, age <= 120 {
             presenter?.fetchValidAge(true)
         } else {
             presenter?.fetchValidAge(false)
@@ -42,22 +42,21 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     }
 
     func getUser() {
-        let loggedId = Auth.auth().currentUser?.uid ?? ""
-        let predicate = NSPredicate(format: "id = %@", loggedId)
+        let loggedUser = Auth.auth().currentUser
+        let predicate = NSPredicate(format: "id = %@", loggedUser?.uid ?? "")
         let user = DataService.shared.getUser(predicate: predicate)
-
         if let user {
             presenter?.fetchUserInfo(user)
         }
     }
 
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?) {
-        guard let loggedId = LoginService.shared.getLoggedUser() else {
+        guard let loggedId = Auth.auth().currentUser?.uid else {
             self.presenter?.updateUserFailed(with: AuthorizationError.idError)
             return
         }
 
-        NetworkService.shared.updateUserInfo(id: loggedId, email: email, name: name, last_name: lastname, age: age ?? 0) { result in
+        FirebaseService.shared.updateUserInfo(id: loggedId, email: email, first_name: name, last_name: lastname, age: age ?? 0) { result in
             switch result {
             case let .success(success):
                 switch success {
@@ -65,17 +64,20 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
                     do {
                         try DataService.shared.updateUser(id: loggedId, email: email, name: name, lastname: lastname, age: age)
                         try DataService.shared.saveContext()
+                        Thread.sleep(forTimeInterval: 1)
                         self.presenter?.updateUserSuccess()
                     } catch {
                         self.presenter?.updateUserFailed(with: error)
+                        return
                     }
-                case .badRequest:
-                    self.presenter?.updateUserFailed(with: AuthorizationError.emailAlreadyExist)
+
                 default:
                     self.presenter?.updateUserFailed(with: NetworkErrors.serverError)
+                    return
                 }
             case let .failure(error):
                 self.presenter?.updateUserFailed(with: error)
+                return
             }
         }
     }

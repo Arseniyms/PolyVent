@@ -39,7 +39,7 @@ class FirebaseService {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error {
                 switch error {
-                case AuthErrorCode.wrongPassword:
+                case AuthErrorCode.wrongPassword, AuthErrorCode.userNotFound:
                     completion(.failure(AuthorizationError.invalidEmailOrPassword))
                 default:
                     completion(.failure(error))
@@ -59,16 +59,40 @@ class FirebaseService {
     private func createNewUser(id: String) {
         let db = Firestore.firestore()
 
-        let parameters: [String: Any] = [
+        let parameters: [String: Any?] = [
             "id": id,
-            "first_name": "",
-            "last_name": "",
+            "first_name": nil,
+            "last_name": nil,
             "age": 0,
             "group": "",
             "is_staff": false,
             "is_teacher": false,
         ]
-        db.collection(Constants.FireCollections.users).addDocument(data: parameters)
+        db.collection(Constants.FireCollections.users).document(id).setData(parameters as [String : Any])
+    }
+    
+    func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+        
+        let db = Firestore.firestore()
+        db.collection(Constants.FireCollections.users).document(id).updateData([
+            "first_name": first_name,
+            "last_name": last_name,
+            "age": age
+        ]) { error in
+            if let error {
+                print(error)
+                completion(.failure(NetworkErrors.wrongParameters))
+                return
+            }
+        }
+        Auth.auth().currentUser?.updateEmail(to: email) { error in
+            if error != nil {
+                completion(.failure(AuthorizationError.emailAlreadyExist))
+                return
+            }
+        }
+        
+        completion(.success(.OK))
     }
 
     func loadUsersToCoreData(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
