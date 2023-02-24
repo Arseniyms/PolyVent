@@ -9,6 +9,7 @@
 import CoreData
 import CoreImage.CIFilterBuiltins
 import UIKit
+import Firebase
 
 class ProfileInteractor: PresenterToInteractorProfileProtocol {
     // MARK: Properties
@@ -47,6 +48,7 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
 
     func deleteLoggedUser() {
         LoginService.shared.deleteLoggedUser()
+        try? Auth.auth().signOut()
     }
 
     func generateQRCode(with string: String) {

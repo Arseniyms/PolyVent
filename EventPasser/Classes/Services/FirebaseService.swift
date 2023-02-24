@@ -35,7 +35,7 @@ class FirebaseService {
         }
     }
 
-    func signIn(email: String, password: String, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+    func signIn(email: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error {
                 switch error {
@@ -46,8 +46,8 @@ class FirebaseService {
                 }
                 return
             }
-            if let _ = result?.user {
-                completion(.success(.OK))
+            if let user = result?.user {
+                completion(.success(user.uid))
                 return
             }
             completion(.failure(AuthorizationError.unknownError))
@@ -93,7 +93,6 @@ class FirebaseService {
                 let user = try? decoder.decode(UserEntity.self, from: data ?? Data())
                 return user
             }
-            print(users)
 
             completion(.success(users))
         }

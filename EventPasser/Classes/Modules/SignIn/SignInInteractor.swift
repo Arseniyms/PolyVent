@@ -26,12 +26,7 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
         FirebaseService.shared.signIn(email: email, password: password) { result in
             switch result {
             case .success(let success):
-                switch success {
-                case .OK:
-                    self.loginWithUser(email: email)
-                default:
-                    self.presenter?.signInFailure(error: AuthorizationError.unknownError)
-                }
+                self.loginWithUser(id: success, email: email)
             case .failure(let failure):
                 self.presenter?.signInFailure(error: failure)
             }
@@ -39,27 +34,29 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
         }
     }
     
-    private func loginWithUser(email: String) {
-//        Auth.auth().addStateDidChangeListener { auth, user in
-//            if user != nil {
-//
-//            }
-//        }
-        NetworkService.shared.loadUsersToCoreData { result in
-            FirebaseService.shared.loadUsersToCoreData { result in
-                
+    private func loginWithUser(id: String, email: String) {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if user != nil {
+                print("User login")
+                //                            LoginService.shared.saveLoggedUser(id: user?.uid)
+            } else {
+                print("User logout")
+                LoginService.shared.deleteLoggedUser()
             }
-//            switch result {
-//            case .success(let success):
-//                guard let user = success.first(where: { $0.email == email }) else {
-//                    self.presenter?.signInFailure(error: NetworkErrors.wrongParameters)
-//                    return
-//                }
-//                LoginService.shared.saveLoggedUser(id: user.wrappedId)
-//                self.presenter?.signInSuccess()
-//            case .failure(let error):
-//                self.presenter?.signInFailure(error: error)
-//            }
+        }
+        FirebaseService.shared.loadUsersToCoreData { result in
+            switch result {
+            case .success(let success):
+                guard let user = success.first(where: { $0.id == id }) else {
+                    self.presenter?.signInFailure(error: NetworkErrors.wrongParameters)
+                    return
+                }
+                user.email = email
+//                    LoginService.shared.saveLoggedUser(id: user.wrappedStringId)
+                self.presenter?.signInSuccess()
+            case .failure(let failure):
+                self.presenter?.signInFailure(error: failure)
+            }
         }
     }
     
