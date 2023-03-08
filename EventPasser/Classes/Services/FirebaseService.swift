@@ -213,24 +213,35 @@ class FirebaseService {
     // MARK: Tickets
 
     func createTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
-        let db = Firestore.firestore()
-
-        let newDocument = db.collection(Constants.FireCollections.tickets).document()
-
-        let parameters: [String: Any] = [
-            "id": newDocument.documentID,
-            "event_id": eventId,
-            "user_id": userId,
-            "is_inside": false,
-        ]
-
-        newDocument.setData(parameters) { error in
-            if let error {
+        loadEventsToCoreData { result in
+            switch result {
+            case .success:
+                let event = DataService.shared.getEvent(predicate: NSPredicate(format: "id = %@", eventId))
+                if event?.isFull ?? true {
+                    return completion(TicketErrors.notEnoughSpace)
+                }
+                let db = Firestore.firestore()
+                
+                let newDocument = db.collection(Constants.FireCollections.tickets).document()
+                
+                let parameters: [String: Any] = [
+                    "id": newDocument.documentID,
+                    "event_id": eventId,
+                    "user_id": userId,
+                    "is_inside": false,
+                ]
+                
+                newDocument.setData(parameters) { error in
+                    if let error {
+                        return completion(error)
+                    }
+                }
+                
+                completion(nil)
+            case .failure(let error):
                 return completion(error)
             }
         }
-
-        completion(nil)
     }
 
     func loadTicketsToCoreData(completion: @escaping (Result<[TicketEntity], Error>) -> Void) {

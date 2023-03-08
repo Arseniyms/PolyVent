@@ -29,19 +29,23 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
         }
         isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
 
-//        if isUserAlreadySet ?? false {
+        if isUserAlreadySet ?? false {
 //            workWithTicketClosure = { [weak self] in
 //                NetworkService.shared.deleteTicket(of: loggedId, to: eventId) { result in
 //                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.unsetTicket)
 //                }
 //            }
-//        } else {
-//            workWithTicketClosure = { [weak self] in
-//                NetworkService.shared.setTicket(user: loggedId, event: eventId) { result in
-//                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.setTicket)
-//                }
-//            }
-//        }
+        } else {
+            workWithTicketClosure = { [weak self] in
+                FirebaseService.shared.createTicket(of: loggedId, to: eventId) { error in
+                    guard let error else {
+                        self?.completion(loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.setTicket)
+                        return
+                    }
+                    self?.presenter?.setTicketWentWrong(with: error)
+                }
+            }
+        }
     }
 
     func isEventAvailable() -> Bool {
@@ -58,20 +62,10 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
         }
     }
 
-    private func completion(loggedId: UUID, eventId: UUID, result: Result<ResponseStatus, Error>, ticketFunc: (UUID, UUID) throws -> Void) {
+    private func completion(loggedId: String, eventId: String, ticketFunc: (String, String) throws -> Void) {
         do {
-            switch result {
-            case let .success(response):
-                switch response {
-                case .deleted, .created:
-                    try ticketFunc(loggedId, eventId)
-                    self.presenter?.setTicketDone()
-                default:
-                    throw NetworkErrors.serverError
-                }
-            case let .failure(error):
-                throw error
-            }
+            try ticketFunc(loggedId, eventId)
+            self.presenter?.setTicketDone()
         } catch {
             self.presenter?.setTicketWentWrong(with: error)
         }

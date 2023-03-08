@@ -62,6 +62,10 @@ extension EventEntity {
         tickets?.count ?? 0
     }
     
+    public var isFull: Bool {
+        wrappedCurrentAmountOfTickets >= wrappedMaxCount
+    }
+    
     public var usersArray: [UserEntity] {
         let set = tickets as? Set<TicketEntity> ?? []
         return set.compactMap({ $0.user }).sorted(by: { $0.wrappedFullName < $1.wrappedFullName })
