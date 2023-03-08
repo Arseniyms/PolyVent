@@ -68,16 +68,15 @@ class FirebaseService {
             "is_staff": false,
             "is_teacher": false,
         ]
-        db.collection(Constants.FireCollections.users).document(id).setData(parameters as [String : Any])
+        db.collection(Constants.FireCollections.users).document(id).setData(parameters as [String: Any])
     }
-    
+
     func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
-        
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.users).document(id).updateData([
             "first_name": first_name,
             "last_name": last_name,
-            "age": age
+            "age": age,
         ]) { error in
             if let error {
                 print(error)
@@ -91,12 +90,12 @@ class FirebaseService {
                 return
             }
         }
-        
+
         completion(.success(.OK))
     }
 
     func loadUsersToCoreData(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-        DataService.shared.deleteFromCoreData(entityName: "UserEntity")
+        DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.userEntityName)
         let db = Firestore.firestore()
 
         db.collection("users").getDocuments { snapshot, error in
@@ -117,36 +116,58 @@ class FirebaseService {
                 let user = try? decoder.decode(UserEntity.self, from: data ?? Data())
                 return user
             }
-
             completion(.success(users))
         }
     }
 
     // MARK: Events
 
-    func createNewEvent(_ event: EventEntity, password: String, completion: @escaping ((Error) -> Void)) {
+    func getEvents() {
+        
+    }
+    
+    
+    func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, completion: @escaping ((Error?) -> Void)) {
         let db = Firestore.firestore()
 
         let newDocument = db.collection(Constants.FireCollections.events).document()
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = Constants.dateFormatter
-        let parameters: [String: Any] = [
-            "id": newDocument.documentID,
-            "title": event.wrappedTitle,
-            "login": event.wrappedLogin,
-            "password": password,
-            "address": event.wrappedAddress,
-            "time_start": formatter.string(from: event.wrappedTimeStart),
-            "time_end": formatter.string(from: event.wrappedTimeEnd),
-            "max_guest_count": event.wrappedMaxCount,
-            "description": event.wrappedSpecification,
-        ]
-        newDocument.setData(parameters) { error in
-            if let error {
-                completion(error)
+        let id = newDocument.documentID
+
+        do {
+            let event = try DataService.shared.saveEvent(id: id,
+                                                         login: login,
+                                                         name: name,
+                                                         address: address,
+                                                         maxGuestsCount: maxGuestsCount,
+                                                         specification: specification,
+                                                         timeEnd: timeEnd,
+                                                         timeStart: timeStart)
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = Constants.dateFormatter
+            let parameters: [String: Any] = [
+                "id": id,
+                "title": event.wrappedTitle,
+                "login": event.wrappedLogin,
+                "password": password,
+                "address": event.wrappedAddress,
+                "time_start": formatter.string(from: event.wrappedTimeStart),
+                "time_end": formatter.string(from: event.wrappedTimeEnd),
+                "max_guest_count": event.wrappedMaxCount,
+                "description": event.wrappedSpecification,
+            ]
+            newDocument.setData(parameters) { error in
+                if let error {
+                    return completion(error)
+                }
             }
+
+        } catch {
+            return completion(error)
         }
+        
+        completion(nil)
     }
 
     // MARK: Tickets

@@ -26,21 +26,21 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
         guard let loggedId = LoginService.shared.getLoggedUser(), let eventId = event?.id else {
             return
         }
-        isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
+//        isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
 
-        if isUserAlreadySet ?? false {
-            workWithTicketClosure = { [weak self] in
-                NetworkService.shared.deleteTicket(of: loggedId, to: eventId) { result in
-                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.unsetTicket)
-                }
-            }
-        } else {
-            workWithTicketClosure = { [weak self] in
-                NetworkService.shared.setTicket(user: loggedId, event: eventId) { result in
-                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.setTicket)
-                }
-            }
-        }
+//        if isUserAlreadySet ?? false {
+//            workWithTicketClosure = { [weak self] in
+//                NetworkService.shared.deleteTicket(of: loggedId, to: eventId) { result in
+//                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.unsetTicket)
+//                }
+//            }
+//        } else {
+//            workWithTicketClosure = { [weak self] in
+//                NetworkService.shared.setTicket(user: loggedId, event: eventId) { result in
+//                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.setTicket)
+//                }
+//            }
+//        }
     }
 
     func isEventAvailable() -> Bool {

@@ -17,7 +17,7 @@ extension EventEntity {
     }
 
     @NSManaged public var address: String?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var login: String?
     @NSManaged public var max_guest_count: Int32
     @NSManaged public var specification: String?
@@ -26,16 +26,12 @@ extension EventEntity {
     @NSManaged public var title: String?
     @NSManaged public var tickets: NSSet?
 
-    public var wrappedStringId: String {
-        id?.uuidString ?? ""
+    public var wrappedId: String {
+        id ?? ""
     }
     
     public var wrappedLogin: String {
         login ?? ""
-    }
-    
-    public var wrappedId: UUID {
-        id ?? UUID()
     }
     
     public var wrappedTitle: String {

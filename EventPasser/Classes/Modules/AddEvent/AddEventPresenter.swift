@@ -15,19 +15,20 @@ class AddEventPresenter: ViewToPresenterAddEventProtocol {
     var interactor: PresenterToInteractorAddEventProtocol?
     var router: PresenterToRouterAddEventProtocol?
 
-    func saveEventInfo(id: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
-        interactor?.saveEvent(id: id,
-                              name: name,
-                              address: address,
-                              maxGuestsCount: maxGuestsCount,
-                              specification: specification,
-                              timeEnd: timeEnd,
-                              timeStart: timeStart,
-                              login: login,
-                              password: password,
-                              confirmPassword: confirmPassword)
+    func saveEventInfo(id _: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
+        interactor?.saveEvent(
+            name: name,
+            address: address,
+            maxGuestsCount: maxGuestsCount,
+            specification: specification,
+            timeEnd: timeEnd,
+            timeStart: timeStart,
+            login: login,
+            password: password,
+            confirmPassword: confirmPassword
+        )
     }
-    
+
     func viewDidLoad() {
         DispatchQueue.main.async {
             self.interactor?.isUserStaff()

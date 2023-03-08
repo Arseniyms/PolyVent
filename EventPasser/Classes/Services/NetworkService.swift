@@ -192,7 +192,7 @@ class NetworkService {
         formatter.dateFormat = Constants.dateFormatter
 
         let parameters: [String: Any] = [
-            "id": event.wrappedStringId,
+            "id": event.wrappedId,
             "title": event.wrappedTitle,
             "login": event.wrappedLogin,
             "password": password,

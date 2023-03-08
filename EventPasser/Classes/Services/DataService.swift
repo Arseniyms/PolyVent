@@ -94,7 +94,7 @@ class DataService {
         return result ?? [EventEntity]()
     }
 
-    func saveEvent(id: UUID, login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date) throws -> EventEntity {
+    func saveEvent(id: String, login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date) throws -> EventEntity {
         guard let login else { throw EventAuthorizationError.saveError }
         if !isEventAlreadyExist(login: login) {
             let newEvent = EventEntity(context: DataService.context)

@@ -55,9 +55,9 @@ extension EventsPresenter: UITableViewDelegate, UITableViewDataSource {
         guard let user = LoginService.shared.getLoggedUser() else {
             return EventTableViewCell()
         }
-        let isSet = DataService.shared.isUserAlreadySetToEvent(userId: user, eventId: event.wrappedId)
+//        let isSet = DataService.shared.isUserAlreadySetToEvent(userId: user, eventId: event.wrappedId)
 
-        cell?.setCell(with: event, isSet: isSet)
+//        cell?.setCell(with: event, isSet: isSet)
 
         return cell ?? EventTableViewCell()
     }

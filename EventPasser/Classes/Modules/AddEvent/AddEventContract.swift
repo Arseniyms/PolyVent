@@ -32,7 +32,7 @@ protocol PresenterToInteractorAddEventProtocol: AnyObject {
     var presenter: InteractorToPresenterAddEventProtocol? { get set }
     
     func isUserStaff()
-    func saveEvent(id: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
+    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
 }
 
 

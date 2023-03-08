@@ -24,8 +24,7 @@ public class EventEntity: NSManagedObject, Decodable {
         self.init(context: context)
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let stringId = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: stringId)
+        self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String?.self, forKey: .title)
         self.login = try container.decode(String?.self, forKey: .login)
         self.address = try container.decode(String?.self, forKey: .address)

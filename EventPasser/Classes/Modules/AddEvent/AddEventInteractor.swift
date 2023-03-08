@@ -9,6 +9,9 @@
 import Foundation
 import Firebase
 
+
+import UIKit
+import CoreData
 class AddEventInteractor: PresenterToInteractorAddEventProtocol {
 
     // MARK: Properties
@@ -26,41 +29,48 @@ class AddEventInteractor: PresenterToInteractorAddEventProtocol {
         }
     }
     
-    func saveEvent(id: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
+    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
         do {
             guard let login, let password, let confirmPassword else {
                 throw EventAuthorizationError.saveError
             }
             try checkEventInfo(name: name, address: address, maxGuestsCount: maxGuestsCount, login: login, password: password, confirmPassword: confirmPassword)
-            let event = try DataService.shared.saveEvent(id: id,
-                                             login: login,
-                                             name: name,
-                                             address: address,
-                                             maxGuestsCount: maxGuestsCount,
-                                             specification: specification,
-                                             timeEnd: timeEnd,
-                                             timeStart: timeStart)
-            
-            NetworkService.shared.addEvent(event, password: password) { result in
-                switch result {
-                case .success(let success):
-                    switch success {
-                    case .created:
-                        do {
-                            try DataService.shared.saveContext()
-                            self.presenter?.saveEventSuccess()
-                        } catch {
-                            self.presenter?.saveEventFailure(with: error, handler: nil)
-                        }
-                    case .badRequest:
-                        self.presenter?.saveEventFailure(with: NetworkErrors.wrongParameters, handler: nil)
-                    default:
-                        self.presenter?.saveEventFailure(with: NetworkErrors.serverError, handler: nil)
-                    }
-                case .failure(let error):
+            FirebaseService.shared.createNewEvent(login: login, name: name, address: address, maxGuestsCount: maxGuestsCount, specification: specification, timeEnd: timeEnd, timeStart: timeStart, password: password) { error in
+                if let error {
                     self.presenter?.saveEventFailure(with: error, handler: nil)
                 }
             }
+            try DataService.shared.saveContext()
+            self.presenter?.saveEventSuccess()
+//            let event = try DataService.shared.saveEvent(
+//                                             login: login,
+//                                             name: name,
+//                                             address: address,
+//                                             maxGuestsCount: maxGuestsCount,
+//                                             specification: specification,
+//                                             timeEnd: timeEnd,
+//                                             timeStart: timeStart)
+            
+//            NetworkService.shared.addEvent(event, password: password) { result in
+//                switch result {
+//                case .success(let success):
+//                    switch success {
+//                    case .created:
+//                        do {
+//                            try DataService.shared.saveContext()
+//                            self.presenter?.saveEventSuccess()
+//                        } catch {
+//                            self.presenter?.saveEventFailure(with: error, handler: nil)
+//                        }
+//                    case .badRequest:
+//                        self.presenter?.saveEventFailure(with: NetworkErrors.wrongParameters, handler: nil)
+//                    default:
+//                        self.presenter?.saveEventFailure(with: NetworkErrors.serverError, handler: nil)
+//                    }
+//                case .failure(let error):
+//                    self.presenter?.saveEventFailure(with: error, handler: nil)
+//                }
+//            }
         } catch {
             presenter?.saveEventFailure(with: error, handler: nil)
         }
