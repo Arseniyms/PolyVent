@@ -23,18 +23,15 @@ public class TicketEntity: NSManagedObject, Decodable {
         self.init(context: context)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let eventId = UUID(uuidString: try container.decode(String.self, forKey: .event_id)) ?? UUID()
-        let userId =  UUID(uuidString: try container.decode(String.self, forKey: .user_id)) ?? UUID()
-        let id = UUID(uuidString: try container.decode(String.self, forKey: .id)) ?? UUID()
+        let eventId = try container.decode(String.self, forKey: .event_id)
+        let userId =  try container.decode(String.self, forKey: .user_id)
         self.is_inside = try container.decode(Bool.self, forKey: .is_inside)
         
-        let event = DataService.shared.getEvent(predicate: NSPredicate(format: "id == %@", eventId as CVarArg))
-        let user = DataService.shared.getUser(predicate: NSPredicate(format: "id == %@", userId as CVarArg))
+        let event = DataService.shared.getEvent(predicate: NSPredicate(format: "id == %@", eventId))
+        let user = DataService.shared.getUser(predicate: NSPredicate(format: "id == %@", userId))
         
         self.event = event
         self.user = user
-        self.id = id
-
-        
+        self.id = try container.decode(String.self, forKey: .id)
     }
 }

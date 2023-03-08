@@ -106,7 +106,7 @@ class FirebaseService {
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-            
+
             let decoder = JSONDecoder()
             decoder.userInfo[CodingUserInfoKey.context] = DataService.context
 
@@ -124,31 +124,36 @@ class FirebaseService {
     func loadEventsToCoreData(completion: @escaping (Result<[EventEntity], Error>) -> Void) {
         DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.eventEntityName)
         let db = Firestore.firestore()
-        
+
         db.collection("events").getDocuments { snapshot, error in
             if let error {
                 return completion(.failure(error))
             }
-            
+
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-            
+
             let decoder = JSONDecoder()
             decoder.userInfo[CodingUserInfoKey.context] = DataService.context
-            
+
             let events: [EventEntity] = snapshot.documents.compactMap { doc in
                 let data = try? JSONSerialization.data(withJSONObject: doc.data())
                 let event = try? decoder.decode(EventEntity.self, from: data ?? Data())
                 return event
             }
-            completion(.success(events))
+
+            self.loadTicketsToCoreData { result in
+                switch result {
+                case .success:
+                    completion(.success(events))
+                case let .failure(failure):
+                    completion(.failure(failure))
+                }
+            }
         }
-        
-        
     }
-    
-    
+
     func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, completion: @escaping ((Error?) -> Void)) {
         let db = Firestore.firestore()
 
@@ -188,21 +193,58 @@ class FirebaseService {
         } catch {
             return completion(error)
         }
-        
+
         completion(nil)
     }
 
     // MARK: Tickets
 
-    func createTicket(of userId: String, to eventId: UUID) {
+    func createTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
         let db = Firestore.firestore()
 
+        let newDocument = db.collection(Constants.FireCollections.tickets).document()
+
         let parameters: [String: Any] = [
-            "event_id": eventId.uuidString,
+            "id": newDocument.documentID,
+            "event_id": eventId,
             "user_id": userId,
             "is_inside": false,
         ]
 
-        db.collection(Constants.FireCollections.tickets).addDocument(data: parameters)
+        newDocument.setData(parameters) { error in
+            if let error {
+                return completion(error)
+            }
+        }
+        
+        completion(nil)
+    }
+
+    
+    
+    func loadTicketsToCoreData(completion: @escaping (Result<[TicketEntity], Error>) -> Void) {
+        DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.ticketEntityName)
+        let db = Firestore.firestore()
+
+        db.collection(Constants.FireCollections.tickets).getDocuments { snapshot, error in
+            if let error {
+                return completion(.failure(error))
+            }
+
+            guard let snapshot else {
+                return completion(.failure(NetworkErrors.dataError))
+            }
+
+            let decoder = JSONDecoder()
+            decoder.userInfo[CodingUserInfoKey.context] = DataService.context
+
+            let tickets: [TicketEntity] = snapshot.documents.compactMap { doc in
+                let data = try? JSONSerialization.data(withJSONObject: doc.data())
+                let ticket = try? decoder.decode(TicketEntity.self, from: data ?? Data())
+                return ticket
+            }
+            
+            completion(.success(tickets))
+        }
     }
 }

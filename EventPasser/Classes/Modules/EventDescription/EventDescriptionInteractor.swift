@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol {
     // MARK: Properties
@@ -23,10 +24,10 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
     }
 
     func loadIsUserAlreadySet() {
-        guard let loggedId = LoginService.shared.getLoggedUser(), let eventId = event?.id else {
+        guard let loggedId = Auth.auth().currentUser?.uid, let eventId = event?.id else {
             return
         }
-//        isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
+        isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
 
 //        if isUserAlreadySet ?? false {
 //            workWithTicketClosure = { [weak self] in

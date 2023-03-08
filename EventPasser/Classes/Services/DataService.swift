@@ -234,7 +234,7 @@ class DataService {
         return ticket
     }
     
-    func getTicketID(of userID: String, to eventId: String) throws -> UUID? {
+    func getTicketID(of userID: String, to eventId: String) throws -> String? {
         let user = try getUserEntityById(userID)
         let event = try getEventEntityById(eventId)
         

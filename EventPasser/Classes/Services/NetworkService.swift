@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(*, deprecated)
 class NetworkService {
     private init() { }
 
@@ -265,9 +266,9 @@ class NetworkService {
     }
 
     func userGoInside(_ user: UserEntity, on event: EventEntity, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
-        var id = UUID()
+        var id = ""
         do {
-            id = try DataService.shared.getTicket(of: user, to: event).id ?? UUID()
+            id = try DataService.shared.getTicket(of: user, to: event).id ?? ""
         } catch {
             completion(.failure(error))
             return
@@ -278,7 +279,7 @@ class NetworkService {
         ]
 
         do {
-            let request = try prepareRequest(urlString: Constants.NetworkURL.baseURL + "/tickets/\(id.uuidString)/", parameters: parameters, httpMethod: "PATCH")
+            let request = try prepareRequest(urlString: Constants.NetworkURL.baseURL + "/tickets/\(id)/", parameters: parameters, httpMethod: "PATCH")
             requestWithResponse(request, completion: completion)
         } catch {
             completion(.failure(error))
@@ -293,7 +294,7 @@ class NetworkService {
             return
         }
 
-        guard let url = URL(string: Constants.NetworkURL.baseURL + "/tickets/\(ticketId.uuidString)") else {
+        guard let url = URL(string: Constants.NetworkURL.baseURL + "/tickets/\(ticketId)") else {
             completion(.failure(NetworkErrors.wrongBaseURL))
             return
         }

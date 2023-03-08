@@ -38,24 +38,6 @@ class EventsInteractor: PresenterToInteractorEventsProtocol {
                 self.presenter?.loadEventFromNetworkFailed(with: error)
             }
         }
-        
-        
-//        NetworkService.shared.loadEventsToCoreData { result in
-//            do {
-//                switch result {
-//                case .success:
-//                    self.loadEventsFromCoreData(with: info)
-//                    try DataService.shared.saveContext()
-//                    self.presenter?.reloadDataInTable()
-//                case let .failure(error):
-//                    throw error
-//                }
-//            } catch {
-//                self.loadEventsFromCoreData(with: nil)
-//                self.presenter?.reloadDataInTable()
-//                self.presenter?.loadEventFromNetworkFailed(with: error)
-//            }
-//        }
     }
 
     func loadEventsFromCoreData(with predicate: String?) {

@@ -16,7 +16,7 @@ extension TicketEntity {
         return NSFetchRequest<TicketEntity>(entityName: "TicketEntity")
     }
 
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var is_inside: Bool
     @NSManaged public var event: EventEntity?
     @NSManaged public var user: UserEntity?
