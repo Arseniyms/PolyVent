@@ -96,7 +96,6 @@ class DataService {
 
     func saveEvent(id: String, login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date) throws -> EventEntity {
         guard let login else { throw EventAuthorizationError.saveError }
-        if !isEventAlreadyExist(login: login) {
             let newEvent = EventEntity(context: DataService.context)
 
             newEvent.id = id
@@ -109,10 +108,6 @@ class DataService {
             newEvent.time_start = timeStart
 
             return newEvent
-        } else {
-            throw EventAuthorizationError.eventAlreadyExist
-        }
-        
     }
 
     private func isEventAlreadyExist(login: String) -> Bool {

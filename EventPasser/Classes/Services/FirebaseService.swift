@@ -157,44 +157,57 @@ class FirebaseService {
     func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, completion: @escaping ((Error?) -> Void)) {
         let db = Firestore.firestore()
 
-        let newDocument = db.collection(Constants.FireCollections.events).document()
-
-        let id = newDocument.documentID
-
-        do {
-            let event = try DataService.shared.saveEvent(id: id,
-                                                         login: login,
-                                                         name: name,
-                                                         address: address,
-                                                         maxGuestsCount: maxGuestsCount,
-                                                         specification: specification,
-                                                         timeEnd: timeEnd,
-                                                         timeStart: timeStart)
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = Constants.dateFormatter
-            let parameters: [String: Any] = [
-                "id": id,
-                "title": event.wrappedTitle,
-                "login": event.wrappedLogin,
-                "password": password,
-                "address": event.wrappedAddress,
-                "time_start": formatter.string(from: event.wrappedTimeStart),
-                "time_end": formatter.string(from: event.wrappedTimeEnd),
-                "max_guest_count": event.wrappedMaxCount,
-                "description": event.wrappedSpecification,
-            ]
-            newDocument.setData(parameters) { error in
-                if let error {
-                    return completion(error)
-                }
-            }
-
-        } catch {
-            return completion(error)
+        guard let login else {
+            return completion(EventAuthorizationError.invalidLogin)
         }
 
-        completion(nil)
+        let query = db.collection(Constants.FireCollections.events).whereField("login", isEqualTo: login as String)
+        query.getDocuments { snapshot, error in
+            if let error {
+                return completion(error)
+            }
+            if !(snapshot?.isEmpty ?? false) {
+                return completion(EventAuthorizationError.eventAlreadyExist)
+            } else {
+                let newDocument = db.collection(Constants.FireCollections.events).document()
+
+                let id = newDocument.documentID
+
+                do {
+                    let event = try DataService.shared.saveEvent(id: id,
+                                                                 login: login,
+                                                                 name: name,
+                                                                 address: address,
+                                                                 maxGuestsCount: maxGuestsCount,
+                                                                 specification: specification,
+                                                                 timeEnd: timeEnd,
+                                                                 timeStart: timeStart)
+
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = Constants.dateFormatter
+                    let parameters: [String: Any] = [
+                        "id": id,
+                        "title": event.wrappedTitle,
+                        "login": event.wrappedLogin,
+                        "password": password,
+                        "address": event.wrappedAddress,
+                        "time_start": formatter.string(from: event.wrappedTimeStart),
+                        "time_end": formatter.string(from: event.wrappedTimeEnd),
+                        "max_guest_count": event.wrappedMaxCount,
+                        "description": event.wrappedSpecification,
+                    ]
+                    newDocument.setData(parameters) { error in
+                        if let error {
+                            return completion(error)
+                        }
+                    }
+                } catch {
+                    return completion(error)
+                }
+
+                completion(nil)
+            }
+        }
     }
 
     // MARK: Tickets
@@ -216,12 +229,10 @@ class FirebaseService {
                 return completion(error)
             }
         }
-        
+
         completion(nil)
     }
 
-    
-    
     func loadTicketsToCoreData(completion: @escaping (Result<[TicketEntity], Error>) -> Void) {
         DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.ticketEntityName)
         let db = Firestore.firestore()
@@ -243,7 +254,7 @@ class FirebaseService {
                 let ticket = try? decoder.decode(TicketEntity.self, from: data ?? Data())
                 return ticket
             }
-            
+
             completion(.success(tickets))
         }
     }
