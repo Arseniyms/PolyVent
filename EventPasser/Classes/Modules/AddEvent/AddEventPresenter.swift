@@ -15,7 +15,7 @@ class AddEventPresenter: ViewToPresenterAddEventProtocol {
     var interactor: PresenterToInteractorAddEventProtocol?
     var router: PresenterToRouterAddEventProtocol?
 
-    func saveEventInfo(id _: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
+    func saveEventInfo(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
         interactor?.saveEvent(
             name: name,
             address: address,

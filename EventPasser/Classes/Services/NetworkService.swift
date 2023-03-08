@@ -288,7 +288,7 @@ class NetworkService {
     // MARK: DELETE Requests
 
     func deleteTicket(of user: UUID, to event: UUID, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
-        guard let ticketId = try? DataService.shared.getTicketID(of: user, to: event) else {
+        guard let ticketId = try? DataService.shared.getTicketID(of: user.uuidString, to: event.uuidString) else {
             completion(.failure(NetworkErrors.wrongParameters))
             return
         }

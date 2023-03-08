@@ -10,8 +10,6 @@ import Foundation
 import Firebase
 
 
-import UIKit
-import CoreData
 class AddEventInteractor: PresenterToInteractorAddEventProtocol {
 
     // MARK: Properties
@@ -35,7 +33,14 @@ class AddEventInteractor: PresenterToInteractorAddEventProtocol {
                 throw EventAuthorizationError.saveError
             }
             try checkEventInfo(name: name, address: address, maxGuestsCount: maxGuestsCount, login: login, password: password, confirmPassword: confirmPassword)
-            FirebaseService.shared.createNewEvent(login: login, name: name, address: address, maxGuestsCount: maxGuestsCount, specification: specification, timeEnd: timeEnd, timeStart: timeStart, password: password) { error in
+            FirebaseService.shared.createNewEvent(login: login,
+                                                  name: name,
+                                                  address: address,
+                                                  maxGuestsCount: maxGuestsCount,
+                                                  specification: specification,
+                                                  timeEnd: timeEnd,
+                                                  timeStart: timeStart,
+                                                  password: password) { error in
                 if let error {
                     self.presenter?.saveEventFailure(with: error, handler: nil)
                 }

@@ -139,7 +139,7 @@ class DataService {
     
     // MARK: Tickets
     
-    func getEvents(of userId: UUID, with info: String?) -> [EventEntity] {
+    func getEvents(of userId: String, with info: String?) -> [EventEntity] {
         guard let user = try? getUserEntityById(userId) else { return [EventEntity]() }
         if let info, !info.isEmpty {
             return user.eventsArray.filter {
@@ -152,7 +152,7 @@ class DataService {
         return user.eventsArray
     }
     
-    func setTicket(userId: UUID, eventId: UUID) throws {
+    func setTicket(userId: String, eventId: String) throws {
         let updateUser = try getUserEntityById(userId)
         let updateEvent = try getEventEntityById(eventId)
         
@@ -170,7 +170,7 @@ class DataService {
 //        try DataService.context.save()
     }
     
-    func unsetTicket(userId: UUID, eventId: UUID) throws {
+    func unsetTicket(userId: String, eventId: String) throws {
         let updateUser = try getUserEntityById(userId)
         let updateEvent = try getEventEntityById(eventId)
         
@@ -194,7 +194,7 @@ class DataService {
         ticket.is_inside = isInside
     }
     
-    func isUserAlreadySetToEvent(userId: UUID, eventId: UUID) -> Bool {
+    func isUserAlreadySetToEvent(userId: String, eventId: String) -> Bool {
         do {
             let user = try getUserEntityById(userId)
             let event = try getEventEntityById(eventId)
@@ -234,7 +234,7 @@ class DataService {
         return ticket
     }
     
-    func getTicketID(of userID: UUID, to eventId: UUID) throws -> UUID? {
+    func getTicketID(of userID: String, to eventId: String) throws -> UUID? {
         let user = try getUserEntityById(userID)
         let event = try getEventEntityById(eventId)
         
@@ -242,9 +242,9 @@ class DataService {
     }
     
     
-    private func getEventEntityById(_ eventId: UUID) throws -> EventEntity {
+    private func getEventEntityById(_ eventId: String) throws -> EventEntity {
         let eventRequest = NSFetchRequest<EventEntity>(entityName: Constants.CoreDataEntities.eventEntityName)
-        eventRequest.predicate = NSPredicate(format: "id = %@", eventId as CVarArg)
+        eventRequest.predicate = NSPredicate(format: "id = %@", eventId)
         eventRequest.returnsObjectsAsFaults = false
         
         let eventResult = try DataService.context.fetch(eventRequest)
@@ -254,9 +254,9 @@ class DataService {
         return event
     }
     
-    private func getUserEntityById(_ userId: UUID) throws -> UserEntity {
+    private func getUserEntityById(_ userId: String) throws -> UserEntity {
         let request = NSFetchRequest<UserEntity>(entityName: Constants.CoreDataEntities.userEntityName)
-        request.predicate = NSPredicate(format: "id = %@", userId as CVarArg)
+        request.predicate = NSPredicate(format: "id = %@", userId)
         request.returnsObjectsAsFaults = false
         
         let result = try DataService.context.fetch(request)

@@ -210,7 +210,7 @@ class AddEventViewController: ScrollableViewController {
     }
 
     @objc func saveButtonTapped(_: UIBarButtonItem) {
-        presenter?.saveEventInfo(id: UUID(),
+        presenter?.saveEventInfo(
                                  name: titleTextField.text ?? "",
                                  address: addressTextField.text ?? "",
                                  maxGuestsCount: Int(maxCountTextField.text ?? "") ?? 0,

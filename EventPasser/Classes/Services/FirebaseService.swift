@@ -100,18 +100,17 @@ class FirebaseService {
 
         db.collection("users").getDocuments { snapshot, error in
             if let error {
-                completion(.failure(error))
-                return
+                return completion(.failure(error))
             }
 
             guard let snapshot else {
-                completion(.failure(NetworkErrors.dataError))
-                return
+                return completion(.failure(NetworkErrors.dataError))
             }
             
+            let decoder = JSONDecoder()
+            decoder.userInfo[CodingUserInfoKey.context] = DataService.context
+
             let users: [UserEntity] = snapshot.documents.compactMap { doc in
-                let decoder = JSONDecoder()
-                decoder.userInfo[CodingUserInfoKey.context] = DataService.context
                 let data = try? JSONSerialization.data(withJSONObject: doc.data())
                 let user = try? decoder.decode(UserEntity.self, from: data ?? Data())
                 return user
@@ -122,7 +121,30 @@ class FirebaseService {
 
     // MARK: Events
 
-    func getEvents() {
+    func loadEventsToCoreData(completion: @escaping (Result<[EventEntity], Error>) -> Void) {
+        DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.eventEntityName)
+        let db = Firestore.firestore()
+        
+        db.collection("events").getDocuments { snapshot, error in
+            if let error {
+                return completion(.failure(error))
+            }
+            
+            guard let snapshot else {
+                return completion(.failure(NetworkErrors.dataError))
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.userInfo[CodingUserInfoKey.context] = DataService.context
+            
+            let events: [EventEntity] = snapshot.documents.compactMap { doc in
+                let data = try? JSONSerialization.data(withJSONObject: doc.data())
+                let event = try? decoder.decode(EventEntity.self, from: data ?? Data())
+                return event
+            }
+            completion(.success(events))
+        }
+        
         
     }
     

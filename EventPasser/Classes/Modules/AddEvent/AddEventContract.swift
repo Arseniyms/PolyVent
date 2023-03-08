@@ -22,7 +22,7 @@ protocol ViewToPresenterAddEventProtocol: AnyObject {
     var router: PresenterToRouterAddEventProtocol? { get set }
     
     func viewDidLoad()
-    func saveEventInfo(id: UUID, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
+    func saveEventInfo(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
 }
 
 

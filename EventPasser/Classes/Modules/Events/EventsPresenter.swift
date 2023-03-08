@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class EventsPresenter: NSObject, ViewToPresenterEventsProtocol {
     // MARK: Properties
@@ -52,12 +53,12 @@ extension EventsPresenter: UITableViewDelegate, UITableViewDataSource {
         guard let event = interactor?.getEvent(at: indexPath.row) else {
             return EventTableViewCell()
         }
-        guard let user = LoginService.shared.getLoggedUser() else {
+        guard let user = Auth.auth().currentUser?.uid else {
             return EventTableViewCell()
         }
-//        let isSet = DataService.shared.isUserAlreadySetToEvent(userId: user, eventId: event.wrappedId)
+        let isSet = DataService.shared.isUserAlreadySetToEvent(userId: user, eventId: event.wrappedId)
 
-//        cell?.setCell(with: event, isSet: isSet)
+        cell?.setCell(with: event, isSet: isSet)
 
         return cell ?? EventTableViewCell()
     }
