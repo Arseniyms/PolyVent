@@ -235,12 +235,27 @@ class FirebaseService {
                     if let error {
                         return completion(error)
                     }
+                    completion(nil)
                 }
                 
-                completion(nil)
             case .failure(let error):
                 return completion(error)
             }
+        }
+    }
+    
+    func deleteTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
+        let db = Firestore.firestore()
+        
+        let ticketId = (try? DataService.shared.getTicketID(of: userId, to: eventId)) ?? ""
+        
+        let docRef = db.collection(Constants.FireCollections.tickets).document(ticketId)
+        
+        docRef.delete { error in
+            if let error {
+                return completion(error)
+            }
+            completion(nil)
         }
     }
 

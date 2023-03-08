@@ -30,11 +30,15 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
         isUserAlreadySet = DataService.shared.isUserAlreadySetToEvent(userId: loggedId, eventId: eventId)
 
         if isUserAlreadySet ?? false {
-//            workWithTicketClosure = { [weak self] in
-//                NetworkService.shared.deleteTicket(of: loggedId, to: eventId) { result in
-//                    self?.completion(loggedId: loggedId, eventId: eventId, result: result, ticketFunc: DataService.shared.unsetTicket)
-//                }
-//            }
+            workWithTicketClosure = { [weak self] in
+                FirebaseService.shared.deleteTicket(of: loggedId, to: eventId) { error in
+                    guard let error else {
+                        self?.completion(loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.unsetTicket)
+                        return
+                    }
+                    self?.presenter?.setTicketWentWrong(with: error)
+                }
+            }
         } else {
             workWithTicketClosure = { [weak self] in
                 FirebaseService.shared.createTicket(of: loggedId, to: eventId) { error in
