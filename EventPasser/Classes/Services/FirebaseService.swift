@@ -304,4 +304,27 @@ class FirebaseService {
             completion(.failure(EventAuthorizationError.invalidLogin))
         }
     }
+    
+    func userGoInside(_ userId: String, to eventId: String, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+        
+        var id = ""
+        do {
+            id = try DataService.shared.getTicketID(of: userId, to: eventId) ?? ""
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        let db = Firestore.firestore()
+        db.collection(Constants.FireCollections.tickets).document(id).updateData([
+            "is_inside": isInside,
+        ]) { error in
+            if let error {
+                print(error)
+                completion(.failure(NetworkErrors.wrongParameters))
+                return
+            }
+        }
+        completion(.success(.OK))
+    }
 }

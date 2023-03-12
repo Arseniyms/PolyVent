@@ -23,16 +23,24 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
 
     func updateEvent() {
         guard let event else { return }
-        NetworkService.shared.loadTicketsToCoreData { result in
+        FirebaseService.shared.loadUsersToCoreData { result in
             switch result {
             case .success:
-                self.event = DataService.shared.getEvent(predicate: NSPredicate(format: "id == %@", event.wrappedId as CVarArg))
-                self.loadTickets()
-                self.presenter?.reloadDataInTableView()
-            case let .failure(error):
+                FirebaseService.shared.loadTicketsToCoreData { result in
+                    switch result {
+                    case .success:
+                        self.event = DataService.shared.getEvent(predicate: NSPredicate(format: "id == %@", event.wrappedId))
+                        self.loadTickets()
+                        self.presenter?.reloadDataInTableView()
+                    case let .failure(error):
+                        self.presenter?.userCodeError(message: error.localizedDescription)
+                    }
+                }
+            case .failure(let error):
                 self.presenter?.userCodeError(message: error.localizedDescription)
             }
         }
+        
     }
 
     func loadTickets() {
@@ -70,16 +78,15 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
             return
         }
         
-        // TODO: Исправить
-//        let isOkay = DataService.shared.isUserAlreadySetToEvent(userId: user.wrappedId, eventId: event.wrappedId)
-//        presenter?.validUserFound(user: user, isOkay: isOkay)
+        let isOkay = DataService.shared.isUserAlreadySetToEvent(userId: user.wrappedStringId, eventId: event.wrappedId)
+        presenter?.validUserFound(user: user, isOkay: isOkay)
     }
 
     func userPass(_ user: UserEntity, isInside: Bool, isOkay: Bool) {
         if !isOkay { return }
         do {
             guard let event else { throw TicketErrors.invalidEventId }
-            NetworkService.shared.userGoInside(user, on: event, isInside: isInside) { result in
+            FirebaseService.shared.userGoInside(user.wrappedStringId, to: event.wrappedId, isInside: isInside) { result in
                 switch result {
                 case let .success(success):
                     do {
@@ -88,8 +95,6 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
                             try DataService.shared.userGotToEvent(user, to: event, isInside: isInside)
                             try DataService.shared.saveContext()
                             self.presenter?.reloadDataInTableView()
-                        case .badRequest:
-                            throw NetworkErrors.wrongParameters
                         default:
                             throw NetworkErrors.serverError
                         }
