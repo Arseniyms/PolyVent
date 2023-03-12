@@ -147,7 +147,7 @@ class DataService {
         return user.eventsArray
     }
     
-    func setTicket(userId: String, eventId: String) throws {
+    func setTicket(ticketId: String, userId: String, eventId: String) throws {
         let updateUser = try getUserEntityById(userId)
         let updateEvent = try getEventEntityById(eventId)
         
@@ -160,12 +160,13 @@ class DataService {
         
         let newTicket = NSManagedObject(entity: DataService.ticketEnt!, insertInto: DataService.context)
         
+        newTicket.setValue(ticketId, forKey: "id")
         newTicket.setValue(updateUser, forKey: "user")
         newTicket.setValue(updateEvent, forKey: "event")
 //        try DataService.context.save()
     }
     
-    func unsetTicket(userId: String, eventId: String) throws {
+    func unsetTicket(_: String, userId: String, eventId: String) throws {
         let updateUser = try getUserEntityById(userId)
         let updateEvent = try getEventEntityById(eventId)
         

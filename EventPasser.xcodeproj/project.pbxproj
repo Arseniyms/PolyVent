@@ -256,10 +256,10 @@
 			isa = PBXGroup;
 			children = (
 				DCE2D5DF2923A9B00001D905 /* DataService.swift */,
+				DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */,
 				DCE2D5E12923B2E90001D905 /* LoginService.swift */,
 				DC3EFC24293F4AB000312170 /* KeychainService.swift */,
 				DC2A0DD22954454B004EE1DC /* NetworkService.swift */,
-				DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";

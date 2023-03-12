@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(*, deprecated)
+@available(*, deprecated, message: "Использьуйте Auth.auth().currentUser")
 struct LoginService {
     private init() {
         

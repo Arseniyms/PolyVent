@@ -33,7 +33,7 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
             workWithTicketClosure = { [weak self] in
                 FirebaseService.shared.deleteTicket(of: loggedId, to: eventId) { error in
                     guard let error else {
-                        self?.completion(loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.unsetTicket)
+                        self?.completion(ticketId: "", loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.unsetTicket)
                         return
                     }
                     self?.presenter?.setTicketWentWrong(with: error)
@@ -41,12 +41,14 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
             }
         } else {
             workWithTicketClosure = { [weak self] in
-                FirebaseService.shared.createTicket(of: loggedId, to: eventId) { error in
-                    guard let error else {
-                        self?.completion(loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.setTicket)
+                FirebaseService.shared.createTicket(of: loggedId, to: eventId) { result in
+                    switch result {
+                    case .success(let success):
+                        self?.completion(ticketId: success, loggedId: loggedId, eventId: eventId, ticketFunc: DataService.shared.setTicket)
                         return
+                    case .failure(let error):
+                        self?.presenter?.setTicketWentWrong(with: error)
                     }
-                    self?.presenter?.setTicketWentWrong(with: error)
                 }
             }
         }
@@ -66,9 +68,9 @@ class EventDescriptionInteractor: PresenterToInteractorEventDescriptionProtocol 
         }
     }
 
-    private func completion(loggedId: String, eventId: String, ticketFunc: (String, String) throws -> Void) {
+    private func completion(ticketId: String, loggedId: String, eventId: String, ticketFunc: (String, String, String) throws -> Void) {
         do {
-            try ticketFunc(loggedId, eventId)
+            try ticketFunc(ticketId, loggedId, eventId)
             self.presenter?.setTicketDone()
         } catch {
             self.presenter?.setTicketWentWrong(with: error)

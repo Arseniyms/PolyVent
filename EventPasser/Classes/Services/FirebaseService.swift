@@ -212,13 +212,13 @@ class FirebaseService {
 
     // MARK: Tickets
 
-    func createTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
+    func createTicket(of userId: String, to eventId: String, completion: @escaping (Result<String, Error>) -> Void) {
         loadEventsToCoreData { result in
             switch result {
             case .success:
                 let event = DataService.shared.getEvent(predicate: NSPredicate(format: "id = %@", eventId))
                 if event?.isFull ?? true {
-                    return completion(TicketErrors.notEnoughSpace)
+                    return completion(.failure(TicketErrors.notEnoughSpace))
                 }
                 let db = Firestore.firestore()
                 
@@ -233,13 +233,12 @@ class FirebaseService {
                 
                 newDocument.setData(parameters) { error in
                     if let error {
-                        return completion(error)
+                        return completion(.failure(error))
                     }
-                    completion(nil)
+                    return completion(.success(newDocument.documentID))
                 }
-                
             case .failure(let error):
-                return completion(error)
+                return completion(.failure(error))
             }
         }
     }

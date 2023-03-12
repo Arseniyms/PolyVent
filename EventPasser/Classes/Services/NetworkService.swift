@@ -7,7 +7,7 @@
 
 import UIKit
 
-@available(*, deprecated)
+@available(*, deprecated, message: "Используйте FireBaseService")
 class NetworkService {
     private init() { }
 
