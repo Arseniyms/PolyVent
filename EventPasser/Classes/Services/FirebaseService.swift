@@ -284,4 +284,24 @@ class FirebaseService {
             completion(.success(tickets))
         }
     }
+    
+    
+    func getEventPassword(by id: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let db = Firestore.firestore()
+        
+        let docRef = db.collection(Constants.FireCollections.events).document(id)
+        
+        docRef.getDocument { document, error in
+            if let error {
+                return completion(.failure(error))
+            }
+            if let document, document.exists {
+                let data = document.data()
+                if let password = data?["password"] as? String {
+                    return completion(.success(password))
+                }
+            }
+            completion(.failure(EventAuthorizationError.invalidLogin))
+        }
+    }
 }

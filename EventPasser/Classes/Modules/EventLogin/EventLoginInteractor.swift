@@ -21,20 +21,20 @@ class EventLoginInteractor: PresenterToInteractorEventLoginProtocol {
             return
         }
 
-//        NetworkService.shared.getEventPassword(by: event.wrappedId) { result in
-//            switch result {
-//            case let .success(success):
-//                if password == success {
-//                    self.presenter?.signInSuccess(with: event)
-//                    return
-//                } else {
-//                    self.presenter?.signInFailure(with: AuthorizationError.invalidEmailOrPassword)
-//                    return
-//                }
-//            case let .failure(error):
-//                self.presenter?.signInFailure(with: error)
-//                return
-//            }
-//        }
+        FirebaseService.shared.getEventPassword(by: event.wrappedId) { result in
+            switch result {
+            case let .success(success):
+                if password == success {
+                    self.presenter?.signInSuccess(with: event)
+                    return
+                } else {
+                    self.presenter?.signInFailure(with: AuthorizationError.invalidEmailOrPassword)
+                    return
+                }
+            case let .failure(error):
+                self.presenter?.signInFailure(with: error)
+                return
+            }
+        }
     }
 }
