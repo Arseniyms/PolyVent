@@ -14,11 +14,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Выход", style: .plain, target: self, action: #selector(exitButtonTapped))
-        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -60,11 +56,7 @@ class SignUpViewController: UIViewController {
         var stackview = UIStackView()
         stackview.axis = .vertical
         stackview.alignment = .fill
-        if #available(iOS 13.0, *) {
-            stackview.spacing = 10
-        } else {
-            stackview.spacing = 5
-        }
+        stackview.spacing = 10
 
         return stackview
     }()
@@ -211,11 +203,7 @@ class SignUpViewController: UIViewController {
         if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let height = frame.cgRectValue.height
             UIView.animate(withDuration: 0.5, animations: {
-                if #available(iOS 13.0, *) {
-                    self.bottomSignUpButtonConstraint.constant = -height - 20
-                } else {
-                    self.bottomSignUpButtonConstraint.constant = -height - 3
-                }
+                self.bottomSignUpButtonConstraint.constant = -height - 20
                 self.view.layoutIfNeeded()
             })
         }

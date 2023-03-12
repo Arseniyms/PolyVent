@@ -64,19 +64,11 @@ class EventsViewController: UIViewController {
     // MARK: - Functions
 
     func setupNavigationItems() {
-        if #available(iOS 13.0, *) {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(addEventTapped))
-        } else {
-            let button = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addEventTapped))
-            self.navigationItem.leftBarButtonItem = button
-        }
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(addEventTapped))
 
         var qr = UIBarButtonItem()
-        if #available(iOS 13.0, *) {
-            qr = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"), style: .plain, target: self, action: #selector(qrButtonTapped))
-        } else {
-            qr = UIBarButtonItem(title: "Для охраны", style: .plain, target: self, action: #selector(qrButtonTapped))
-        }
+        qr = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"), style: .plain, target: self, action: #selector(qrButtonTapped))
+
         navigationItem.rightBarButtonItem = qr
 
         self.navigationController?.navigationBar.tintColor = .buttonColor

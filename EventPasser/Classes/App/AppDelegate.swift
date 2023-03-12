@@ -16,32 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        if #available(iOS 13.0, *) {
-            return true
-        } else {
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            var mainView = UIViewController()
-            if Auth.auth().currentUser != nil {
-                mainView = TabBarRouter.createModule()
-            } else {
-                mainView = SignInRouter.createModule()
-            }
-            self.window?.rootViewController = mainView
-            self.window?.makeKeyAndVisible()
-            return true
-        }
+        return true
     }
 
     // MARK: UISceneSession Lifecycle
 
-    @available(iOS 13.0, *)
     func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    @available(iOS 13.0, *)
     func application(_: UIApplication, didDiscardSceneSessions _: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.

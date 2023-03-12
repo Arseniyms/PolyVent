@@ -40,10 +40,8 @@ class EventTableViewCell: UITableViewCell {
         var image: UIImage?
         image = UIImage(named: "ticket.fill")?.withRenderingMode(.alwaysTemplate)
         isSetImageView.image = image
-        if #available(iOS 13.0, *) {
-            let largeConfig = UIImage.SymbolConfiguration(textStyle: .title2)
-            image = image?.withConfiguration(largeConfig)
-        }
+        let largeConfig = UIImage.SymbolConfiguration(textStyle: .title2)
+        image = image?.withConfiguration(largeConfig)
 
         if isSet {
             isSetImageView.tintColor = .systemGreen

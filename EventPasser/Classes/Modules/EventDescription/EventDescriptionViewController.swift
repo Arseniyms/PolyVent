@@ -114,11 +114,7 @@ class EventDescriptionViewController: ScrollableViewController {
 
     private lazy var peopleImage: UIImageView = {
         var image: UIImage? = UIImage()
-        if #available(iOS 13.0, *) {
-            image = UIImage(systemName: "person.3.fill")
-        } else {
-            image = UIImage(named: "person")
-        }
+        image = UIImage(systemName: "person.3.fill")
         let imageView = UIImageView.withRoundedBackground(with: image)
         imageView.image = imageView.image?
             .withInset(UIEdgeInsets(top: 2, left: -1, bottom: 2, right: -1))
@@ -171,11 +167,7 @@ class EventDescriptionViewController: ScrollableViewController {
     func setupNavigationItems() {
         self.navigationItem.title = "Описание"
 
-        if #available(iOS 13.0, *) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
-        } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Выход", style: .plain, target: self, action: #selector(exitButtonTapped))
-        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
     }
 
     @objc func exitButtonTapped(_: UIButton) {

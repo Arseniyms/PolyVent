@@ -15,11 +15,7 @@ extension UIViewController: UITextFieldDelegate {
         textField.isSecureTextEntry = true
         textField.keyboardType = .default
         textField.textContentType = .oneTimeCode
-        if #available(iOS 13.0, *) {
-            textField.enablePasswordToggle()
-        } else {
-            textField.isSecureTextEntry = true
-        }
+        textField.enablePasswordToggle()
         textField.delegate = self
         
         return textField

@@ -29,11 +29,7 @@ class UserTableViewCell: UITableViewCell {
     func setCell(with user: UserEntity, isUserInside: Bool) {
         self.fullName.text = "Имя - \(user.wrappedFullName)"
         self.age.text = "Возраст - \(user.wrappedAge)"
-        if #available(iOS 13.0, *) {
-            isInsideImageView.image = UIImage(systemName: "checkmark.seal.fill")?.withRenderingMode(.alwaysTemplate)
-        } else {
-            isInsideImageView.image = UIImage(named: "checkmark.circle")?.withRenderingMode(.alwaysTemplate)
-        }
+        isInsideImageView.image = UIImage(systemName: "checkmark.seal.fill")?.withRenderingMode(.alwaysTemplate)
         self.isInsideImageView.tintColor = isUserInside ? .systemGreen : .systemRed
     }
 

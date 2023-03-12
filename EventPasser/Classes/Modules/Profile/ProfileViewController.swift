@@ -38,11 +38,9 @@ class ProfileViewController: ScrollableViewController {
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.customBackgroundColor.cgColor
         
-        if #available(iOS 13.0, *) {
-            imageView.isUserInteractionEnabled = true
-            let interaction = UIContextMenuInteraction(delegate: self)
-            imageView.addInteraction(interaction)
-        }
+        imageView.isUserInteractionEnabled = true
+        let interaction = UIContextMenuInteraction(delegate: self)
+        imageView.addInteraction(interaction)
         return imageView
     }()
 
@@ -123,10 +121,8 @@ class ProfileViewController: ScrollableViewController {
             $0.layer.add(transition, forKey: "imageReveal")
         }
 
-        if #available(iOS 13.0, *) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            qrCodeImageView.addInteraction(interaction)
-        }
+        let interaction = UIContextMenuInteraction(delegate: self)
+        qrCodeImageView.addInteraction(interaction)
         
         nameLabel.layoutIfNeeded()
         nameLabel.shimmerEffectView()
@@ -175,9 +171,7 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
         qrCodeImageView.image = image
             .withInset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)) ?? UIImage(named: "xmark.circle")!
 
-        if #available(iOS 13.0, *) {
-            qrCodeImageView.image = qrCodeImageView.image?.withRenderingMode(.alwaysTemplate)
-        }
+        qrCodeImageView.image = qrCodeImageView.image?.withRenderingMode(.alwaysTemplate)
         let transition = CATransition()
         transition.duration = 1.5
         transition.type = .fade
@@ -186,7 +180,6 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
 }
 
 extension ProfileViewController: UIContextMenuInteractionDelegate {
-    @available(iOS 13.0, *)
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
             return self.makeContextMenu()
@@ -194,7 +187,6 @@ extension ProfileViewController: UIContextMenuInteractionDelegate {
         
     }
     
-    @available(iOS 13.0, *)
     func makeContextMenu() -> UIMenu {
         
         let edit = UIAction(title: "Изменить профиль", image: UIImage(systemName: "pencil")) { _ in

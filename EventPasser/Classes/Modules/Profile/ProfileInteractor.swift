@@ -64,18 +64,13 @@ class ProfileInteractor: PresenterToInteractorProfileProtocol {
     func generateQRCode(with string: String) {
         DispatchQueue.main.async { [weak self] in
             var qrImage = UIImage()
-            if #available(iOS 13.0, *) {
-                qrImage = string.qrCode()
-            } else {
-                qrImage = string.qrCode12iOS()
-            }
+            qrImage = string.qrCode()
             self?.presenter?.fetchQrImageSuccess(with: qrImage)
         }
     }
 }
 
 extension String {
-    @available(iOS 13.0, *)
     func qrCode() -> UIImage {
         let context = CIContext()
         var qrImage = UIImage(systemName: "xmark.circle") ?? UIImage()
@@ -108,20 +103,5 @@ extension String {
             }
         }
         return qrImage
-    }
-
-    func qrCode12iOS() -> UIImage {
-        let data = self.data(using: String.Encoding.ascii)
-
-        if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(data, forKey: "inputMessage")
-            let transform = CGAffineTransform(scaleX: 10, y: 10)
-
-            if let output = filter.outputImage?.transformed(by: transform) {
-                return UIImage(ciImage: output)
-            }
-        }
-
-        return UIImage()
     }
 }

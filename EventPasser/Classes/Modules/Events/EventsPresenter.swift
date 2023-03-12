@@ -82,7 +82,6 @@ extension EventsPresenter: UITableViewDelegate, UITableViewDataSource {
         })
     }
 
-    @available(iOS 13.0, *)
     func tableView(_: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point _: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: indexPath.row as NSCopying, previewProvider: {
             if let event = self.interactor?.getEvent(at: indexPath.row) {
@@ -92,7 +91,6 @@ extension EventsPresenter: UITableViewDelegate, UITableViewDataSource {
         }, actionProvider: nil)
     }
 
-    @available(iOS 13.0, *)
     func tableView(_: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let index = configuration.identifier as? NSNumber else { return }
 
@@ -124,9 +122,7 @@ extension EventsPresenter: UISearchBarDelegate, UISearchResultsUpdating {
         if !(searchBar.text?.isEmpty ?? false) {
             refresh(with: nil)
         }
-        if #available(iOS 13.0, *) {
-            Vibration.light.vibrate()
-        }
+        Vibration.light.vibrate()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

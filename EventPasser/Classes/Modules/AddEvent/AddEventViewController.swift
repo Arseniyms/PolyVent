@@ -137,11 +137,7 @@ class AddEventViewController: ScrollableViewController {
         textView.isEditable = true
         textView.isScrollEnabled = false
         textView.layer.borderWidth = 0.5
-        if #available(iOS 13.0, *) {
-            textView.layer.borderColor = UIColor.systemGray4.cgColor
-        } else {
-            textView.layer.borderColor = UIColor.gray.cgColor
-        }
+        textView.layer.borderColor = UIColor.systemGray4.cgColor
         textView.layer.cornerRadius = 4
         textView.backgroundColor = .gray.withAlphaComponent(0.1)
         textView.textContainerInset.top = 6
