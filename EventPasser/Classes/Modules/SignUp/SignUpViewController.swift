@@ -186,7 +186,7 @@ class SignUpViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
 
             signUpButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),

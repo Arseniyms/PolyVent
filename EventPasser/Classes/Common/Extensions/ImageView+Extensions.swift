@@ -16,7 +16,7 @@ extension UIImageView {
         
         imageView.tintColor = .buttonColor
         
-        imageView.backgroundColor = .systemBlue.withAlphaComponent(0.2)
+        imageView.backgroundColor = .backgroundColor.withAlphaComponent(0.5)
         imageView.layer.cornerRadius = 15
         
         return imageView

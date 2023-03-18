@@ -19,10 +19,10 @@ class EventDescriptionPresenter: ViewToPresenterEventDescriptionProtocol {
         interactor?.loadEvent()
         interactor?.loadIsUserAlreadySet()
         if interactor?.isUserAlreadySet ?? false {
-            view?.updateSetButton(with: "Отказаться", isEnabled: true, with: .systemRed)
+            view?.updateSetButton(with: "Отказаться", isEnabled: true, with: .unsetTicketButtonColor)
         } else {
             let isEnabled = interactor?.isEventAvailable() ?? false
-            view?.updateSetButton(with: "Записаться", isEnabled: isEnabled, with: .buttonColor)
+            view?.updateSetButton(with: "Записаться", isEnabled: isEnabled, with: .setTicketButtonColor)
         }
     }
     

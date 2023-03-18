@@ -35,13 +35,13 @@ class SignInInteractor: PresenterToInteractorSignInProtocol {
     }
     
     private func loginWithUser(id: String, email: String) {
-        Auth.auth().addStateDidChangeListener { auth, user in
-            if user != nil {
-                print("User login")
-            } else {
-                print("User logout")
-            }
-        }
+//        Auth.auth().addStateDidChangeListener { auth, user in
+//            if user != nil {
+//                print("User login")
+//            } else {
+//                print("User logout")
+//            }
+//        }
         self.presenter?.signInSuccess()
     }
     

@@ -38,6 +38,19 @@ extension UIColor {
     }
     
     public class var buttonColor: UIColor {
-        .init(red: 86 / 255, green: 105 / 255, blue: 255 / 255, alpha: 1.0)
+        .init(red: 55 / 255, green: 179 / 255, blue: 74 / 255, alpha: 1.0)
+//        .init(red: 86 / 255, green: 105 / 255, blue: 255 / 255, alpha: 1.0)
+    }
+    
+    public class var backgroundColor: UIColor {
+        .init(red: 151 / 255, green: 255 / 255, blue: 163 / 255, alpha: 1.0)
+    }
+    
+    public class var setTicketButtonColor: UIColor {
+        .init(red: 105 / 255, green: 172 / 255, blue: 43 / 255, alpha: 1.0)
+    }
+    
+    public class var unsetTicketButtonColor: UIColor {
+        .init(red: 219 / 255, green: 53 / 255, blue: 25 / 255, alpha: 1.0)
     }
 }

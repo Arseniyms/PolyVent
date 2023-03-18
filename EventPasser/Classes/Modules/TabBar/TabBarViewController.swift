@@ -28,7 +28,7 @@ class TabBarViewController: UITabBarController {
     
     func setupUI() {
         self.delegate = self
-        self.tabBar.tintColor = .dynamic(light: .black, dark: .white)
+        self.tabBar.tintColor = .buttonColor
         let events = EventsRouter.createModule(eventsClassification: .all)
         let saved = EventsRouter.createModule(eventsClassification: .saved)
         let profile = ProfileRouter.createModule()
