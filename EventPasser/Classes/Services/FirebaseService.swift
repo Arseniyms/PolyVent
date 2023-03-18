@@ -221,35 +221,35 @@ class FirebaseService {
                     return completion(.failure(TicketErrors.notEnoughSpace))
                 }
                 let db = Firestore.firestore()
-                
+
                 let newDocument = db.collection(Constants.FireCollections.tickets).document()
-                
+
                 let parameters: [String: Any] = [
                     "id": newDocument.documentID,
                     "event_id": eventId,
                     "user_id": userId,
                     "is_inside": false,
                 ]
-                
+
                 newDocument.setData(parameters) { error in
                     if let error {
                         return completion(.failure(error))
                     }
                     return completion(.success(newDocument.documentID))
                 }
-            case .failure(let error):
+            case let .failure(error):
                 return completion(.failure(error))
             }
         }
     }
-    
+
     func deleteTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
         let db = Firestore.firestore()
-        
+
         let ticketId = (try? DataService.shared.getTicketID(of: userId, to: eventId)) ?? ""
-        
+
         let docRef = db.collection(Constants.FireCollections.tickets).document(ticketId)
-        
+
         docRef.delete { error in
             if let error {
                 return completion(error)
@@ -283,13 +283,12 @@ class FirebaseService {
             completion(.success(tickets))
         }
     }
-    
-    
+
     func getEventPassword(by id: String, completion: @escaping (Result<String, Error>) -> Void) {
         let db = Firestore.firestore()
-        
+
         let docRef = db.collection(Constants.FireCollections.events).document(id)
-        
+
         docRef.getDocument { document, error in
             if let error {
                 return completion(.failure(error))
@@ -303,9 +302,8 @@ class FirebaseService {
             completion(.failure(EventAuthorizationError.invalidLogin))
         }
     }
-    
+
     func userGoInside(_ userId: String, to eventId: String, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
-        
         var id = ""
         do {
             id = try DataService.shared.getTicketID(of: userId, to: eventId) ?? ""
@@ -313,7 +311,7 @@ class FirebaseService {
             completion(.failure(error))
             return
         }
-        
+
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.tickets).document(id).updateData([
             "is_inside": isInside,
@@ -325,5 +323,32 @@ class FirebaseService {
             }
         }
         completion(.success(.OK))
+    }
+
+    // MARK: - Groups
+
+    func loadGroupsFromJsonToFirestore() {
+        if let path = Bundle.main.path(forResource: "groups", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data)
+                let db = Firestore.firestore()
+                if let groups = jsonResult as? [String] {
+                    for group in groups {
+                        let query = db.collection(Constants.FireCollections.groups)
+                            .whereField("num", isEqualTo: group)
+                        query.getDocuments { snapshot, error in
+                            if (snapshot?.isEmpty ?? false), error == nil {
+                                db.collection(Constants.FireCollections.groups)
+                                    .document()
+                                    .setData(["num": group] as [String: Any])
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
 }

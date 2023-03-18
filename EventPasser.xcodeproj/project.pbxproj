@@ -54,6 +54,7 @@
 		DC433E77294275C800740B0E /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC433E71294275C800740B0E /* EventEntity+CoreDataProperties.swift */; };
 		DC433E792944C3DA00740B0E /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC433E782944C3DA00740B0E /* Vibration.swift */; };
 		DC4648882947AE97006447F8 /* ImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4648872947AE97006447F8 /* ImageView+Extensions.swift */; };
+		DC58665929C5D21500EB0F6A /* groups.json in Resources */ = {isa = PBXBuildFile; fileRef = DC58665829C5D21500EB0F6A /* groups.json */; };
 		DC5BD35F28FD91B7000C9D4E /* SignInContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35A28FD91B7000C9D4E /* SignInContract.swift */; };
 		DC5BD36028FD91B7000C9D4E /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35B28FD91B7000C9D4E /* SignInPresenter.swift */; };
 		DC5BD36128FD91B7000C9D4E /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35C28FD91B7000C9D4E /* SignInRouter.swift */; };
@@ -157,6 +158,7 @@
 		DC433E71294275C800740B0E /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DC433E782944C3DA00740B0E /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		DC4648872947AE97006447F8 /* ImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+Extensions.swift"; sourceTree = "<group>"; };
+		DC58665829C5D21500EB0F6A /* groups.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = groups.json; sourceTree = "<group>"; };
 		DC5BD35A28FD91B7000C9D4E /* SignInContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInContract.swift; sourceTree = "<group>"; };
 		DC5BD35B28FD91B7000C9D4E /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
 		DC5BD35C28FD91B7000C9D4E /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				DCC0B48128E3025500FDEA13 /* Assets.xcassets */,
+				DC58665829C5D21500EB0F6A /* groups.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				DCC0B48528E3025500FDEA13 /* LaunchScreen.storyboard in Resources */,
 				DCC0B48228E3025500FDEA13 /* Assets.xcassets in Resources */,
 				DC6C1B1E29A775300058EA12 /* GoogleService-Info.plist in Resources */,
+				DC58665929C5D21500EB0F6A /* groups.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

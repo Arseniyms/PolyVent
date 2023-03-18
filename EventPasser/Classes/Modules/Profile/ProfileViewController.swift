@@ -166,7 +166,7 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
     }
 
     func updateQrImage(with image: UIImage) {
-        qrCodeImageView.layer.borderColor = UIColor.systemGray.cgColor
+        qrCodeImageView.layer.borderColor = UIColor.buttonColor.cgColor
 
         qrCodeImageView.image = image
             .withInset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)) ?? UIImage(named: "xmark.circle")!
