@@ -33,6 +33,7 @@ class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
 
     func viewDidLoad() {
         interactor?.getUser()
+        interactor?.loadGroups()
     }
 
     func save(email: String?, name: String?, lastname: String?, age: String?) {

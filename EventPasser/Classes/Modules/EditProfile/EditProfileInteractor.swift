@@ -50,6 +50,17 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
         }
     }
 
+    func loadGroups() {
+        FirebaseService.shared.getGroups { result in
+            switch result {
+            case .success(let success):
+                print(success.sorted())
+            case .failure(let error):
+                self.presenter?.updateUserFailed(with: error)
+            }
+        }
+    }
+    
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?) {
         guard let loggedId = Auth.auth().currentUser?.uid else {
             self.presenter?.updateUserFailed(with: AuthorizationError.idError)

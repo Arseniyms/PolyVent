@@ -49,6 +49,7 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     func validateAge(_ age: String)
     
     func getUser()
+    func loadGroups()
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?)
 }
 

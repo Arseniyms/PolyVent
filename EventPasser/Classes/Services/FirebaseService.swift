@@ -351,4 +351,27 @@ class FirebaseService {
             }
         }
     }
+    
+    
+    func getGroups(completion: @escaping (Result<[String], Error>) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection(Constants.FireCollections.groups).getDocuments { snapshot, error in
+            if let error {
+                return completion(.failure(error))
+            }
+            
+            guard let snapshot else {
+                return completion(.failure(NetworkErrors.dataError))
+            }
+            
+            let decoder = JSONDecoder()
+            let groups: [String] = snapshot.documents.compactMap { doc in
+                let data = try? JSONSerialization.data(withJSONObject: doc.data())
+                let decoded = try? decoder.decode([String: String].self, from: data ?? Data())
+                return decoded?["num"]
+            }
+            completion(.success(groups))
+        }
+    }
 }
