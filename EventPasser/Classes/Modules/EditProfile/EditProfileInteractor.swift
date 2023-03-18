@@ -11,6 +11,7 @@ import Foundation
 
 class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
     // MARK: Properties
+    var groups: [String]?
 
     let emailRegex = Constants.emailRegex
 
@@ -54,11 +55,19 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
         FirebaseService.shared.getGroups { result in
             switch result {
             case .success(let success):
-                print(success.sorted())
+                self.groups = success.sorted()
             case .failure(let error):
                 self.presenter?.updateUserFailed(with: error)
             }
         }
+    }
+    
+    func numberOfRowsInComponent() -> Int {
+        groups?.count ?? 0
+    }
+    
+    func getGroup(in row: Int) -> String {
+        groups?[row] ?? ""
     }
     
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?) {

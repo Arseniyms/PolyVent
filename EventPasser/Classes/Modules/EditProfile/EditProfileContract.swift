@@ -17,11 +17,12 @@ protocol PresenterToViewEditProfileProtocol: AnyObject {
     func updateAgeValidation(isAgeValid: Bool)
 
     func updateUserInfo(_ user: UserEntity)
+    func updateSelectedGroup(with group: String)
 }
 
 
 // MARK: View Input (View -> Presenter)
-protocol ViewToPresenterEditProfileProtocol: AnyObject {
+protocol ViewToPresenterEditProfileProtocol: NSObject, AnyObject, UIPickerViewDelegate, UIPickerViewDataSource {
     var view: PresenterToViewEditProfileProtocol? { get set }
     var interactor: PresenterToInteractorEditProfileProtocol? { get set }
     var router: PresenterToRouterEditProfileProtocol? { get set }
@@ -43,6 +44,8 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     
     var presenter: InteractorToPresenterEditProfileProtocol? { get set }
     
+    var groups: [String]? { get set }
+    
     func validateEmail(_ email: String)
     func validateName(_ name: String)
     func validateLastName(_ lastName: String)
@@ -51,6 +54,9 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     func getUser()
     func loadGroups()
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?)
+    
+    func numberOfRowsInComponent() -> Int
+    func getGroup(in row: Int) -> String
 }
 
 

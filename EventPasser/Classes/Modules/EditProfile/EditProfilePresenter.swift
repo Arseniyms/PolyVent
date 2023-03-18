@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
+class EditProfilePresenter: NSObject, ViewToPresenterEditProfileProtocol{
     // MARK: Properties
 
     weak var view: PresenterToViewEditProfileProtocol?
@@ -56,6 +56,25 @@ class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
     func exit() {
         Vibration.light.vibrate()
         router?.dismissEditProfile(view!)
+    }
+}
+
+extension EditProfilePresenter: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        interactor?.numberOfRowsInComponent() ?? 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        interactor?.getGroup(in: row)
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let group = interactor?.getGroup(in: row) ?? ""
+        view?.updateSelectedGroup(with: group)
     }
 }
 
