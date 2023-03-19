@@ -14,12 +14,12 @@ class EditProfileViewController: ScrollableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter?.viewDidLoad()
         setupNavigationItems()
         setupScrollView()
         setupScrollContentView()
         setupUI()
         updateSaveItem()
+        presenter?.viewDidLoad()
     }
 
     // MARK: - Properties
@@ -110,7 +110,7 @@ class EditProfileViewController: ScrollableViewController {
         return switcher
     } ()
     
-    private lazy var isTeacherLabel: UILabel = {
+    private lazy var groupLabel: UILabel = {
         return self.getInfoLabel("Группа")
     } ()
     
@@ -118,16 +118,10 @@ class EditProfileViewController: ScrollableViewController {
         let transition = CATransition()
         transition.duration = 0.5
         transition.type = .fade
-        isTeacherLabel.layer.add(transition, forKey: "imageReveal")
+        groupLabel.layer.add(transition, forKey: "imageReveal")
         groupTextField.layer.add(transition, forKey: "imageReveal")
         
-        if switcher.isOn {
-            self.stackView.addArrangedSubview(self.isTeacherLabel)
-            self.stackView.addArrangedSubview(self.groupTextField)
-        } else {
-            self.isTeacherLabel.removeFromSuperview()
-            self.groupTextField.removeFromSuperview()
-        }
+        updateGroupPicker(isShown: switcher.isOn)
     }
     
     private lazy var switcherStackView: UIStackView = {
@@ -172,7 +166,9 @@ class EditProfileViewController: ScrollableViewController {
         self.presenter?.save(email: self.emailTextField.text,
                              name: self.nameTextField.text,
                              lastname: self.lastNameTextField.text,
-                             age: self.ageTextField.text)
+                             age: self.ageTextField.text,
+                             group: self.groupTextField.text
+        )
     }
 
     func setupScrollContentView() {
@@ -209,9 +205,21 @@ class EditProfileViewController: ScrollableViewController {
         stackView.addArrangedSubview(switcherStackView)
     }
 
-    func updateSaveItem() {
+    private func updateSaveItem() {
         navigationItem.rightBarButtonItem?.isEnabled = isEmailValid && isNameValid && isLastnameValid && isAgeValid
     }
+    
+    private func updateGroupPicker(isShown: Bool) {
+        if isShown {
+            self.stackView.addArrangedSubview(self.groupLabel)
+            self.stackView.addArrangedSubview(self.groupTextField)
+        } else {
+            self.groupLabel.removeFromSuperview()
+            self.groupTextField.removeFromSuperview()
+            groupTextField.text = ""
+        }
+    }
+    
 }
 
 extension EditProfileViewController: PresenterToViewEditProfileProtocol {
@@ -242,6 +250,8 @@ extension EditProfileViewController: PresenterToViewEditProfileProtocol {
         self.nameTextField.placeholder = user.wrappedName
         self.lastNameTextField.placeholder = user.wrappedLastName
         self.ageTextField.placeholder = "Введите возраст"
+        self.groupTextField.text = user.group
+        self.switcher.setOn(!user.is_teacher, animated: true)
         
         if let _ = user.first_name, let _ = user.last_name {
             self.nameTextField.text = user.wrappedName
@@ -254,7 +264,8 @@ extension EditProfileViewController: PresenterToViewEditProfileProtocol {
         }
 
         presenter?.emailDidChange(user.wrappedEmail)
-        
+        self.updateGroupPicker(isShown: self.switcher.isOn)
+
     }
     
     func updateSelectedGroup(with group: String) {

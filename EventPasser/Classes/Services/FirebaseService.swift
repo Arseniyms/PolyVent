@@ -71,12 +71,14 @@ class FirebaseService {
         db.collection(Constants.FireCollections.users).document(id).setData(parameters as [String: Any])
     }
 
-    func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+    func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, group: String, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.users).document(id).updateData([
             "first_name": first_name,
             "last_name": last_name,
             "age": age,
+            "group": group,
+            "is_teacher": group.isEmpty
         ]) { error in
             if let error {
                 print(error)

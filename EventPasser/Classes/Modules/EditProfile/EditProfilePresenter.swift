@@ -36,12 +36,13 @@ class EditProfilePresenter: NSObject, ViewToPresenterEditProfileProtocol{
         interactor?.loadGroups()
     }
 
-    func save(email: String?, name: String?, lastname: String?, age: String?) {
+    func save(email: String?, name: String?, lastname: String?, age: String?, group: String?) {
         interactor?.updateUserInfo(
             email: email ?? "",
             name: name ?? "",
             lastname: lastname ?? "",
-            age: Int(age ?? "Error")
+            age: Int(age ?? "Error"),
+            group: group ?? ""
         )
     }
 

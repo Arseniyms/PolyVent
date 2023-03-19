@@ -33,7 +33,7 @@ protocol ViewToPresenterEditProfileProtocol: NSObject, AnyObject, UIPickerViewDe
     func ageDidChange(_ age: String)
     
     func viewDidLoad()
-    func save(email: String?, name: String?, lastname: String?, age: String?)
+    func save(email: String?, name: String?, lastname: String?, age: String?, group: String?)
     func updatePresentingViewController(_ vc: UIViewController?)
     func exit()
 }
@@ -53,7 +53,7 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     
     func getUser()
     func loadGroups()
-    func updateUserInfo(email: String, name: String, lastname: String, age: Int?)
+    func updateUserInfo(email: String, name: String, lastname: String, age: Int?, group: String)
     
     func numberOfRowsInComponent() -> Int
     func getGroup(in row: Int) -> String

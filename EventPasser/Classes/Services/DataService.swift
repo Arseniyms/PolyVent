@@ -34,7 +34,7 @@ class DataService {
         return try? DataService.context.fetch(request).first
     }
 
-    func updateUser(id: String, email: String, name: String, lastname: String, age: Int?) throws {
+    func updateUser(id: String, email: String, name: String, lastname: String, age: Int?, group: String) throws {
         let request = NSFetchRequest<UserEntity>(entityName: Constants.CoreDataEntities.userEntityName)
         request.predicate = NSPredicate(format: "id = %@", id)
         request.returnsObjectsAsFaults = false
@@ -44,6 +44,9 @@ class DataService {
         updateUser?.first_name = name
         updateUser?.email = email
         updateUser?.last_name = lastname
+        updateUser?.group = group
+        updateUser?.is_teacher = group.isEmpty
+        
         if let age {
             updateUser?.age = Int16(age)
         }

@@ -70,19 +70,25 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
         groups?[row] ?? ""
     }
     
-    func updateUserInfo(email: String, name: String, lastname: String, age: Int?) {
+    func updateUserInfo(email: String, name: String, lastname: String, age: Int?, group: String) {
         guard let loggedId = Auth.auth().currentUser?.uid else {
             self.presenter?.updateUserFailed(with: AuthorizationError.idError)
             return
         }
 
-        FirebaseService.shared.updateUserInfo(id: loggedId, email: email, first_name: name, last_name: lastname, age: age ?? 0) { result in
+        FirebaseService.shared.updateUserInfo(id: loggedId,
+                                              email: email,
+                                              first_name: name,
+                                              last_name: lastname,
+                                              age: age ?? 0,
+                                              group: group
+        ) { result in
             switch result {
             case let .success(success):
                 switch success {
                 case .OK:
                     do {
-                        try DataService.shared.updateUser(id: loggedId, email: email, name: name, lastname: lastname, age: age)
+                        try DataService.shared.updateUser(id: loggedId, email: email, name: name, lastname: lastname, age: age, group: group)
                         try DataService.shared.saveContext()
                         Thread.sleep(forTimeInterval: 1)
                         self.presenter?.updateUserSuccess()
