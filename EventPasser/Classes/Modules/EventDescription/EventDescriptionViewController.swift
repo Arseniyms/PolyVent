@@ -155,7 +155,6 @@ class EventDescriptionViewController: ScrollableViewController {
         let button = UIButton(type: .system)
         button.setTitle("", for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .buttonColor
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .light)
