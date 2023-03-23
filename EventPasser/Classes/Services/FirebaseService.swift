@@ -204,20 +204,27 @@ class FirebaseService {
                             return completion(error)
                         }
                     }
-                } catch {
-                    return completion(error)
-                }
-                
-                if let image {
-                    image.uploadToFireBase(name: id) { result in
-                        switch result {
-                        case .success(let success):
-                            print(success?.absoluteString)
-                            return completion(nil)
-                        case .failure(let failure):
-                            completion(failure)
+                    
+                    if let image {
+                        image.uploadToFireBase(name: id) { result in
+                            switch result {
+                            case .success(let success):
+                                guard let success else { return completion(FireStorageErrors.imageError) }
+                                newDocument.setData(["imageURL": success.absoluteString], merge: true) { error in
+                                    if let error {
+                                        return completion(error)
+                                    }
+                                    event.imageURL = success.absoluteString
+                                    event.image = image.jpegData(compressionQuality: 1.0)
+                                    return completion(nil)
+                                }
+                            case .failure(let failure):
+                                completion(failure)
+                            }
                         }
                     }
+                } catch {
+                    return completion(error)
                 }
             }
         }
