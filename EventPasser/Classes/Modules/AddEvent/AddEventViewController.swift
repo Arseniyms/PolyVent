@@ -253,7 +253,8 @@ class AddEventViewController: ScrollableViewController {
             timeStart: startDatePicker.date,
             login: loginTextField.text,
             password: passTextField.text,
-            confirmPassword: confirmPassTextField.text
+            confirmPassword: confirmPassTextField.text,
+            image: addedImageView.image
         )
     }
 

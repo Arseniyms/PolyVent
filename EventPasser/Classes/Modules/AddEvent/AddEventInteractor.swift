@@ -26,7 +26,7 @@ class AddEventInteractor: PresenterToInteractorAddEventProtocol {
         }
     }
 
-    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?) {
+    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?, image: UIImage?) {
         guard let login, let password, let confirmPassword else {
             presenter?.saveEventFailure(with: EventAuthorizationError.invalidLogin, handler: nil)
             return
@@ -45,7 +45,9 @@ class AddEventInteractor: PresenterToInteractorAddEventProtocol {
                                               specification: specification,
                                               timeEnd: timeEnd,
                                               timeStart: timeStart,
-                                              password: password)
+                                              password: password,
+                                              image: image
+        )
         { error in
             if let error {
                 self.presenter?.saveEventFailure(with: error, handler: nil)

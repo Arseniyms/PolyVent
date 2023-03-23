@@ -157,7 +157,7 @@ class FirebaseService {
         }
     }
 
-    func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, completion: @escaping ((Error?) -> Void)) {
+    func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, image: UIImage?, completion: @escaping ((Error?) -> Void)) {
         let db = Firestore.firestore()
 
         guard let login else {
@@ -207,8 +207,18 @@ class FirebaseService {
                 } catch {
                     return completion(error)
                 }
-
-                completion(nil)
+                
+                if let image {
+                    image.uploadToFireBase(name: id) { result in
+                        switch result {
+                        case .success(let success):
+                            print(success?.absoluteString)
+                            return completion(nil)
+                        case .failure(let failure):
+                            completion(failure)
+                        }
+                    }
+                }
             }
         }
     }
@@ -380,7 +390,7 @@ class FirebaseService {
     func getImageFromFirebase(urlString: String, completion: @escaping ((Result<UIImage, Error>) -> Void)) {
         let storage = Storage.storage()
 
-        let storageRef = storage.reference().child(urlString)
+        let storageRef = storage.reference(forURL: urlString)
         
         storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if error != nil {
@@ -397,26 +407,26 @@ class FirebaseService {
 // MARK: Images
 
 extension UIImage {
-    func uploadToFireBase(with folder: String, completion: @escaping (URL?) -> Void) {
+    func uploadToFireBase(name: String, completion: @escaping (Result<URL?, Error>) -> Void) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
 
         let data = self.jpegData(compressionQuality: 0.4) ?? Data()
         let storage = Storage.storage().reference()
-        storage.child(folder).putData(data, metadata: metadata) { _, error in
+        storage.child(name).putData(data, metadata: metadata) { _, error in
             if let error = error {
                 print(error)
-                completion(nil)
+                completion(.failure(FireStorageErrors.imageError))
                 return
             }
 
-            storage.child(folder).downloadURL { url, error in
+            storage.child(name).downloadURL { url, error in
                 if let error = error {
                     print(error)
-                    completion(nil)
+                    completion(.failure(FireStorageErrors.imageError))
                 }
                 else {
-                    completion(url)
+                    completion(.success(url))
                 }
             }
         }

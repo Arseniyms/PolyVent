@@ -24,7 +24,7 @@ protocol ViewToPresenterAddEventProtocol: NSObject, AnyObject, UIImagePickerCont
     var router: PresenterToRouterAddEventProtocol? { get set }
     
     func viewDidLoad()
-    func saveEventInfo(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
+    func saveEventInfo(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?, image: UIImage?)
     
     func startImagePicker()
 }
@@ -36,7 +36,7 @@ protocol PresenterToInteractorAddEventProtocol: AnyObject {
     var presenter: InteractorToPresenterAddEventProtocol? { get set }
     
     func isUserStaff()
-    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
+    func saveEvent(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?, image: UIImage?)
 }
 
 
