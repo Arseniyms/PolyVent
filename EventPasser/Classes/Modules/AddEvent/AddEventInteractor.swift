@@ -7,7 +7,7 @@
 //
 
 import Firebase
-import Foundation
+import UIKit
 
 class AddEventInteractor: PresenterToInteractorAddEventProtocol {
     // MARK: Properties

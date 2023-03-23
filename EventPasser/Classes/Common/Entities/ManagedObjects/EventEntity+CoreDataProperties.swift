@@ -25,6 +25,8 @@ extension EventEntity {
     @NSManaged public var time_start: Date?
     @NSManaged public var title: String?
     @NSManaged public var tickets: NSSet?
+    @NSManaged public var image: Data?
+    @NSManaged public var imageURL: String?
 
     public var wrappedId: String {
         id ?? ""

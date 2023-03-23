@@ -3,6 +3,8 @@
     <entity name="EventEntity" representedClassName="EventEntity" syncable="YES">
         <attribute name="address" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="login" attributeType="String"/>
         <attribute name="max_guest_count" attributeType="Integer 32" minValueString="0" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="specification" attributeType="String"/>

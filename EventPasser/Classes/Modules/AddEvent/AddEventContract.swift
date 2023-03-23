@@ -11,11 +11,13 @@ import UIKit
 
 // MARK: View Output (Presenter -> View)
 protocol PresenterToViewAddEventProtocol: AnyObject {
+    func updateChosenImage(with image: UIImage)
+    func removeChosenImage()
 }
 
 
 // MARK: View Input (View -> Presenter)
-protocol ViewToPresenterAddEventProtocol: AnyObject {
+protocol ViewToPresenterAddEventProtocol: NSObject, AnyObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var view: PresenterToViewAddEventProtocol? { get set }
     var interactor: PresenterToInteractorAddEventProtocol? { get set }
@@ -23,6 +25,8 @@ protocol ViewToPresenterAddEventProtocol: AnyObject {
     
     func viewDidLoad()
     func saveEventInfo(name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, login: String?, password: String?, confirmPassword: String?)
+    
+    func startImagePicker()
 }
 
 
@@ -47,4 +51,5 @@ protocol InteractorToPresenterAddEventProtocol: AnyObject {
 protocol PresenterToRouterAddEventProtocol: AnyObject {
     func popViewController(_ view: PresenterToViewAddEventProtocol)
     func presentErrorAlert(on view: PresenterToViewAddEventProtocol, title: String, message: String, handler: ((UIAlertAction) -> Void)?)
+    func openImagePicker(on view: PresenterToViewAddEventProtocol, delegate: ViewToPresenterAddEventProtocol)
 }

@@ -17,7 +17,7 @@ class AddEventViewController: ScrollableViewController {
         setupNavigationItems()
         setupScrollView()
         setupScrollContentView()
-        
+
         presenter?.viewDidLoad()
         setupUI()
     }
@@ -64,29 +64,29 @@ class AddEventViewController: ScrollableViewController {
         textField.tag = 1
         textField.textContentType = .username
         textField.setBorderStyle(autocorrectionType: .no, autocapitalizationType: .none)
-        
+
         return textField
     }()
 
     private lazy var passTextField: UITextField = {
         let textField = self.getPasswordTextField()
         textField.tag = 2
-        
+
         return textField
     }()
-    
+
     private lazy var confirmPassTextField: UITextField = {
         let textField = self.getPasswordTextField()
         textField.tag = 3
-        
+
         return textField
-    } ()
+    }()
 
     private lazy var titleTextField: UITextField = {
         let textField = self.getInfoTextField()
         textField.tag = 4
         textField.setBorderStyle()
-        
+
         return textField
     }()
 
@@ -95,7 +95,7 @@ class AddEventViewController: ScrollableViewController {
         textField.tag = 5
         textField.textContentType = .fullStreetAddress
         textField.setBorderStyle()
-        
+
         return textField
     }()
 
@@ -130,6 +130,41 @@ class AddEventViewController: ScrollableViewController {
         return textField
     }()
 
+    private lazy var addImageButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Добавить фото", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.backgroundColor = .buttonColor
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(addPhotoButtonTapped), for: .touchUpInside)
+
+        return button
+    }()
+
+    private lazy var addedImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
+        let interaction = UIContextMenuInteraction(delegate: self)
+        imageView.addInteraction(interaction)
+
+        return imageView
+    }()
+
+    private lazy var addImageStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [addImageButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+
+        return stackView
+    }()
+
     private lazy var specificationTextView: UITextView = {
         let textView = UITextView()
         textView.tag = 7
@@ -142,7 +177,7 @@ class AddEventViewController: ScrollableViewController {
         textView.backgroundColor = .gray.withAlphaComponent(0.1)
         textView.textContainerInset.top = 6
         textView.textContainerInset.bottom = 6
-        
+
         return textView
     }()
 
@@ -187,6 +222,9 @@ class AddEventViewController: ScrollableViewController {
         stackView.addArrangedSubview(endDatePicker)
         stackView.addArrangedSubview(self.getInfoLabel("Максимальное количество посетителей"))
         stackView.addArrangedSubview(maxCountTextField)
+        stackView.setCustomSpacing(10, after: maxCountTextField)
+        stackView.addArrangedSubview(addImageStackView)
+        stackView.setCustomSpacing(10, after: addImageStackView)
         stackView.addArrangedSubview(self.getInfoLabel("Описание мероприятия"))
 
         scrollContentView.addSubview(stackView)
@@ -207,23 +245,65 @@ class AddEventViewController: ScrollableViewController {
 
     @objc func saveButtonTapped(_: UIBarButtonItem) {
         presenter?.saveEventInfo(
-                                 name: titleTextField.text ?? "",
-                                 address: addressTextField.text ?? "",
-                                 maxGuestsCount: Int(maxCountTextField.text ?? "") ?? 0,
-                                 specification: specificationTextView.text,
-                                 timeEnd: endDatePicker.date,
-                                 timeStart: startDatePicker.date,
-                                 login: loginTextField.text,
-                                 password: passTextField.text,
-                                 confirmPassword: confirmPassTextField.text)
+            name: titleTextField.text ?? "",
+            address: addressTextField.text ?? "",
+            maxGuestsCount: Int(maxCountTextField.text ?? "") ?? 0,
+            specification: specificationTextView.text,
+            timeEnd: endDatePicker.date,
+            timeStart: startDatePicker.date,
+            login: loginTextField.text,
+            password: passTextField.text,
+            confirmPassword: confirmPassTextField.text
+        )
     }
 
     @objc func startDatePickerValueChanged(_: UIDatePicker) {
         endDatePicker.minimumDate = startDatePicker.date
     }
 
+    @objc func addPhotoButtonTapped(_: UIButton) {
+        presenter?.startImagePicker()
+    }
 }
 
 extension AddEventViewController: PresenterToViewAddEventProtocol {
+    func updateChosenImage(with image: UIImage) {
+        UIView.animate(withDuration: 0.5, delay: 0) {
+            self.addImageStackView.insertArrangedSubview(self.addedImageView, at: 0)
+            self.addImageStackView.layoutIfNeeded()
+        } completion: { _ in
+            self.addedImageView.image = image
+        }
+    }
 
+    func removeChosenImage() {
+        UIView.animate(withDuration: 0.5, delay: 0) {
+            self.addedImageView.removeFromSuperview()
+            self.addedImageView.image = nil
+            self.addImageStackView.layoutIfNeeded()
+        }
+    }
+}
+
+extension AddEventViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_: UIContextMenuInteraction, configurationForMenuAtLocation _: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { _ in
+            self.makeContextMenu()
+        })
+    }
+
+    func makeContextMenu() -> UIMenu {
+        let edit = UIAction(title: "Изменить", image: UIImage(systemName: "photo.on.rectangle")) { _ in
+            self.presenter?.startImagePicker()
+        }
+
+        let delete = UIAction(
+            title: "Удалить",
+            image: UIImage(systemName: "xmark.circle")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        ) { _ in
+            self.removeChosenImage()
+        }
+
+        return UIMenu(title: "", children: [edit, delete])
+    }
 }
