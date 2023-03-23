@@ -32,6 +32,7 @@
 		DC31012529018E570031BB8B /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31012429018E570031BB8B /* ViewController+Extensions.swift */; };
 		DC315C5D2917C35A0062BE6C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC315C5C2917C35A0062BE6C /* Constants.swift */; };
 		DC34CFCD28FEA9930016010D /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC34CFCC28FEA9930016010D /* Color+Extensions.swift */; };
+		DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DC35100729CC9EB500A317DB /* FirebaseStorage */; };
 		DC3EFC0D293CDB4000312170 /* EventSecurityContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC08293CDB4000312170 /* EventSecurityContract.swift */; };
 		DC3EFC0E293CDB4000312170 /* EventSecurityPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC09293CDB4000312170 /* EventSecurityPresenter.swift */; };
 		DC3EFC0F293CDB4000312170 /* EventSecurityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC0A293CDB4000312170 /* EventSecurityRouter.swift */; };
@@ -213,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD1A45A3FE6A212BFCFF208 /* Pods_EventPasser.framework in Frameworks */,
+				DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */,
 				DC6C1B1A29A774640058EA12 /* FirebaseAuth in Frameworks */,
 				DC6C1B1C29A774640058EA12 /* FirebaseFirestore in Frameworks */,
 			);
@@ -580,6 +582,7 @@
 			packageProductDependencies = (
 				DC6C1B1929A774640058EA12 /* FirebaseAuth */,
 				DC6C1B1B29A774640058EA12 /* FirebaseFirestore */,
+				DC35100729CC9EB500A317DB /* FirebaseStorage */,
 			);
 			productName = EventPasser;
 			productReference = DCA1E9B228FDB967002207C4 /* EventPasser.app */;
@@ -861,7 +864,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -915,7 +918,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1069,6 +1072,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DC35100729CC9EB500A317DB /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC6C1B1829A774640058EA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		DC6C1B1929A774640058EA12 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DC6C1B1829A774640058EA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

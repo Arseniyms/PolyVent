@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseStorage
 import UIKit
 
 class FirebaseService {
@@ -78,7 +79,7 @@ class FirebaseService {
             "last_name": last_name,
             "age": age,
             "group": group,
-            "is_teacher": group.isEmpty
+            "is_teacher": group.isEmpty,
         ]) { error in
             if let error {
                 print(error)
@@ -340,7 +341,7 @@ class FirebaseService {
                         let query = db.collection(Constants.FireCollections.groups)
                             .whereField("num", isEqualTo: group)
                         query.getDocuments { snapshot, error in
-                            if (snapshot?.isEmpty ?? false), error == nil {
+                            if snapshot?.isEmpty ?? false, error == nil {
                                 db.collection(Constants.FireCollections.groups)
                                     .document()
                                     .setData(["num": group] as [String: Any])
@@ -353,20 +354,19 @@ class FirebaseService {
             }
         }
     }
-    
-    
+
     func getGroups(completion: @escaping (Result<[String], Error>) -> Void) {
         let db = Firestore.firestore()
-        
+
         db.collection(Constants.FireCollections.groups).getDocuments { snapshot, error in
             if let error {
                 return completion(.failure(error))
             }
-            
+
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-            
+
             let decoder = JSONDecoder()
             let groups: [String] = snapshot.documents.compactMap { doc in
                 let data = try? JSONSerialization.data(withJSONObject: doc.data())
@@ -374,6 +374,51 @@ class FirebaseService {
                 return decoded?["num"]
             }
             completion(.success(groups))
+        }
+    }
+
+    func getImageFromFirebase(urlString: String, completion: @escaping ((Result<UIImage, Error>) -> Void)) {
+        let storage = Storage.storage()
+
+        let storageRef = storage.reference().child(urlString)
+        
+        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if error != nil {
+                return completion(.failure(FireStorageErrors.imageError))
+            }
+            if let imageData = data, let image = UIImage(data: imageData) {
+                return completion(.success(image))
+            }
+            return completion(.failure(FireStorageErrors.imageError))
+        }
+    }
+}
+
+// MARK: Images
+
+extension UIImage {
+    func uploadToFireBase(with folder: String, completion: @escaping (URL?) -> Void) {
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+
+        let data = self.jpegData(compressionQuality: 0.4) ?? Data()
+        let storage = Storage.storage().reference()
+        storage.child(folder).putData(data, metadata: metadata) { _, error in
+            if let error = error {
+                print(error)
+                completion(nil)
+                return
+            }
+
+            storage.child(folder).downloadURL { url, error in
+                if let error = error {
+                    print(error)
+                    completion(nil)
+                }
+                else {
+                    completion(url)
+                }
+            }
         }
     }
 }

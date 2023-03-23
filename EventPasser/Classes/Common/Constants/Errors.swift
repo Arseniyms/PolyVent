@@ -106,3 +106,18 @@ extension NetworkErrors: LocalizedError {
         }
     }
 }
+
+enum FireStorageErrors: Error {
+    case wrongURL, imageError
+}
+
+extension FireStorageErrors: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .wrongURL:
+            return NSLocalizedString("Некорректная ссылка на фото.", comment: "")
+        case .imageError:
+            return NSLocalizedString("Ошибка загрузки фото.", comment: "")
+        }
+    }
+}
