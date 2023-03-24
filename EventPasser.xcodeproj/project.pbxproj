@@ -29,6 +29,7 @@
 		DC2A0DD32954454B004EE1DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD22954454B004EE1DC /* NetworkService.swift */; };
 		DC2A0DD5295493FA004EE1DC /* ResponseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD4295493FA004EE1DC /* ResponseStatus.swift */; };
 		DC2A0DD72954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */; };
+		DC2A180529CE0700006728E3 /* Button+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A180429CE0700006728E3 /* Button+Extensions.swift */; };
 		DC31012529018E570031BB8B /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31012429018E570031BB8B /* ViewController+Extensions.swift */; };
 		DC315C5D2917C35A0062BE6C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC315C5C2917C35A0062BE6C /* Constants.swift */; };
 		DC34CFCD28FEA9930016010D /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC34CFCC28FEA9930016010D /* Color+Extensions.swift */; };
@@ -134,6 +135,7 @@
 		DC2A0DD22954454B004EE1DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DC2A0DD4295493FA004EE1DC /* ResponseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStatus.swift; sourceTree = "<group>"; };
 		DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+Extensions.swift"; sourceTree = "<group>"; };
+		DC2A180429CE0700006728E3 /* Button+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+Extensions.swift"; sourceTree = "<group>"; };
 		DC31012429018E570031BB8B /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 		DC315C5C2917C35A0062BE6C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DC34CFCC28FEA9930016010D /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				DCB59301293BA68F0024FA9E /* View+Extensions.swift */,
 				DC4648872947AE97006447F8 /* ImageView+Extensions.swift */,
 				DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */,
+				DC2A180429CE0700006728E3 /* Button+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -719,6 +722,7 @@
 				DC5BD36C28FD91C2000C9D4E /* SignUpViewController.swift in Sources */,
 				DC6C1B2029A778B90058EA12 /* FirebaseService.swift in Sources */,
 				DC433E76294275C800740B0E /* TicketEntity+CoreDataClass.swift in Sources */,
+				DC2A180529CE0700006728E3 /* Button+Extensions.swift in Sources */,
 				DC09FD802916BC7D0037DD6B /* EditProfileViewController.swift in Sources */,
 				DC1B0BBE2928E0FA0045F8C4 /* EventsClassification.swift in Sources */,
 				DCC3A0AA2922A27000F72146 /* Errors.swift in Sources */,

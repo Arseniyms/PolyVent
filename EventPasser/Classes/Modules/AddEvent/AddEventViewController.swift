@@ -139,6 +139,7 @@ class AddEventViewController: ScrollableViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(addPhotoButtonTapped), for: .touchUpInside)
+        button.makeLivePressing()
 
         return button
     }()

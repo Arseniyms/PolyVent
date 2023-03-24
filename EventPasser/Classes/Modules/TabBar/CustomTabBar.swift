@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(*, deprecated)
 class CustomTabBar: UITabBar {
     private var tabBarWidth: CGFloat { self.bounds.width }
     private var tabBarHeight: CGFloat { self.bounds.height }
