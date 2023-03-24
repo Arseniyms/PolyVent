@@ -8,6 +8,8 @@
 import UIKit
 
 class EventTableViewCell: UITableViewCell {
+    private let imagePlaceholder = "🪩".image()
+
     private let name = UILabel()
     private let address = UILabel()
     private let timeStart = UILabel()
@@ -46,7 +48,13 @@ class EventTableViewCell: UITableViewCell {
         timeStart.text = dateFormatter.string(from: event.wrappedTimeStart)
         guestsCount.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
         eventImageView.image = event.convertedImage
-
+        eventImageView.tintColor = .buttonColor
+        eventImageView.contentMode = .scaleAspectFit
+        
+        if eventImageView.image == nil {
+            eventImageView.image = imagePlaceholder
+            eventImageView.contentMode = .center
+        }
         setTicketImage(isSet: isSet)
     }
 
@@ -142,5 +150,24 @@ class EventTableViewCell: UITableViewCell {
         } else {
             isSetImageView.tintColor = .systemGray
         }
+    }
+}
+
+
+extension String {
+    func image() -> UIImage? {
+        let nsString = (self as NSString)
+        let font = UIFont.systemFont(ofSize: 90)
+        let stringAttributes = [NSAttributedString.Key.font: font]
+        let imageSize = nsString.size(withAttributes: stringAttributes)
+        
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+        UIColor.clear.set()
+        UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
+        nsString.draw(at: CGPoint.zero, withAttributes: stringAttributes)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image ?? UIImage()
     }
 }
