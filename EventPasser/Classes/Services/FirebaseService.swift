@@ -146,12 +146,16 @@ class FirebaseService {
                 return event
             }
 
-            self.loadTicketsToCoreData { result in
-                switch result {
-                case .success:
-                    completion(.success(events))
-                case let .failure(failure):
-                    completion(.failure(failure))
+            self.loadImagesToCoreData { error in
+                if error == nil {
+                    self.loadTicketsToCoreData { result in
+                        switch result {
+                        case .success:
+                            completion(.success(events))
+                        case let .failure(failure):
+                            completion(.failure(failure))
+                        }
+                    }
                 }
             }
         }
@@ -204,11 +208,11 @@ class FirebaseService {
                             return completion(error)
                         }
                     }
-                    
+
                     if let image {
                         image.uploadToFireBase(name: id) { result in
                             switch result {
-                            case .success(let success):
+                            case let .success(success):
                                 guard let success else { return completion(FireStorageErrors.imageError) }
                                 newDocument.setData(["imageURL": success.absoluteString], merge: true) { error in
                                     if let error {
@@ -218,7 +222,7 @@ class FirebaseService {
                                     event.image = image.jpegData(compressionQuality: 1.0)
                                     return completion(nil)
                                 }
-                            case .failure(let failure):
+                            case let .failure(failure):
                                 completion(failure)
                             }
                         }
@@ -232,14 +236,14 @@ class FirebaseService {
 
     func loadImagesToCoreData(completion: @escaping (Error?) -> Void) {
         let events = DataService.shared.getEvents()
-        
+
         let dispatchGroup = DispatchGroup()
         for event in events {
             if let urlString = event.imageURL {
                 dispatchGroup.enter()
                 getImageFromFirebase(urlString: urlString) { result in
                     switch result {
-                    case .success(let success):
+                    case let .success(success):
                         event.image = success.jpegData(compressionQuality: 1.0)
                     case .failure:
                         break
@@ -248,12 +252,12 @@ class FirebaseService {
                 }
             }
         }
-        
+
         dispatchGroup.notify(queue: .main) {
             completion(nil)
         }
     }
-    
+
     // MARK: Tickets
 
     func createTicket(of userId: String, to eventId: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -422,7 +426,7 @@ class FirebaseService {
         let storage = Storage.storage()
 
         let storageRef = storage.reference(forURL: urlString)
-        
+
         storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if error != nil {
                 return completion(.failure(FireStorageErrors.imageError))

@@ -26,12 +26,8 @@ class EventsInteractor: PresenterToInteractorEventsProtocol {
             switch result {
             case .success:
                 self.loadEventsFromCoreData(with: info)
-                FirebaseService.shared.loadImagesToCoreData { error in
-                    if error == nil {
-                        self.presenter?.reloadDataInTable()
-                    }
-                    try? DataService.shared.saveContext()
-                }
+                try? DataService.shared.saveContext()
+                self.presenter?.reloadDataInTable()
             case let .failure(error):
                 self.loadEventsFromCoreData(with: nil)
                 self.presenter?.reloadDataInTable()
