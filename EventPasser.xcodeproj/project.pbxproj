@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DBD1A45A3FE6A212BFCFF208 /* Pods_EventPasser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0F123502976D7ABF14E6AD1 /* Pods_EventPasser.framework */; };
 		DC03E5D5292AA0AC001BF560 /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC03E5D4292AA0AC001BF560 /* Image+Extensions.swift */; };
 		DC09FD7D2916BC7D0037DD6B /* EditProfileContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC09FD782916BC7D0037DD6B /* EditProfileContract.swift */; };
 		DC09FD7E2916BC7D0037DD6B /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC09FD792916BC7D0037DD6B /* EditProfilePresenter.swift */; };
@@ -113,7 +112,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		45CD408D929A0F40B7B72F9D /* Pods-EventPasser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EventPasser.release.xcconfig"; path = "Target Support Files/Pods-EventPasser/Pods-EventPasser.release.xcconfig"; sourceTree = "<group>"; };
 		DC03E5D4292AA0AC001BF560 /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
 		DC09FD782916BC7D0037DD6B /* EditProfileContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileContract.swift; sourceTree = "<group>"; };
 		DC09FD792916BC7D0037DD6B /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
@@ -177,7 +175,7 @@
 		DC6C1B1F29A778B90058EA12 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		DC6E484129118285006199E3 /* Label+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Extensions.swift"; sourceTree = "<group>"; };
 		DC6E4843291191FC006199E3 /* InfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
-		DCA1E9B228FDB967002207C4 /* EventPasser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EventPasser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCA1E9B228FDB967002207C4 /* EventPasser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = EventPasser.app; path = "/Users/arseniyms/XcodeProjects/PolyVent/build/Debug-iphoneos/EventPasser.app"; sourceTree = "<absolute>"; };
 		DCB3305E2902F73600536E95 /* ProfileContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileContract.swift; sourceTree = "<group>"; };
 		DCB3305F2902F73600536E95 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		DCB330602902F73600536E95 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
@@ -206,8 +204,6 @@
 		DCEA51FF2953617F00D1BCDC /* EditProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTests.swift; sourceTree = "<group>"; };
 		DCEA52012953618E00D1BCDC /* EditProfileMockPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileMockPresenter.swift; sourceTree = "<group>"; };
 		DCEA52042953763300D1BCDC /* AddEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventTests.swift; sourceTree = "<group>"; };
-		E0F123502976D7ABF14E6AD1 /* Pods_EventPasser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EventPasser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EF12BE19C2BFAAAC5C5277E1 /* Pods-EventPasser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EventPasser.debug.xcconfig"; path = "Target Support Files/Pods-EventPasser/Pods-EventPasser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,7 +211,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBD1A45A3FE6A212BFCFF208 /* Pods_EventPasser.framework in Frameworks */,
 				DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */,
 				DC6C1B1A29A774640058EA12 /* FirebaseAuth in Frameworks */,
 				DC6C1B1C29A774640058EA12 /* FirebaseFirestore in Frameworks */,
@@ -232,23 +227,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		075E8948AA037816F05DC6FE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E0F123502976D7ABF14E6AD1 /* Pods_EventPasser.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		87A7880F44CBE4DFA7374A14 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EF12BE19C2BFAAAC5C5277E1 /* Pods-EventPasser.debug.xcconfig */,
-				45CD408D929A0F40B7B72F9D /* Pods-EventPasser.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		DC015FCB290155E30057AF82 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,10 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				DCC0B47728E3025400FDEA13 /* EventPasser */,
-				DCA1E9B228FDB967002207C4 /* EventPasser.app */,
-				87A7880F44CBE4DFA7374A14 /* Pods */,
 				DCEA51F12953543C00D1BCDC /* EventPasserTests */,
-				075E8948AA037816F05DC6FE /* Frameworks */,
 				DCEA51F02953543C00D1BCDC /* EventPasserTests.xctest */,
 			);
 			sourceTree = "<group>";
@@ -572,7 +547,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCC0B48928E3025500FDEA13 /* Build configuration list for PBXNativeTarget "EventPasser" */;
 			buildPhases = (
-				EBBFD010791105A9F656C034 /* [CP] Check Pods Manifest.lock */,
 				DCC0B47128E3025400FDEA13 /* Sources */,
 				DCC0B47228E3025400FDEA13 /* Frameworks */,
 				DCC0B47328E3025400FDEA13 /* Resources */,
@@ -670,31 +644,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		EBBFD010791105A9F656C034 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-EventPasser-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DCC0B47128E3025400FDEA13 /* Sources */ = {
@@ -934,7 +883,6 @@
 		};
 		DCC0B48A28E3025500FDEA13 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF12BE19C2BFAAAC5C5277E1 /* Pods-EventPasser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -966,7 +914,6 @@
 		};
 		DCC0B48B28E3025500FDEA13 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 45CD408D929A0F40B7B72F9D /* Pods-EventPasser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
