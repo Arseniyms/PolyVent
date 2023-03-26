@@ -6,86 +6,88 @@
 //
 //
 
-import Foundation
 import CoreData
+import UIKit
 
-
-extension EventEntity {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<EventEntity> {
+public extension EventEntity {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<EventEntity> {
         return NSFetchRequest<EventEntity>(entityName: "EventEntity")
     }
 
-    @NSManaged public var address: String?
-    @NSManaged public var id: String?
-    @NSManaged public var login: String?
-    @NSManaged public var max_guest_count: Int32
-    @NSManaged public var specification: String?
-    @NSManaged public var time_end: Date?
-    @NSManaged public var time_start: Date?
-    @NSManaged public var title: String?
-    @NSManaged public var tickets: NSSet?
+    @NSManaged var address: String?
+    @NSManaged var id: String?
+    @NSManaged var login: String?
+    @NSManaged var max_guest_count: Int32
+    @NSManaged var specification: String?
+    @NSManaged var time_end: Date?
+    @NSManaged var time_start: Date?
+    @NSManaged var title: String?
+    @NSManaged var tickets: NSSet?
+    @NSManaged var image: Data?
+    @NSManaged var imageURL: String?
 
-    public var wrappedId: String {
+    var wrappedId: String {
         id ?? ""
     }
-    
-    public var wrappedLogin: String {
+
+    var wrappedLogin: String {
         login ?? ""
     }
-    
-    public var wrappedTitle: String {
+
+    var wrappedTitle: String {
         title ?? ""
     }
-    
-    public var wrappedAddress: String {
+
+    var wrappedAddress: String {
         address ?? ""
     }
-    
-    public var wrappedMaxCount: Int {
+
+    var wrappedMaxCount: Int {
         Int(max_guest_count)
     }
-    
-    public var wrappedSpecification: String {
+
+    var wrappedSpecification: String {
         specification ?? ""
     }
-    
-    public var wrappedTimeEnd: Date {
+
+    var wrappedTimeEnd: Date {
         time_end ?? Date.distantFuture
     }
-    
-    public var wrappedTimeStart: Date {
+
+    var wrappedTimeStart: Date {
         time_start ?? Date.distantPast
     }
-    
-    public var wrappedCurrentAmountOfTickets: Int {
+
+    var wrappedCurrentAmountOfTickets: Int {
         tickets?.count ?? 0
     }
-    
-    public var isFull: Bool {
+
+    var isFull: Bool {
         wrappedCurrentAmountOfTickets >= wrappedMaxCount
     }
-    
-    public var usersArray: [UserEntity] {
+
+    var usersArray: [UserEntity] {
         let set = tickets as? Set<TicketEntity> ?? []
-        return set.compactMap({ $0.user }).sorted(by: { $0.wrappedFullName < $1.wrappedFullName })
+        return set.compactMap { $0.user }.sorted(by: { $0.wrappedFullName < $1.wrappedFullName })
     }
-    
+
+    var convertedImage: UIImage? {
+        UIImage(data: image ?? Data())
+    }
 }
 
 // MARK: Generated accessors for tickets
-extension EventEntity {
 
+public extension EventEntity {
     @objc(addTicketsObject:)
-    @NSManaged public func addToTickets(_ value: TicketEntity)
+    @NSManaged func addToTickets(_ value: TicketEntity)
 
     @objc(removeTicketsObject:)
-    @NSManaged public func removeFromTickets(_ value: TicketEntity)
+    @NSManaged func removeFromTickets(_ value: TicketEntity)
 
     @objc(addTickets:)
-    @NSManaged public func addToTickets(_ values: NSSet)
+    @NSManaged func addToTickets(_ values: NSSet)
 
     @objc(removeTickets:)
-    @NSManaged public func removeFromTickets(_ values: NSSet)
-
+    @NSManaged func removeFromTickets(_ values: NSSet)
 }

@@ -29,9 +29,11 @@
 		DC2A0DD32954454B004EE1DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD22954454B004EE1DC /* NetworkService.swift */; };
 		DC2A0DD5295493FA004EE1DC /* ResponseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD4295493FA004EE1DC /* ResponseStatus.swift */; };
 		DC2A0DD72954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */; };
+		DC2A180529CE0700006728E3 /* Button+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A180429CE0700006728E3 /* Button+Extensions.swift */; };
 		DC31012529018E570031BB8B /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31012429018E570031BB8B /* ViewController+Extensions.swift */; };
 		DC315C5D2917C35A0062BE6C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC315C5C2917C35A0062BE6C /* Constants.swift */; };
 		DC34CFCD28FEA9930016010D /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC34CFCC28FEA9930016010D /* Color+Extensions.swift */; };
+		DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DC35100729CC9EB500A317DB /* FirebaseStorage */; };
 		DC3EFC0D293CDB4000312170 /* EventSecurityContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC08293CDB4000312170 /* EventSecurityContract.swift */; };
 		DC3EFC0E293CDB4000312170 /* EventSecurityPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC09293CDB4000312170 /* EventSecurityPresenter.swift */; };
 		DC3EFC0F293CDB4000312170 /* EventSecurityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC0A293CDB4000312170 /* EventSecurityRouter.swift */; };
@@ -54,6 +56,7 @@
 		DC433E77294275C800740B0E /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC433E71294275C800740B0E /* EventEntity+CoreDataProperties.swift */; };
 		DC433E792944C3DA00740B0E /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC433E782944C3DA00740B0E /* Vibration.swift */; };
 		DC4648882947AE97006447F8 /* ImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4648872947AE97006447F8 /* ImageView+Extensions.swift */; };
+		DC58665929C5D21500EB0F6A /* groups.json in Resources */ = {isa = PBXBuildFile; fileRef = DC58665829C5D21500EB0F6A /* groups.json */; };
 		DC5BD35F28FD91B7000C9D4E /* SignInContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35A28FD91B7000C9D4E /* SignInContract.swift */; };
 		DC5BD36028FD91B7000C9D4E /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35B28FD91B7000C9D4E /* SignInPresenter.swift */; };
 		DC5BD36128FD91B7000C9D4E /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5BD35C28FD91B7000C9D4E /* SignInRouter.swift */; };
@@ -132,6 +135,7 @@
 		DC2A0DD22954454B004EE1DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DC2A0DD4295493FA004EE1DC /* ResponseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStatus.swift; sourceTree = "<group>"; };
 		DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+Extensions.swift"; sourceTree = "<group>"; };
+		DC2A180429CE0700006728E3 /* Button+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+Extensions.swift"; sourceTree = "<group>"; };
 		DC31012429018E570031BB8B /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 		DC315C5C2917C35A0062BE6C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DC34CFCC28FEA9930016010D /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 		DC433E71294275C800740B0E /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DC433E782944C3DA00740B0E /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		DC4648872947AE97006447F8 /* ImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+Extensions.swift"; sourceTree = "<group>"; };
+		DC58665829C5D21500EB0F6A /* groups.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = groups.json; sourceTree = "<group>"; };
 		DC5BD35A28FD91B7000C9D4E /* SignInContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInContract.swift; sourceTree = "<group>"; };
 		DC5BD35B28FD91B7000C9D4E /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
 		DC5BD35C28FD91B7000C9D4E /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
@@ -211,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD1A45A3FE6A212BFCFF208 /* Pods_EventPasser.framework in Frameworks */,
+				DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */,
 				DC6C1B1A29A774640058EA12 /* FirebaseAuth in Frameworks */,
 				DC6C1B1C29A774640058EA12 /* FirebaseFirestore in Frameworks */,
 			);
@@ -311,6 +317,7 @@
 				DCB59301293BA68F0024FA9E /* View+Extensions.swift */,
 				DC4648872947AE97006447F8 /* ImageView+Extensions.swift */,
 				DC2A0DD62954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift */,
+				DC2A180429CE0700006728E3 /* Button+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -470,6 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				DCC0B48128E3025500FDEA13 /* Assets.xcassets */,
+				DC58665829C5D21500EB0F6A /* groups.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -577,6 +585,7 @@
 			packageProductDependencies = (
 				DC6C1B1929A774640058EA12 /* FirebaseAuth */,
 				DC6C1B1B29A774640058EA12 /* FirebaseFirestore */,
+				DC35100729CC9EB500A317DB /* FirebaseStorage */,
 			);
 			productName = EventPasser;
 			productReference = DCA1E9B228FDB967002207C4 /* EventPasser.app */;
@@ -649,6 +658,7 @@
 				DCC0B48528E3025500FDEA13 /* LaunchScreen.storyboard in Resources */,
 				DCC0B48228E3025500FDEA13 /* Assets.xcassets in Resources */,
 				DC6C1B1E29A775300058EA12 /* GoogleService-Info.plist in Resources */,
+				DC58665929C5D21500EB0F6A /* groups.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +722,7 @@
 				DC5BD36C28FD91C2000C9D4E /* SignUpViewController.swift in Sources */,
 				DC6C1B2029A778B90058EA12 /* FirebaseService.swift in Sources */,
 				DC433E76294275C800740B0E /* TicketEntity+CoreDataClass.swift in Sources */,
+				DC2A180529CE0700006728E3 /* Button+Extensions.swift in Sources */,
 				DC09FD802916BC7D0037DD6B /* EditProfileViewController.swift in Sources */,
 				DC1B0BBE2928E0FA0045F8C4 /* EventsClassification.swift in Sources */,
 				DCC3A0AA2922A27000F72146 /* Errors.swift in Sources */,
@@ -857,7 +868,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -911,7 +922,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -934,6 +945,7 @@
 				INFOPLIST_FILE = "EventPasser/Supporting Files/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PolyVent;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Для сканирования кодов пользователя";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Для фото вашего мероприятия";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -965,6 +977,7 @@
 				INFOPLIST_FILE = "EventPasser/Supporting Files/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PolyVent;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Для сканирования кодов пользователя";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Для фото вашего мероприятия";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1065,6 +1078,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DC35100729CC9EB500A317DB /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC6C1B1829A774640058EA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		DC6C1B1929A774640058EA12 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DC6C1B1829A774640058EA12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

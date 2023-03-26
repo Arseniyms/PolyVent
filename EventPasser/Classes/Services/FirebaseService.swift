@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseStorage
 import UIKit
 
 class FirebaseService {
@@ -71,12 +72,14 @@ class FirebaseService {
         db.collection(Constants.FireCollections.users).document(id).setData(parameters as [String: Any])
     }
 
-    func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+    func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, group: String, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.users).document(id).updateData([
             "first_name": first_name,
             "last_name": last_name,
             "age": age,
+            "group": group,
+            "is_teacher": group.isEmpty,
         ]) { error in
             if let error {
                 print(error)
@@ -143,18 +146,22 @@ class FirebaseService {
                 return event
             }
 
-            self.loadTicketsToCoreData { result in
-                switch result {
-                case .success:
-                    completion(.success(events))
-                case let .failure(failure):
-                    completion(.failure(failure))
+            self.loadImagesToCoreData { error in
+                if error == nil {
+                    self.loadTicketsToCoreData { result in
+                        switch result {
+                        case .success:
+                            completion(.success(events))
+                        case let .failure(failure):
+                            completion(.failure(failure))
+                        }
+                    }
                 }
             }
         }
     }
 
-    func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, completion: @escaping ((Error?) -> Void)) {
+    func createNewEvent(login: String?, name: String, address: String, maxGuestsCount: Int, specification: String, timeEnd: Date, timeStart: Date, password: String, image: UIImage?, completion: @escaping ((Error?) -> Void)) {
         let db = Firestore.firestore()
 
         guard let login else {
@@ -201,12 +208,53 @@ class FirebaseService {
                             return completion(error)
                         }
                     }
+
+                    if let image {
+                        image.uploadToFireBase(name: id) { result in
+                            switch result {
+                            case let .success(success):
+                                guard let success else { return completion(FireStorageErrors.imageError) }
+                                newDocument.setData(["imageURL": success.absoluteString], merge: true) { error in
+                                    if let error {
+                                        return completion(error)
+                                    }
+                                    event.imageURL = success.absoluteString
+                                    event.image = image.jpegData(compressionQuality: 1.0)
+                                    return completion(nil)
+                                }
+                            case let .failure(failure):
+                                completion(failure)
+                            }
+                        }
+                    }
                 } catch {
                     return completion(error)
                 }
-
-                completion(nil)
             }
+        }
+    }
+
+    func loadImagesToCoreData(completion: @escaping (Error?) -> Void) {
+        let events = DataService.shared.getEvents()
+
+        let dispatchGroup = DispatchGroup()
+        for event in events {
+            if let urlString = event.imageURL {
+                dispatchGroup.enter()
+                getImageFromFirebase(urlString: urlString) { result in
+                    switch result {
+                    case let .success(success):
+                        event.image = success.jpegData(compressionQuality: 1.0)
+                    case .failure:
+                        break
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            completion(nil)
         }
     }
 
@@ -221,35 +269,35 @@ class FirebaseService {
                     return completion(.failure(TicketErrors.notEnoughSpace))
                 }
                 let db = Firestore.firestore()
-                
+
                 let newDocument = db.collection(Constants.FireCollections.tickets).document()
-                
+
                 let parameters: [String: Any] = [
                     "id": newDocument.documentID,
                     "event_id": eventId,
                     "user_id": userId,
                     "is_inside": false,
                 ]
-                
+
                 newDocument.setData(parameters) { error in
                     if let error {
                         return completion(.failure(error))
                     }
                     return completion(.success(newDocument.documentID))
                 }
-            case .failure(let error):
+            case let .failure(error):
                 return completion(.failure(error))
             }
         }
     }
-    
+
     func deleteTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
         let db = Firestore.firestore()
-        
+
         let ticketId = (try? DataService.shared.getTicketID(of: userId, to: eventId)) ?? ""
-        
+
         let docRef = db.collection(Constants.FireCollections.tickets).document(ticketId)
-        
+
         docRef.delete { error in
             if let error {
                 return completion(error)
@@ -283,13 +331,12 @@ class FirebaseService {
             completion(.success(tickets))
         }
     }
-    
-    
+
     func getEventPassword(by id: String, completion: @escaping (Result<String, Error>) -> Void) {
         let db = Firestore.firestore()
-        
+
         let docRef = db.collection(Constants.FireCollections.events).document(id)
-        
+
         docRef.getDocument { document, error in
             if let error {
                 return completion(.failure(error))
@@ -303,9 +350,8 @@ class FirebaseService {
             completion(.failure(EventAuthorizationError.invalidLogin))
         }
     }
-    
+
     func userGoInside(_ userId: String, to eventId: String, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
-        
         var id = ""
         do {
             id = try DataService.shared.getTicketID(of: userId, to: eventId) ?? ""
@@ -313,7 +359,7 @@ class FirebaseService {
             completion(.failure(error))
             return
         }
-        
+
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.tickets).document(id).updateData([
             "is_inside": isInside,
@@ -325,5 +371,99 @@ class FirebaseService {
             }
         }
         completion(.success(.OK))
+    }
+
+    // MARK: - Groups
+
+    func loadGroupsFromJsonToFirestore() {
+        if let path = Bundle.main.path(forResource: "groups", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data)
+                let db = Firestore.firestore()
+                if let groups = jsonResult as? [String] {
+                    for group in groups {
+                        let query = db.collection(Constants.FireCollections.groups)
+                            .whereField("num", isEqualTo: group)
+                        query.getDocuments { snapshot, error in
+                            if snapshot?.isEmpty ?? false, error == nil {
+                                db.collection(Constants.FireCollections.groups)
+                                    .document()
+                                    .setData(["num": group] as [String: Any])
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+    func getGroups(completion: @escaping (Result<[String], Error>) -> Void) {
+        let db = Firestore.firestore()
+
+        db.collection(Constants.FireCollections.groups).getDocuments { snapshot, error in
+            if let error {
+                return completion(.failure(error))
+            }
+
+            guard let snapshot else {
+                return completion(.failure(NetworkErrors.dataError))
+            }
+
+            let decoder = JSONDecoder()
+            let groups: [String] = snapshot.documents.compactMap { doc in
+                let data = try? JSONSerialization.data(withJSONObject: doc.data())
+                let decoded = try? decoder.decode([String: String].self, from: data ?? Data())
+                return decoded?["num"]
+            }
+            completion(.success(groups))
+        }
+    }
+
+    func getImageFromFirebase(urlString: String, completion: @escaping ((Result<UIImage, Error>) -> Void)) {
+        let storage = Storage.storage()
+
+        let storageRef = storage.reference(forURL: urlString)
+
+        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if error != nil {
+                return completion(.failure(FireStorageErrors.imageError))
+            }
+            if let imageData = data, let image = UIImage(data: imageData) {
+                return completion(.success(image))
+            }
+            return completion(.failure(FireStorageErrors.imageError))
+        }
+    }
+}
+
+// MARK: Images
+
+extension UIImage {
+    func uploadToFireBase(name: String, completion: @escaping (Result<URL?, Error>) -> Void) {
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+
+        let data = self.jpegData(compressionQuality: 0.4) ?? Data()
+        let storage = Storage.storage().reference()
+        storage.child(name).putData(data, metadata: metadata) { _, error in
+            if let error = error {
+                print(error)
+                completion(.failure(FireStorageErrors.imageError))
+                return
+            }
+
+            storage.child(name).downloadURL { url, error in
+                if let error = error {
+                    print(error)
+                    completion(.failure(FireStorageErrors.imageError))
+                }
+                else {
+                    completion(.success(url))
+                }
+            }
+        }
     }
 }

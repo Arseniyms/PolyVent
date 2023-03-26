@@ -53,10 +53,10 @@ class SignInViewController: ScrollableViewController {
 
     private lazy var welcomeLabel: UILabel = {
         var label = UILabel()
-        label.text = "Добро\nпожаловать!"
-        label.numberOfLines = 2
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 50, weight: .ultraLight)
+        label.text = "PolyVent"
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 30, weight: .light)
         
         return label
     }()
@@ -138,9 +138,8 @@ class SignInViewController: ScrollableViewController {
 
     private lazy var qrImageView: UIImageView = {
         var imageView = UIImageView()
-        let image = UIImage(named: "start")?.withRenderingMode(.alwaysTemplate) ?? UIImage()
+        let image = UIImage(named: "start") ?? UIImage()
         imageView.image = image
-        imageView.tintColor = .blue
 
         return imageView
     }()
@@ -185,18 +184,19 @@ class SignInViewController: ScrollableViewController {
         scrollContentView.addSubview(qrImageView)
 
         NSLayoutConstraint.activate([
-            qrImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 40),
+            qrImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 60),
             qrImageView.widthAnchor.constraint(equalToConstant: 200),
             qrImageView.heightAnchor.constraint(equalToConstant: 200),
-            qrImageView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: -19),
+//            qrImageView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: -19),
+            qrImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
 
-            welcomeLabel.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: -5),
+            welcomeLabel.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 10),
             welcomeLabel.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
             welcomeLabel.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 30),
             welcomeLabel.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -30),
-            welcomeLabel.heightAnchor.constraint(equalToConstant: 150),
+            welcomeLabel.heightAnchor.constraint(equalToConstant: 70),
 
-            emailLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 20),
+            emailLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 50),
             emailLabel.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 30),
             emailLabel.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -30),
 

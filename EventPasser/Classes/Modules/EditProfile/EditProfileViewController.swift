@@ -14,12 +14,12 @@ class EditProfileViewController: ScrollableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter?.viewDidLoad()
         setupNavigationItems()
         setupScrollView()
         setupScrollContentView()
         setupUI()
         updateSaveItem()
+        presenter?.viewDidLoad()
     }
 
     // MARK: - Properties
@@ -101,15 +101,58 @@ class EditProfileViewController: ScrollableViewController {
         self.presenter?.ageDidChange(textField.text ?? "")
         textField.textColor = self.isAgeValid ? .dynamic(light: .black, dark: .white) : .red
     }
+    
+    private lazy var switcher: UISwitch = {
+        let switcher = UISwitch()
+        switcher.onTintColor = .buttonColor
+        switcher.addTarget(self, action: #selector(switchChanged), for: UIControl.Event.valueChanged)
+        
+        return switcher
+    } ()
+    
+    private lazy var groupLabel: UILabel = {
+        return self.getInfoLabel("Группа")
+    } ()
+    
+    @objc func switchChanged(switcher: UISwitch) {
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = .fade
+        groupLabel.layer.add(transition, forKey: "imageReveal")
+        groupTextField.layer.add(transition, forKey: "imageReveal")
+        
+        updateGroupPicker(isShown: switcher.isOn)
+    }
+    
+    private lazy var switcherStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.addArrangedSubview(self.getInfoLabel("Вы cтудент?"))
+        stackView.addArrangedSubview(switcher)
+        
+        return stackView
+    } ()
+    
+    private lazy var groupPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = presenter
+        picker.dataSource = presenter
+        return picker
+    } ()
+    
+    private lazy var groupTextField: UITextField = {
+        let textField = self.getInfoTextField()
+        textField.tag = 5
+        textField.setBorderStyle()
+        textField.inputView = groupPicker
+        
+        return textField
+    } ()
 
     // MARK: - Functions
 
     func setupNavigationItems() {
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Выход", style: .plain, target: self, action: #selector(exitButtonTapped))
-        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .plain, target: self,
                                                             action: #selector(saveButtonTapped))
@@ -123,7 +166,9 @@ class EditProfileViewController: ScrollableViewController {
         self.presenter?.save(email: self.emailTextField.text,
                              name: self.nameTextField.text,
                              lastname: self.lastNameTextField.text,
-                             age: self.ageTextField.text)
+                             age: self.ageTextField.text,
+                             group: self.groupTextField.text
+        )
     }
 
     func setupScrollContentView() {
@@ -156,11 +201,25 @@ class EditProfileViewController: ScrollableViewController {
 
         stackView.addArrangedSubview(self.getInfoLabel("Возраст"))
         stackView.addArrangedSubview(ageTextField)
+        
+        stackView.addArrangedSubview(switcherStackView)
     }
 
-    func updateSaveItem() {
+    private func updateSaveItem() {
         navigationItem.rightBarButtonItem?.isEnabled = isEmailValid && isNameValid && isLastnameValid && isAgeValid
     }
+    
+    private func updateGroupPicker(isShown: Bool) {
+        if isShown {
+            self.stackView.addArrangedSubview(self.groupLabel)
+            self.stackView.addArrangedSubview(self.groupTextField)
+        } else {
+            self.groupLabel.removeFromSuperview()
+            self.groupTextField.removeFromSuperview()
+            groupTextField.text = ""
+        }
+    }
+    
 }
 
 extension EditProfileViewController: PresenterToViewEditProfileProtocol {
@@ -191,6 +250,8 @@ extension EditProfileViewController: PresenterToViewEditProfileProtocol {
         self.nameTextField.placeholder = user.wrappedName
         self.lastNameTextField.placeholder = user.wrappedLastName
         self.ageTextField.placeholder = "Введите возраст"
+        self.groupTextField.text = user.group
+        self.switcher.setOn(!user.is_teacher, animated: true)
         
         if let _ = user.first_name, let _ = user.last_name {
             self.nameTextField.text = user.wrappedName
@@ -203,7 +264,12 @@ extension EditProfileViewController: PresenterToViewEditProfileProtocol {
         }
 
         presenter?.emailDidChange(user.wrappedEmail)
-        
+        self.updateGroupPicker(isShown: self.switcher.isOn)
+
+    }
+    
+    func updateSelectedGroup(with group: String) {
+        groupTextField.text = group
     }
 
     

@@ -17,11 +17,12 @@ protocol PresenterToViewEditProfileProtocol: AnyObject {
     func updateAgeValidation(isAgeValid: Bool)
 
     func updateUserInfo(_ user: UserEntity)
+    func updateSelectedGroup(with group: String)
 }
 
 
 // MARK: View Input (View -> Presenter)
-protocol ViewToPresenterEditProfileProtocol: AnyObject {
+protocol ViewToPresenterEditProfileProtocol: NSObject, AnyObject, UIPickerViewDelegate, UIPickerViewDataSource {
     var view: PresenterToViewEditProfileProtocol? { get set }
     var interactor: PresenterToInteractorEditProfileProtocol? { get set }
     var router: PresenterToRouterEditProfileProtocol? { get set }
@@ -32,7 +33,7 @@ protocol ViewToPresenterEditProfileProtocol: AnyObject {
     func ageDidChange(_ age: String)
     
     func viewDidLoad()
-    func save(email: String?, name: String?, lastname: String?, age: String?)
+    func save(email: String?, name: String?, lastname: String?, age: String?, group: String?)
     func updatePresentingViewController(_ vc: UIViewController?)
     func exit()
 }
@@ -43,13 +44,19 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     
     var presenter: InteractorToPresenterEditProfileProtocol? { get set }
     
+    var groups: [String]? { get set }
+    
     func validateEmail(_ email: String)
     func validateName(_ name: String)
     func validateLastName(_ lastName: String)
     func validateAge(_ age: String)
     
     func getUser()
-    func updateUserInfo(email: String, name: String, lastname: String, age: Int?)
+    func loadGroups()
+    func updateUserInfo(email: String, name: String, lastname: String, age: Int?, group: String)
+    
+    func numberOfRowsInComponent() -> Int
+    func getGroup(in row: Int) -> String
 }
 
 

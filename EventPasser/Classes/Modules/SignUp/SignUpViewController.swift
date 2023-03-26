@@ -14,11 +14,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Выход", style: .plain, target: self, action: #selector(exitButtonTapped))
-        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -60,11 +56,7 @@ class SignUpViewController: UIViewController {
         var stackview = UIStackView()
         stackview.axis = .vertical
         stackview.alignment = .fill
-        if #available(iOS 13.0, *) {
-            stackview.spacing = 10
-        } else {
-            stackview.spacing = 5
-        }
+        stackview.spacing = 10
 
         return stackview
     }()
@@ -194,7 +186,7 @@ class SignUpViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
 
             signUpButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
@@ -211,11 +203,7 @@ class SignUpViewController: UIViewController {
         if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let height = frame.cgRectValue.height
             UIView.animate(withDuration: 0.5, animations: {
-                if #available(iOS 13.0, *) {
-                    self.bottomSignUpButtonConstraint.constant = -height - 20
-                } else {
-                    self.bottomSignUpButtonConstraint.constant = -height - 3
-                }
+                self.bottomSignUpButtonConstraint.constant = -height - 20
                 self.view.layoutIfNeeded()
             })
         }

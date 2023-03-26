@@ -38,27 +38,47 @@ class ProfileViewController: ScrollableViewController {
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.customBackgroundColor.cgColor
         
-        if #available(iOS 13.0, *) {
-            imageView.isUserInteractionEnabled = true
-            let interaction = UIContextMenuInteraction(delegate: self)
-            imageView.addInteraction(interaction)
-        }
+        imageView.isUserInteractionEnabled = true
+        let interaction = UIContextMenuInteraction(delegate: self)
+        imageView.addInteraction(interaction)
         return imageView
     }()
 
+    private lazy var warningTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = .preferredFont(forTextStyle: .caption2)
+        textView.alpha = 0.6
+        textView.isEditable = false
+        textView.isSelectable = false
+        textView.textAlignment = .center
+        textView.isScrollEnabled = false
+        
+        textView.text = "Это ваш личный QR-код для прохода на мероприятия. Пожалуйста, не передавайте его другим людям."
+        return textView
+    }()
+    
     private lazy var nameLabel: InfoLabel = InfoLabel.profileInfo(of: "Загрузка...")
     private lazy var lastNameLabel: InfoLabel = InfoLabel.profileInfo(of: "Загрузка...")
     private lazy var ageLabel: InfoLabel = InfoLabel.profileInfo(of: "Загрузка...")
     private lazy var emailLabel: InfoLabel = InfoLabel.profileInfo(of: "Загрузка...")
-
+    private lazy var groupLabel: InfoLabel = InfoLabel.profileInfo(of: "Загрузка")
+    
     private lazy var stackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [qrCodeImageView, nameLabel, lastNameLabel, ageLabel, emailLabel])
+        var stackView = UIStackView(arrangedSubviews: [qrCodeImageView,
+                                                       warningTextView,
+                                                       nameLabel,
+                                                       lastNameLabel,
+                                                       ageLabel,
+                                                       emailLabel,
+                                                       groupLabel
+                                                      ]
+        )
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
 
-        stackView.setCustomSpacing(100, after: qrCodeImageView)
+        stackView.setCustomSpacing(30, after: warningTextView)
         return stackView
     }()
 
@@ -123,10 +143,8 @@ class ProfileViewController: ScrollableViewController {
             $0.layer.add(transition, forKey: "imageReveal")
         }
 
-        if #available(iOS 13.0, *) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            qrCodeImageView.addInteraction(interaction)
-        }
+        let interaction = UIContextMenuInteraction(delegate: self)
+        qrCodeImageView.addInteraction(interaction)
         
         nameLabel.layoutIfNeeded()
         nameLabel.shimmerEffectView()
@@ -136,6 +154,8 @@ class ProfileViewController: ScrollableViewController {
         ageLabel.shimmerEffectView()
         emailLabel.layoutIfNeeded()
         emailLabel.shimmerEffectView()
+        groupLabel.layoutIfNeeded()
+        groupLabel.shimmerEffectView()
         
     }
 
@@ -154,11 +174,13 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
         lastNameLabel.text = user.wrappedLastName
         emailLabel.text = user.wrappedEmail
         ageLabel.text = "\(user.wrappedAge)"
+        groupLabel.text = user.group
         
         self.nameLabel.shimmerStopAnimate()
         self.ageLabel.shimmerStopAnimate()
         self.lastNameLabel.shimmerStopAnimate()
         self.emailLabel.shimmerStopAnimate()
+        self.groupLabel.shimmerStopAnimate()
         
         let transition = CATransition()
         transition.duration = 1
@@ -167,17 +189,16 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
         lastNameLabel.layer.add(transition, forKey: "infoReveal")
         ageLabel.layer.add(transition, forKey: "infoReveal")
         emailLabel.layer.add(transition, forKey: "infoReveal")
+        groupLabel.layer.add(transition, forKey: "infoReveal")
     }
 
     func updateQrImage(with image: UIImage) {
-        qrCodeImageView.layer.borderColor = UIColor.systemGray.cgColor
+        qrCodeImageView.layer.borderColor = UIColor.buttonColor.cgColor
 
         qrCodeImageView.image = image
             .withInset(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)) ?? UIImage(named: "xmark.circle")!
 
-        if #available(iOS 13.0, *) {
-            qrCodeImageView.image = qrCodeImageView.image?.withRenderingMode(.alwaysTemplate)
-        }
+        qrCodeImageView.image = qrCodeImageView.image?.withRenderingMode(.alwaysTemplate)
         let transition = CATransition()
         transition.duration = 1.5
         transition.type = .fade
@@ -186,7 +207,6 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
 }
 
 extension ProfileViewController: UIContextMenuInteractionDelegate {
-    @available(iOS 13.0, *)
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
             return self.makeContextMenu()
@@ -194,7 +214,6 @@ extension ProfileViewController: UIContextMenuInteractionDelegate {
         
     }
     
-    @available(iOS 13.0, *)
     func makeContextMenu() -> UIMenu {
         
         let edit = UIAction(title: "Изменить профиль", image: UIImage(systemName: "pencil")) { _ in

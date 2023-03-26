@@ -35,14 +35,23 @@ class EventDescriptionViewController: ScrollableViewController {
         return stackView
     }()
 
-    private lazy var nameLabel: UITextView = {
-        let label = UITextView()
-        label.font = .preferredFont(forTextStyle: .largeTitle)
-        label.isEditable = false
-        label.isSelectable = true
-        label.isScrollEnabled = false
-        label.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+    private lazy var eventImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 8
         
+        return imageView
+    } ()
+    
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        label.backgroundColor = .clear
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.lineBreakMode = .byWordWrapping
+        self.navigationItem.titleView = label
+
         return label
     }()
 
@@ -114,11 +123,7 @@ class EventDescriptionViewController: ScrollableViewController {
 
     private lazy var peopleImage: UIImageView = {
         var image: UIImage? = UIImage()
-        if #available(iOS 13.0, *) {
-            image = UIImage(systemName: "person.3.fill")
-        } else {
-            image = UIImage(named: "person")
-        }
+        image = UIImage(systemName: "person.3.fill")
         let imageView = UIImageView.withRoundedBackground(with: image)
         imageView.image = imageView.image?
             .withInset(UIEdgeInsets(top: 2, left: -1, bottom: 2, right: -1))
@@ -159,7 +164,6 @@ class EventDescriptionViewController: ScrollableViewController {
         let button = UIButton(type: .system)
         button.setTitle("", for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .buttonColor
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .light)
@@ -171,11 +175,7 @@ class EventDescriptionViewController: ScrollableViewController {
     func setupNavigationItems() {
         self.navigationItem.title = "Описание"
 
-        if #available(iOS 13.0, *) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
-        } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Выход", style: .plain, target: self, action: #selector(exitButtonTapped))
-        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(exitButtonTapped))
     }
 
     @objc func exitButtonTapped(_: UIButton) {
@@ -200,19 +200,26 @@ class EventDescriptionViewController: ScrollableViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         specificationTextView.translatesAutoresizingMaskIntoConstraints = false
         signButton.translatesAutoresizingMaskIntoConstraints = false
+        eventImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(dateStackView)
         stackView.addArrangedSubview(addressStackView)
         stackView.addArrangedSubview(peopleStackView)
         stackView.addArrangedSubview(self.getInfoLabel("Описание"))
 
+        scrollContentView.addSubview(eventImageView)
         scrollContentView.addSubview(stackView)
         scrollContentView.addSubview(specificationTextView)
         view.addSubview(signButton)
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
+
+            eventImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
+            eventImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            eventImageView.widthAnchor.constraint(equalToConstant: 220),
+            eventImageView.heightAnchor.constraint(equalToConstant: 220),
+            
+            stackView.topAnchor.constraint(equalTo: eventImageView.bottomAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20),
             stackView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20),
 
@@ -269,6 +276,17 @@ extension EventDescriptionViewController: PresenterToViewEventDescriptionProtoco
         specificationTextView.text = event.specification
         peopleLabel.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
         addressLabel.text = event.address
+        if let img = event.convertedImage {
+            eventImageView.image = img
+        } else {
+            DispatchQueue.main.async {
+                self.eventImageView.removeFromSuperview()
+                self.stackView.topAnchor.constraint(
+                    equalTo: self.scrollContentView.topAnchor, constant: 10
+                )
+                .isActive = true
+            }
+        }
     }
 
     func updateSetButton(with string: String, isEnabled: Bool = true, with color: UIColor) {

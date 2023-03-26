@@ -8,6 +8,8 @@
 import UIKit
 
 class EventTableViewCell: UITableViewCell {
+    private let imagePlaceholder = "🪩".image()
+
     private let name = UILabel()
     private let address = UILabel()
     private let timeStart = UILabel()
@@ -18,6 +20,7 @@ class EventTableViewCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.spacing = 3
+        stackView.distribution = .fillProportionally
 
         return stackView
     }()
@@ -28,28 +31,31 @@ class EventTableViewCell: UITableViewCell {
         return imageView
     }()
 
+    private lazy var eventImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 8
+        imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        return imageView
+    }()
+
     func setCell(with event: EventEntity, isSet: Bool = false) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .short
-        self.name.text = event.wrappedTitle
-        self.address.text = event.address
-        self.timeStart.text = dateFormatter.string(from: event.wrappedTimeStart)
-        self.guestsCount.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
-
-        var image: UIImage?
-        image = UIImage(named: "ticket.fill")?.withRenderingMode(.alwaysTemplate)
-        isSetImageView.image = image
-        if #available(iOS 13.0, *) {
-            let largeConfig = UIImage.SymbolConfiguration(textStyle: .title2)
-            image = image?.withConfiguration(largeConfig)
+        name.text = event.wrappedTitle
+        address.text = event.address
+        timeStart.text = dateFormatter.string(from: event.wrappedTimeStart)
+        guestsCount.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
+        eventImageView.image = event.convertedImage
+        eventImageView.tintColor = .buttonColor
+        eventImageView.contentMode = .scaleAspectFit
+        
+        if eventImageView.image == nil {
+            eventImageView.image = imagePlaceholder
+            eventImageView.contentMode = .center
         }
-
-        if isSet {
-            isSetImageView.tintColor = .systemGreen
-        } else {
-            isSetImageView.tintColor = .systemGray
-        }
+        setTicketImage(isSet: isSet)
     }
 
     var backView = UIView()
@@ -76,8 +82,10 @@ class EventTableViewCell: UITableViewCell {
         backView.backgroundColor = .customBackgroundColor
         backView.layer.cornerRadius = 8
 
+        eventImageView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         isSetImageView.translatesAutoresizingMaskIntoConstraints = false
+        backView.addSubview(eventImageView)
         backView.addSubview(stackView)
         backView.addSubview(isSetImageView)
 
@@ -90,20 +98,28 @@ class EventTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(timeStart)
         stackView.addArrangedSubview(guestsCount)
 
+        
         NSLayoutConstraint.activate([
-            isSetImageView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
-            isSetImageView.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            eventImageView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
+            eventImageView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
+            eventImageView.topAnchor.constraint(equalTo: backView.topAnchor),
+            eventImageView.bottomAnchor.constraint(equalTo: backView.bottomAnchor),
+            eventImageView.widthAnchor.constraint(equalToConstant: 120),
+            eventImageView.heightAnchor.constraint(equalToConstant: 120),
 
             stackView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 30),
-            stackView.trailingAnchor.constraint(equalTo: isSetImageView.leadingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -10),
             stackView.topAnchor.constraint(equalTo: backView.topAnchor, constant: 5),
             stackView.bottomAnchor.constraint(equalTo: backView.bottomAnchor, constant: -5),
+            
+            isSetImageView.centerYAnchor.constraint(equalTo: guestsCount.centerYAnchor),
+            isSetImageView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
-
+        
         selectionStyle = .none
     }
-    
+
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         UIView.animate(withDuration: 0.5, delay: 0) {
@@ -120,5 +136,38 @@ class EventTableViewCell: UITableViewCell {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setTicketImage(isSet: Bool) {
+        var image: UIImage?
+        image = UIImage(named: "ticket.fill")?.withRenderingMode(.alwaysTemplate)
+        isSetImageView.image = image
+        let largeConfig = UIImage.SymbolConfiguration(textStyle: .title2)
+        image = image?.withConfiguration(largeConfig)
+
+        if isSet {
+            isSetImageView.tintColor = .systemGreen
+        } else {
+            isSetImageView.tintColor = .systemGray
+        }
+    }
+}
+
+
+extension String {
+    func image() -> UIImage? {
+        let nsString = (self as NSString)
+        let font = UIFont.systemFont(ofSize: 90)
+        let stringAttributes = [NSAttributedString.Key.font: font]
+        let imageSize = nsString.size(withAttributes: stringAttributes)
+        
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+        UIColor.clear.set()
+        UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
+        nsString.draw(at: CGPoint.zero, withAttributes: stringAttributes)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image ?? UIImage()
     }
 }

@@ -50,9 +50,7 @@ extension ProfilePresenter: InteractorToPresenterProfileProtocol {
     }
     
     func fetchQrImageFailure() {
-        if #available(iOS 13.0, *) {
-            view?.updateQrImage(with: UIImage(systemName: "xmark.circle")!.withTintColor(.red))
-        }
+        view?.updateQrImage(with: UIImage(systemName: "xmark.circle")!.withTintColor(.red))
     }
     
 }

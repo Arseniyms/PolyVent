@@ -13,16 +13,16 @@ import CoreData
 public class EventEntity: NSManagedObject, Decodable {
     enum CodingKeys: String, CodingKey {
         case id, title, login, address, time_start, time_end, max_guest_count
-        case specification = "description"
+        case specification = "description", imageURL
     }
     
     public required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.context] as? NSManagedObjectContext else {
             fatalError("Missing ManagedObjectContext")
         }
-
+        
         self.init(context: context)
-
+        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String?.self, forKey: .title)
@@ -37,6 +37,6 @@ public class EventEntity: NSManagedObject, Decodable {
         self.time_end = formatter.date(from: dateString)
         self.max_guest_count = try container.decode(Int32?.self, forKey: .max_guest_count) ?? 0
         self.specification = try container.decode(String?.self, forKey: .specification)
-
+        self.imageURL = try container.decode(String?.self, forKey: .imageURL)
     }
 }

@@ -43,4 +43,13 @@ class AddEventRouter: PresenterToRouterAddEventProtocol {
         vc?.present(alert, animated: true)
     }
     
+    func openImagePicker(on view: PresenterToViewAddEventProtocol, delegate: ViewToPresenterAddEventProtocol) {
+        let vc = view as? AddEventViewController
+        
+        let picker = UIImagePickerController()
+        picker.delegate = delegate
+        picker.allowsEditing = true
+        vc?.present(picker, animated: true)
+    }
+    
 }

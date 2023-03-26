@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
+class EditProfilePresenter: NSObject, ViewToPresenterEditProfileProtocol{
     // MARK: Properties
 
     weak var view: PresenterToViewEditProfileProtocol?
@@ -33,14 +33,16 @@ class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
 
     func viewDidLoad() {
         interactor?.getUser()
+        interactor?.loadGroups()
     }
 
-    func save(email: String?, name: String?, lastname: String?, age: String?) {
+    func save(email: String?, name: String?, lastname: String?, age: String?, group: String?) {
         interactor?.updateUserInfo(
             email: email ?? "",
             name: name ?? "",
             lastname: lastname ?? "",
-            age: Int(age ?? "Error")
+            age: Int(age ?? "Error"),
+            group: group ?? ""
         )
     }
 
@@ -55,6 +57,25 @@ class EditProfilePresenter: ViewToPresenterEditProfileProtocol {
     func exit() {
         Vibration.light.vibrate()
         router?.dismissEditProfile(view!)
+    }
+}
+
+extension EditProfilePresenter: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        interactor?.numberOfRowsInComponent() ?? 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        interactor?.getGroup(in: row)
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let group = interactor?.getGroup(in: row) ?? ""
+        view?.updateSelectedGroup(with: group)
     }
 }
 

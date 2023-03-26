@@ -53,5 +53,6 @@ struct Constants {
         static let users = "users"
         static let events = "events"
         static let tickets = "tickets"
+        static let groups = "groups"
     }
 }
