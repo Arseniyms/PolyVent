@@ -53,7 +53,7 @@ class ProfileViewController: ScrollableViewController {
         textView.textAlignment = .center
         textView.isScrollEnabled = false
         
-        textView.text = "Это ваш личный QR-код для прохода на мероприятия. Пожалуйста, не передавайте его другим людям."
+        textView.text = "Это ваш личный QR-код для прохода на мероприятия. На входе вас могут попросить документы."
         return textView
     }()
     

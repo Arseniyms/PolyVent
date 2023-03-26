@@ -26,8 +26,9 @@
 ## Стек
 
 ### iOS
-Языка программирования - Swift
-Использованные библиотеки:
+**XCode 14.2** / **Swift 5.7**
+
+
 - UIKit
 - CoreData
 - AVFoundation
@@ -59,7 +60,7 @@
 - Сканирование QR-кодов для прохода на мероприятия
 ## Авторы
 
-- [@arseniyms](https://github.com/Arseniyms)
+- [@arseniyms](https://t.me/Arseniyms)
 
 
 ## Лицензия
