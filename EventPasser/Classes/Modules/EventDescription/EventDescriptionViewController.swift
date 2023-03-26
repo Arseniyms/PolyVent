@@ -276,7 +276,17 @@ extension EventDescriptionViewController: PresenterToViewEventDescriptionProtoco
         specificationTextView.text = event.specification
         peopleLabel.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
         addressLabel.text = event.address
-        eventImageView.image = event.convertedImage
+        if let img = event.convertedImage {
+            eventImageView.image = img
+        } else {
+            DispatchQueue.main.async {
+                self.eventImageView.removeFromSuperview()
+                self.stackView.topAnchor.constraint(
+                    equalTo: self.scrollContentView.topAnchor, constant: 10
+                )
+                .isActive = true
+            }
+        }
     }
 
     func updateSetButton(with string: String, isEnabled: Bool = true, with color: UIColor) {
