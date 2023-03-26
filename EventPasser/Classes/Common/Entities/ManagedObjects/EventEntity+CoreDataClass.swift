@@ -38,16 +38,5 @@ public class EventEntity: NSManagedObject, Decodable {
         self.max_guest_count = try container.decode(Int32?.self, forKey: .max_guest_count) ?? 0
         self.specification = try container.decode(String?.self, forKey: .specification)
         self.imageURL = try container.decode(String?.self, forKey: .imageURL)
-        
-        if let urlString = self.imageURL {
-            FirebaseService.shared.getImageFromFirebase(urlString: urlString) { result in
-                switch result {
-                case .success(let success):
-                    self.image = success.jpegData(compressionQuality: 1.0)
-                case .failure:
-                    break
-                }
-            }
-        }
     }
 }

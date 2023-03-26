@@ -230,6 +230,30 @@ class FirebaseService {
         }
     }
 
+    func loadImagesToCoreData(completion: @escaping (Error?) -> Void) {
+        let events = DataService.shared.getEvents()
+        
+        let dispatchGroup = DispatchGroup()
+        for event in events {
+            if let urlString = event.imageURL {
+                dispatchGroup.enter()
+                getImageFromFirebase(urlString: urlString) { result in
+                    switch result {
+                    case .success(let success):
+                        event.image = success.jpegData(compressionQuality: 1.0)
+                    case .failure:
+                        break
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(nil)
+        }
+    }
+    
     // MARK: Tickets
 
     func createTicket(of userId: String, to eventId: String, completion: @escaping (Result<String, Error>) -> Void) {

@@ -6,8 +6,8 @@
 //
 //
 
-import Foundation
 import Firebase
+import Foundation
 
 class EventsInteractor: PresenterToInteractorEventsProtocol {
     // MARK: Properties
@@ -23,16 +23,16 @@ class EventsInteractor: PresenterToInteractorEventsProtocol {
 
     func loadEventsFromNetwork(with info: String?) {
         FirebaseService.shared.loadEventsToCoreData { result in
-            do {
-                switch result {
-                case .success:
-                    self.loadEventsFromCoreData(with: info)
-                    try DataService.shared.saveContext()
-                    self.presenter?.reloadDataInTable()
-                case .failure(let error):
-                    throw error
+            switch result {
+            case .success:
+                self.loadEventsFromCoreData(with: info)
+                FirebaseService.shared.loadImagesToCoreData { error in
+                    if error == nil {
+                        self.presenter?.reloadDataInTable()
+                    }
+                    try? DataService.shared.saveContext()
                 }
-            } catch {
+            case let .failure(error):
                 self.loadEventsFromCoreData(with: nil)
                 self.presenter?.reloadDataInTable()
                 self.presenter?.loadEventFromNetworkFailed(with: error)
