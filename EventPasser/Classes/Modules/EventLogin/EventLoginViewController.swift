@@ -170,7 +170,5 @@ class EventLoginViewController: ScrollableViewController {
 extension EventLoginViewController: PresenterToViewEventLoginProtocol {
     func loginFailed() {
         self.signingIn = false
-        passTextField.text = ""
-        loginTextField.text = ""
     }
 }

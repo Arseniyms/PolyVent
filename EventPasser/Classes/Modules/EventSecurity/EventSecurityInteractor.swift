@@ -36,11 +36,10 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
                         self.presenter?.userCodeError(message: error.localizedDescription)
                     }
                 }
-            case .failure(let error):
+            case let .failure(error):
                 self.presenter?.userCodeError(message: error.localizedDescription)
             }
         }
-        
     }
 
     func loadTickets() {
@@ -62,13 +61,8 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
         guard let event else {
             fatalError("Ошибка мероприятия. Повторите попытку входа")
         }
-        let id = UUID(uuidString: code)
-        guard let id else {
-            presenter?.userCodeError(message: "Некорректный код")
-            return
-        }
 
-        let user = DataService.shared.getUser(predicate: NSPredicate(format: "id == %@", id as CVarArg))
+        let user = DataService.shared.getUser(predicate: NSPredicate(format: "id == %@", code))
         guard let user else {
             presenter?.userCodeError(message: "Некорректный код")
             return
@@ -77,7 +71,7 @@ class EventSecurityInteractor: PresenterToInteractorEventSecurityProtocol {
             presenter?.userCodeError(message: "Пользователь уже внутри")
             return
         }
-        
+
         let isOkay = DataService.shared.isUserAlreadySetToEvent(userId: user.wrappedStringId, eventId: event.wrappedId)
         presenter?.validUserFound(user: user, isOkay: isOkay)
     }

@@ -26,13 +26,13 @@ class SignInViewController: ScrollableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        qrImageView.startShimmering()
+//        qrImageView.startShimmering()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        qrImageView.stopShimmering()
+//        qrImageView.stopShimmering()
     }
 
     // MARK: - Properties
