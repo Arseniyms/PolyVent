@@ -19,6 +19,14 @@ class EventDescriptionViewController: ScrollableViewController {
         setupScrollView()
         setupScrollContentView()
         setupUI()
+        setupImageClick()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+//        if popup.isTopAndVisible {
+            popup.dismiss()
+//        }
     }
 
     // MARK: - Properties
@@ -39,10 +47,10 @@ class EventDescriptionViewController: ScrollableViewController {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 8
-        
+
         return imageView
-    } ()
-    
+    }()
+
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
@@ -50,7 +58,6 @@ class EventDescriptionViewController: ScrollableViewController {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
-        self.navigationItem.titleView = label
 
         return label
     }()
@@ -70,7 +77,7 @@ class EventDescriptionViewController: ScrollableViewController {
         label.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         label.textAlignment = .left
         label.textContainer.maximumNumberOfLines = 2
-        
+
         return label
     }()
 
@@ -103,7 +110,7 @@ class EventDescriptionViewController: ScrollableViewController {
         label.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         label.textAlignment = .left
         label.textContainer.maximumNumberOfLines = 2
-        
+
         return label
     }()
 
@@ -143,6 +150,7 @@ class EventDescriptionViewController: ScrollableViewController {
         stackView.axis = .horizontal
         stackView.addArrangedSubview(peopleImage)
         stackView.addArrangedSubview(peopleLabel)
+//        stackView.addArrangedSubview(eventImageView)
 
         peopleImage.translatesAutoresizingMaskIntoConstraints = false
         peopleImage.heightAnchor.constraint(equalToConstant: 48).isActive = true
@@ -159,6 +167,16 @@ class EventDescriptionViewController: ScrollableViewController {
         textView.font = .systemFont(ofSize: 20, weight: .light)
         return textView
     }()
+    
+    private lazy var specificationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.spacing = 15
+        stackView.axis = .horizontal
+        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
+        stackView.addArrangedSubview(eventImageView)
+    
+        return stackView
+    }()
 
     private lazy var signButton: UIButton = {
         let button = UIButton(type: .system)
@@ -169,6 +187,8 @@ class EventDescriptionViewController: ScrollableViewController {
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .light)
         return button
     }()
+
+    private var popup: PopupDialog = .init()
 
     // MARK: - Functions
 
@@ -194,6 +214,19 @@ class EventDescriptionViewController: ScrollableViewController {
         ])
     }
 
+    func setupImageClick() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        eventImageView.isUserInteractionEnabled = true
+        eventImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func imageTapped(_: UITapGestureRecognizer) {
+        popup = PopupDialog(image: eventImageView.image, transitionStyle: .zoomIn)
+        popup.popupContainerView.cornerRadius = 8
+
+        self.present(popup, animated: true)
+    }
+
     func setupUI() {
         view.backgroundColor = .customBackgroundColor
 
@@ -205,21 +238,20 @@ class EventDescriptionViewController: ScrollableViewController {
         stackView.addArrangedSubview(dateStackView)
         stackView.addArrangedSubview(addressStackView)
         stackView.addArrangedSubview(peopleStackView)
-        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
-
-        scrollContentView.addSubview(eventImageView)
+//        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
+        stackView.addArrangedSubview(specificationStackView)
+        
         scrollContentView.addSubview(stackView)
         scrollContentView.addSubview(specificationTextView)
         view.addSubview(signButton)
 
         NSLayoutConstraint.activate([
+            //            eventImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
+//            eventImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            eventImageView.widthAnchor.constraint(equalToConstant: 48),
+            eventImageView.heightAnchor.constraint(equalToConstant: 48),
 
-            eventImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
-            eventImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
-            eventImageView.widthAnchor.constraint(equalToConstant: 220),
-            eventImageView.heightAnchor.constraint(equalToConstant: 220),
-            
-            stackView.topAnchor.constraint(equalTo: eventImageView.bottomAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20),
             stackView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20),
 
@@ -287,6 +319,8 @@ extension EventDescriptionViewController: PresenterToViewEventDescriptionProtoco
                 .isActive = true
             }
         }
+
+        self.navigationItem.titleView = nameLabel
     }
 
     func updateSetButton(with string: String, isEnabled: Bool = true, with color: UIColor) {

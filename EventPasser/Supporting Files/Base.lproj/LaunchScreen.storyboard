@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="lwS-Tb-eIS">
-                                <rect key="frame" x="46.666666666666657" y="276" width="300" height="300"/>
+                                <rect key="frame" x="96.666666666666686" y="326" width="200" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="R0x-rs-c6c"/>
-                                    <constraint firstAttribute="height" constant="300" id="kt3-mo-gbX"/>
+                                    <constraint firstAttribute="width" constant="200" id="R0x-rs-c6c"/>
+                                    <constraint firstAttribute="height" constant="200" id="kt3-mo-gbX"/>
                                 </constraints>
                             </imageView>
                         </subviews>
