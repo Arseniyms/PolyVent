@@ -20,7 +20,6 @@ class SignInViewController: ScrollableViewController {
         setupUI()
         
         presenter?.emailDidChange(to: "")
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -47,7 +46,6 @@ class SignInViewController: ScrollableViewController {
             }
         }
     }
-
 
     private lazy var welcomeLabel: UILabel = {
         var label = UILabel()
@@ -185,7 +183,6 @@ class SignInViewController: ScrollableViewController {
             qrImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 60),
             qrImageView.widthAnchor.constraint(equalToConstant: 180),
             qrImageView.heightAnchor.constraint(equalToConstant: 180),
-//            qrImageView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: -19),
             qrImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
 
             welcomeLabel.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 10),
@@ -261,11 +258,7 @@ extension SignInViewController: PresenterToViewSignInProtocol {
     }
     
     func signInFailed() {
-//        self.emailTextField.text = ""
-//        self.passwordTextField.text = ""
         self.signingIn = false
-//        updateEmailValidation(isEmailValid: false)
-//        updatePasswordValidation(isPassValid: false)
     }
 
     

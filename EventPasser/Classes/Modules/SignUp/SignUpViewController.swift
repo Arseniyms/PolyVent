@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: ScrollableViewController {
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -19,18 +19,20 @@ class SignUpViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
 
+        setupScrollView()
+        setupScrollContentView()
         setupUI()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .all
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .portrait
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        (UIApplication.shared.delegate as! AppDelegate).restrictRotation = .all
+//    }
 
     @objc func exitButtonTapped(_: UIButton) {
         self.presenter?.exit()
@@ -151,17 +153,26 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    // MARK: - Functions
-
+    private lazy var scrollContentView: UIView = .init()
     var bottomSignUpButtonConstraint = NSLayoutConstraint()
+    // MARK: - Functions
+    
+    func setupScrollContentView() {
+        scrollContentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(scrollContentView)
+        NSLayoutConstraint.activate([
+            scrollContentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollContentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollContentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollContentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollContentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+        ])
+        
+        self.navigationController?.navigationBar.tintColor = .buttonColor
+    }
+
 
     func setupUI() {
-        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
-        view.addGestureRecognizer(tapGesture)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-
         view.backgroundColor = .customBackgroundColor
 
         stackView.addArrangedSubview(self.getInfoLabel("Почта"))
@@ -176,7 +187,7 @@ class SignUpViewController: UIViewController {
         stackView.setCustomSpacing(5, after: confirmPassTextField)
         stackView.setCustomSpacing(5, after: invalidPasswordLabel)
 
-        view.addSubview(stackView)
+        scrollContentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(signUpButton)
         signUpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -184,22 +195,24 @@ class SignUpViewController: UIViewController {
         bottomSignUpButtonConstraint = signUpButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
 
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
+            stackView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 50),
+            stackView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: scrollContentView.centerYAnchor, constant: -20),
 
             signUpButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
 
-            bottomSignUpButtonConstraint,
+            bottomSignUpButtonConstraint
         ])
         
         self.view.layoutIfNeeded()
 
     }
 
-    @objc private func keyboardWillShow(notification: NSNotification) {
+    @objc internal override func keyboardWillShow(notification: NSNotification) {
+        super.keyboardWillShow(notification: notification)
         if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let height = frame.cgRectValue.height
             UIView.animate(withDuration: 0.5, animations: {
@@ -209,7 +222,8 @@ class SignUpViewController: UIViewController {
         }
     }
 
-    @objc private func keyboardWillHide(notification _: NSNotification) {
+    @objc internal override func keyboardWillHide(notification: NSNotification) {
+        super.keyboardWillHide(notification: notification)
         UIView.animate(withDuration: 0.5, animations: {
             self.bottomSignUpButtonConstraint.constant = -40
             self.view.layoutIfNeeded()

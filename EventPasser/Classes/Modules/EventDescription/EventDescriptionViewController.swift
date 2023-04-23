@@ -19,15 +19,8 @@ class EventDescriptionViewController: ScrollableViewController {
         setupScrollView()
         setupScrollContentView()
         setupUI()
-        setupImageClick()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-//        if popup.isTopAndVisible {
-            popup.dismiss()
-//        }
-    }
 
     // MARK: - Properties
 
@@ -43,11 +36,30 @@ class EventDescriptionViewController: ScrollableViewController {
         return stackView
     }()
 
-    private lazy var eventImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 8
+    private lazy var imageShadowView: UIView = {
+        let outerView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 400))
+        outerView.clipsToBounds = false
+        outerView.layer.shadowColor = UIColor.systemGray.cgColor
+        outerView.layer.shadowOpacity = 1
+        outerView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        outerView.layer.shadowRadius = 30
+        outerView.layer.shadowPath = UIBezierPath(roundedRect: outerView.bounds, cornerRadius: 10).cgPath
 
+        return outerView
+    } ()
+    
+    private lazy var eventImageView: UIImageView = {
+        let imageView = UIImageView(frame: imageShadowView.bounds)
+        imageView.layer.masksToBounds = true
+        imageView.clipsToBounds = true
+
+        imageView.layer.cornerRadius = 30
+        imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.widthAnchor.constraint(equalToConstant: 400).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        
         return imageView
     }()
 
@@ -77,7 +89,7 @@ class EventDescriptionViewController: ScrollableViewController {
         label.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         label.textAlignment = .left
         label.textContainer.maximumNumberOfLines = 2
-
+        label.backgroundColor = .clear
         return label
     }()
 
@@ -150,7 +162,6 @@ class EventDescriptionViewController: ScrollableViewController {
         stackView.axis = .horizontal
         stackView.addArrangedSubview(peopleImage)
         stackView.addArrangedSubview(peopleLabel)
-//        stackView.addArrangedSubview(eventImageView)
 
         peopleImage.translatesAutoresizingMaskIntoConstraints = false
         peopleImage.heightAnchor.constraint(equalToConstant: 48).isActive = true
@@ -168,15 +179,6 @@ class EventDescriptionViewController: ScrollableViewController {
         return textView
     }()
     
-    private lazy var specificationStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.spacing = 15
-        stackView.axis = .horizontal
-        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
-        stackView.addArrangedSubview(eventImageView)
-    
-        return stackView
-    }()
 
     private lazy var signButton: UIButton = {
         let button = UIButton(type: .system)
@@ -187,8 +189,6 @@ class EventDescriptionViewController: ScrollableViewController {
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .light)
         return button
     }()
-
-    private var popup: PopupDialog = .init()
 
     // MARK: - Functions
 
@@ -214,44 +214,33 @@ class EventDescriptionViewController: ScrollableViewController {
         ])
     }
 
-    func setupImageClick() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        eventImageView.isUserInteractionEnabled = true
-        eventImageView.addGestureRecognizer(tapGestureRecognizer)
-    }
-
-    @objc func imageTapped(_: UITapGestureRecognizer) {
-        popup = PopupDialog(image: eventImageView.image, transitionStyle: .zoomIn)
-        popup.popupContainerView.cornerRadius = 8
-
-        self.present(popup, animated: true)
-    }
-
     func setupUI() {
         view.backgroundColor = .customBackgroundColor
 
+        imageShadowView.addSubview(eventImageView)
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         specificationTextView.translatesAutoresizingMaskIntoConstraints = false
         signButton.translatesAutoresizingMaskIntoConstraints = false
-        eventImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageShadowView.translatesAutoresizingMaskIntoConstraints = false
 
+        scrollContentView.addSubview(imageShadowView)
         stackView.addArrangedSubview(dateStackView)
         stackView.addArrangedSubview(addressStackView)
         stackView.addArrangedSubview(peopleStackView)
-//        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
-        stackView.addArrangedSubview(specificationStackView)
+        stackView.addArrangedSubview(self.getInfoLabel("Описание"))
         
         scrollContentView.addSubview(stackView)
         scrollContentView.addSubview(specificationTextView)
         view.addSubview(signButton)
 
         NSLayoutConstraint.activate([
-            //            eventImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
-//            eventImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
-            eventImageView.widthAnchor.constraint(equalToConstant: 48),
-            eventImageView.heightAnchor.constraint(equalToConstant: 48),
+            imageShadowView.topAnchor.constraint(equalTo: scrollContentView.topAnchor),
+            imageShadowView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            imageShadowView.widthAnchor.constraint(equalToConstant: 400),
+            imageShadowView.heightAnchor.constraint(equalToConstant: 400),
 
-            stackView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: imageShadowView.bottomAnchor, constant: 50),
             stackView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20),
             stackView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20),
 
@@ -309,10 +298,12 @@ extension EventDescriptionViewController: PresenterToViewEventDescriptionProtoco
         peopleLabel.text = "\(event.wrappedCurrentAmountOfTickets)/\(event.wrappedMaxCount)"
         addressLabel.text = event.address
         if let img = event.convertedImage {
-            eventImageView.image = img
+            DispatchQueue.main.async {
+                self.eventImageView.image = img
+            }
         } else {
             DispatchQueue.main.async {
-                self.eventImageView.removeFromSuperview()
+                self.imageShadowView.removeFromSuperview()
                 self.stackView.topAnchor.constraint(
                     equalTo: self.scrollContentView.topAnchor, constant: 10
                 )

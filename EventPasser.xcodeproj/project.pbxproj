@@ -33,14 +33,6 @@
 		DC315C5D2917C35A0062BE6C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC315C5C2917C35A0062BE6C /* Constants.swift */; };
 		DC34CFCD28FEA9930016010D /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC34CFCC28FEA9930016010D /* Color+Extensions.swift */; };
 		DC35100829CC9EB500A317DB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DC35100729CC9EB500A317DB /* FirebaseStorage */; };
-		DC3AFC3529DCAD4E0046E75A /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC2429DCAD4E0046E75A /* InteractiveTransition.swift */; };
-		DC3AFC3929DCAD4E0046E75A /* PopupDialogDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC2829DCAD4E0046E75A /* PopupDialogDefaultView.swift */; };
-		DC3AFC3A29DCAD4E0046E75A /* PopupDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC2929DCAD4E0046E75A /* PopupDialog.swift */; };
-		DC3AFC3F29DCAD4E0046E75A /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC2E29DCAD4E0046E75A /* TransitionAnimator.swift */; };
-		DC3AFC4129DCAD4E0046E75A /* PopupDialogDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC3029DCAD4E0046E75A /* PopupDialogDefaultViewController.swift */; };
-		DC3AFC4229DCAD4E0046E75A /* TransitionAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC3129DCAD4E0046E75A /* TransitionAnimations.swift */; };
-		DC3AFC4429DCAD4E0046E75A /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC3329DCAD4E0046E75A /* PresentationManager.swift */; };
-		DC3AFC4529DCAD4E0046E75A /* PopupDialogContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3AFC3429DCAD4E0046E75A /* PopupDialogContainerView.swift */; };
 		DC3EFC0D293CDB4000312170 /* EventSecurityContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC08293CDB4000312170 /* EventSecurityContract.swift */; };
 		DC3EFC0E293CDB4000312170 /* EventSecurityPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC09293CDB4000312170 /* EventSecurityPresenter.swift */; };
 		DC3EFC0F293CDB4000312170 /* EventSecurityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3EFC0A293CDB4000312170 /* EventSecurityRouter.swift */; };
@@ -145,14 +137,6 @@
 		DC31012429018E570031BB8B /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 		DC315C5C2917C35A0062BE6C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DC34CFCC28FEA9930016010D /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
-		DC3AFC2429DCAD4E0046E75A /* InteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
-		DC3AFC2829DCAD4E0046E75A /* PopupDialogDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialogDefaultView.swift; sourceTree = "<group>"; };
-		DC3AFC2929DCAD4E0046E75A /* PopupDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialog.swift; sourceTree = "<group>"; };
-		DC3AFC2E29DCAD4E0046E75A /* TransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
-		DC3AFC3029DCAD4E0046E75A /* PopupDialogDefaultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialogDefaultViewController.swift; sourceTree = "<group>"; };
-		DC3AFC3129DCAD4E0046E75A /* TransitionAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimations.swift; sourceTree = "<group>"; };
-		DC3AFC3329DCAD4E0046E75A /* PresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationManager.swift; sourceTree = "<group>"; };
-		DC3AFC3429DCAD4E0046E75A /* PopupDialogContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialogContainerView.swift; sourceTree = "<group>"; };
 		DC3EFC08293CDB4000312170 /* EventSecurityContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSecurityContract.swift; sourceTree = "<group>"; };
 		DC3EFC09293CDB4000312170 /* EventSecurityPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSecurityPresenter.swift; sourceTree = "<group>"; };
 		DC3EFC0A293CDB4000312170 /* EventSecurityRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSecurityRouter.swift; sourceTree = "<group>"; };
@@ -321,21 +305,6 @@
 				DC2A180429CE0700006728E3 /* Button+Extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		DC3AFC2329DCAD4E0046E75A /* PopUpDialog */ = {
-			isa = PBXGroup;
-			children = (
-				DC3AFC2429DCAD4E0046E75A /* InteractiveTransition.swift */,
-				DC3AFC2829DCAD4E0046E75A /* PopupDialogDefaultView.swift */,
-				DC3AFC2929DCAD4E0046E75A /* PopupDialog.swift */,
-				DC3AFC2E29DCAD4E0046E75A /* TransitionAnimator.swift */,
-				DC3AFC3029DCAD4E0046E75A /* PopupDialogDefaultViewController.swift */,
-				DC3AFC3129DCAD4E0046E75A /* TransitionAnimations.swift */,
-				DC3AFC3329DCAD4E0046E75A /* PresentationManager.swift */,
-				DC3AFC3429DCAD4E0046E75A /* PopupDialogContainerView.swift */,
-			);
-			path = PopUpDialog;
 			sourceTree = "<group>";
 		};
 		DC3EFC07293CDB2100312170 /* EventSecurity */ = {
@@ -536,7 +505,6 @@
 		DCE35CB228FD78CC00173B41 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				DC3AFC2329DCAD4E0046E75A /* PopUpDialog */,
 				DC9822EB295C686F00E98276 /* Constants */,
 				DC3EFC1F293D16E900312170 /* Own Classes */,
 				DC015FCB290155E30057AF82 /* Entities */,
@@ -712,7 +680,6 @@
 				DC5BD36C28FD91C2000C9D4E /* SignUpViewController.swift in Sources */,
 				DC6C1B2029A778B90058EA12 /* FirebaseService.swift in Sources */,
 				DC433E76294275C800740B0E /* TicketEntity+CoreDataClass.swift in Sources */,
-				DC3AFC3929DCAD4E0046E75A /* PopupDialogDefaultView.swift in Sources */,
 				DC2A180529CE0700006728E3 /* Button+Extensions.swift in Sources */,
 				DC09FD802916BC7D0037DD6B /* EditProfileViewController.swift in Sources */,
 				DC1B0BBE2928E0FA0045F8C4 /* EventsClassification.swift in Sources */,
@@ -725,7 +692,6 @@
 				DCB330712902FC3500536E95 /* TabBarRouter.swift in Sources */,
 				DC09FD7D2916BC7D0037DD6B /* EditProfileContract.swift in Sources */,
 				DC3EFC0D293CDB4000312170 /* EventSecurityContract.swift in Sources */,
-				DC3AFC4129DCAD4E0046E75A /* PopupDialogDefaultViewController.swift in Sources */,
 				DC3EFC1A293CF15A00312170 /* EventLoginRouter.swift in Sources */,
 				DC0DF27E292BE6A900F8BC75 /* AddEventViewController.swift in Sources */,
 				DC433E792944C3DA00740B0E /* Vibration.swift in Sources */,
@@ -736,7 +702,6 @@
 				DCC0B47928E3025400FDEA13 /* AppDelegate.swift in Sources */,
 				DC1B0BCB292910FB0045F8C4 /* EventDescriptionViewController.swift in Sources */,
 				DC315C5D2917C35A0062BE6C /* Constants.swift in Sources */,
-				DC3AFC3F29DCAD4E0046E75A /* TransitionAnimator.swift in Sources */,
 				DCB330662902F73600536E95 /* ProfileViewController.swift in Sources */,
 				DCC0B47B28E3025400FDEA13 /* SceneDelegate.swift in Sources */,
 				DC0DF27B292BE6A900F8BC75 /* AddEventContract.swift in Sources */,
@@ -745,13 +710,11 @@
 				DC3EFC2729423E4B00312170 /* UserTableViewCell.swift in Sources */,
 				DC3EFC1E293CFDFB00312170 /* ScrollableViewController.swift in Sources */,
 				DCE2D5E02923A9B00001D905 /* DataService.swift in Sources */,
-				DC3AFC4529DCAD4E0046E75A /* PopupDialogContainerView.swift in Sources */,
 				DC2A0DD5295493FA004EE1DC /* ResponseStatus.swift in Sources */,
 				DCB330722902FC3500536E95 /* TabBarViewController.swift in Sources */,
 				DC3EFC25293F4AB000312170 /* KeychainService.swift in Sources */,
 				DC2A0DD72954C2DC004EE1DC /* CodingUserInfoKey+Extensions.swift in Sources */,
 				DC03E5D5292AA0AC001BF560 /* Image+Extensions.swift in Sources */,
-				DC3AFC3529DCAD4E0046E75A /* InteractiveTransition.swift in Sources */,
 				DCB330892903045600536E95 /* EventsInteractor.swift in Sources */,
 				DC3EFC1C293CF15A00312170 /* EventLoginInteractor.swift in Sources */,
 				DC3EFC18293CF15A00312170 /* EventLoginContract.swift in Sources */,
@@ -763,13 +726,10 @@
 				DC31012529018E570031BB8B /* ViewController+Extensions.swift in Sources */,
 				DCE2D5DE2922D4110001D905 /* EventPasserModel.xcdatamodeld in Sources */,
 				DCB330882903045600536E95 /* EventsViewController.swift in Sources */,
-				DC3AFC4429DCAD4E0046E75A /* PresentationManager.swift in Sources */,
 				DC5BD36A28FD91C2000C9D4E /* SignUpPresenter.swift in Sources */,
-				DC3AFC4229DCAD4E0046E75A /* TransitionAnimations.swift in Sources */,
 				DC1B0BCC292910FB0045F8C4 /* EventDescriptionInteractor.swift in Sources */,
 				DC09FD7F2916BC7D0037DD6B /* EditProfileRouter.swift in Sources */,
 				DC3EFC11293CDB4000312170 /* EventSecurityInteractor.swift in Sources */,
-				DC3AFC3A29DCAD4E0046E75A /* PopupDialog.swift in Sources */,
 				DC5BD36028FD91B7000C9D4E /* SignInPresenter.swift in Sources */,
 				DC4648882947AE97006447F8 /* ImageView+Extensions.swift in Sources */,
 				DC5BD37128FDAF98000C9D4E /* TextField+Extensions.swift in Sources */,
