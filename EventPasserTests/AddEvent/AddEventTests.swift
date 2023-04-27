@@ -21,7 +21,13 @@ final class AddEventTests: XCTestCase {
     }
 
     func testValidInfo() {
-        XCTAssertNoThrow(try interactor.checkEventInfo(name: "Новый год", address: "Проспект Мира 1", maxGuestsCount: 30, login: "newyear", password: "12345678", confirmPassword: "12345678"))
+        XCTAssertNoThrow(try interactor.checkEventInfo(name: "Новый год",
+                                                       address: "Проспект Мира 1",
+                                                       maxGuestsCount: 30,
+                                                       login: "newyear",
+                                                       password: "12345678",
+                                                       confirmPassword: "12345678")
+        )
     }
 
     func testWrongInfo() {
