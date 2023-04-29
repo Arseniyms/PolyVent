@@ -121,7 +121,35 @@ class FirebaseService {
             completion(.success(users))
         }
     }
-
+    
+    func deleteUser(id: String, completion: @escaping ((Error?) -> Void)) {
+        let db = Firestore.firestore()
+        let docRef = db.collection(Constants.FireCollections.users).document(id)
+        
+        docRef.delete { error in
+            if let error {
+                return completion(error)
+            }
+            
+            let user = DataService.shared.getUser(predicate: NSPredicate(format: "id = %@", id))
+            let events = user?.eventsArray ?? [EventEntity]()
+            let dispatchGroup = DispatchGroup()
+            for event in events {
+                dispatchGroup.enter()
+                self.deleteTicket(of: id, to: event.wrappedId) { _ in
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                let user = Auth.auth().currentUser
+                user?.delete(completion: { error in
+                    completion(error) // если ошибки нет то вернется nil
+                })
+            }
+        }
+    }
+    
     // MARK: Events
 
     func loadEventsToCoreData(completion: @escaping (Result<[EventEntity], Error>) -> Void) {

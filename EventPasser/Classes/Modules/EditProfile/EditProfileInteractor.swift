@@ -107,4 +107,14 @@ class EditProfileInteractor: PresenterToInteractorEditProfileProtocol {
             }
         }
     }
+    
+    func deleteAccount() {
+        FirebaseService.shared.deleteUser(id: Auth.auth().currentUser?.uid ?? "") { error in
+            if let error {
+                self.presenter?.updateUserFailed(with: error)
+            } else {
+                self.presenter?.goToSignIn()
+            }
+        }
+    }
 }

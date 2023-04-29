@@ -41,12 +41,30 @@ class EditProfileRouter: PresenterToRouterEditProfileProtocol {
         vc.dismiss(animated: true)
     }
     
+    func exitApp(on view: PresenterToViewEditProfileProtocol) {
+        let signInViewController = SignInRouter.createModule()
+        
+        let vc = view as! EditProfileViewController
+        guard let window = vc.view.window else {
+            return
+        }
+        window.switchRootViewController(signInViewController)
+    }
     
     func showErrorAlert(on view: PresenterToViewEditProfileProtocol, title: String, message: String) {
         let vc = view as! EditProfileViewController
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
+        vc.present(alert, animated: true)
+    }
+    
+    func showDeleteAlert(on view: PresenterToViewEditProfileProtocol, handler: ((UIAlertAction) -> Void)?) {
+        let vc = view as! EditProfileViewController
+        
+        let alert = UIAlertController(title: "Удаление акканута", message: "Вы уверены, что хотите удалить аккаунт? Все данные будут утеряны.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .destructive, handler: handler))
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
         vc.present(alert, animated: true)
     }
     

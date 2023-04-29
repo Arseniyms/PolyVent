@@ -34,6 +34,7 @@ protocol ViewToPresenterEditProfileProtocol: NSObject, AnyObject, UIPickerViewDe
     
     func viewDidLoad()
     func save(email: String?, name: String?, lastname: String?, age: String?, group: String?)
+    func deleteAccount()
     func updatePresentingViewController(_ vc: UIViewController?)
     func exit()
 }
@@ -54,6 +55,7 @@ protocol PresenterToInteractorEditProfileProtocol: AnyObject {
     func getUser()
     func loadGroups()
     func updateUserInfo(email: String, name: String, lastname: String, age: Int?, group: String)
+    func deleteAccount()
     
     func numberOfRowsInComponent() -> Int
     func getGroup(in row: Int) -> String
@@ -69,7 +71,8 @@ protocol InteractorToPresenterEditProfileProtocol: AnyObject {
     
     func fetchUserInfo(_ user: UserEntity)
     
-    
+    func goToSignIn()
+
     func updateUserSuccess()
     func updateUserFailed(with error: Error)
 }
@@ -80,4 +83,6 @@ protocol PresenterToRouterEditProfileProtocol: AnyObject {
     func dismissEditProfile(_ view: PresenterToViewEditProfileProtocol)
     func saveEditProfile(_ view: PresenterToViewEditProfileProtocol)
     func showErrorAlert(on view: PresenterToViewEditProfileProtocol, title: String, message: String)
+    func showDeleteAlert(on view: PresenterToViewEditProfileProtocol, handler: ((UIAlertAction) -> Void)?)
+    func exitApp(on view: PresenterToViewEditProfileProtocol)
 }
