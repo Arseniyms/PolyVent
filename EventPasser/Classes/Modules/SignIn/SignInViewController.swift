@@ -20,19 +20,16 @@ class SignInViewController: ScrollableViewController {
         setupUI()
         
         presenter?.emailDidChange(to: "")
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        qrImageView.startShimmering()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        qrImageView.stopShimmering()
     }
 
     // MARK: - Properties
@@ -50,13 +47,12 @@ class SignInViewController: ScrollableViewController {
         }
     }
 
-
     private lazy var welcomeLabel: UILabel = {
         var label = UILabel()
-        label.text = "PolyVent"
+        label.text = "Вход PolyVent"
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 30, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
         
         return label
     }()
@@ -185,9 +181,8 @@ class SignInViewController: ScrollableViewController {
 
         NSLayoutConstraint.activate([
             qrImageView.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 60),
-            qrImageView.widthAnchor.constraint(equalToConstant: 200),
-            qrImageView.heightAnchor.constraint(equalToConstant: 200),
-//            qrImageView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: -19),
+            qrImageView.widthAnchor.constraint(equalToConstant: 180),
+            qrImageView.heightAnchor.constraint(equalToConstant: 180),
             qrImageView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
 
             welcomeLabel.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 10),
@@ -263,11 +258,7 @@ extension SignInViewController: PresenterToViewSignInProtocol {
     }
     
     func signInFailed() {
-//        self.emailTextField.text = ""
-//        self.passwordTextField.text = ""
         self.signingIn = false
-//        updateEmailValidation(isEmailValid: false)
-//        updatePasswordValidation(isPassValid: false)
     }
 
     

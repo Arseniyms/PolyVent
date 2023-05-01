@@ -45,6 +45,12 @@ class EditProfilePresenter: NSObject, ViewToPresenterEditProfileProtocol{
             group: group ?? ""
         )
     }
+    
+    func deleteAccount() {
+        router?.showDeleteAlert(on: view!, handler: { _ in
+            self.interactor?.deleteAccount()
+        })
+    }
 
     func updatePresentingViewController(_ vc: UIViewController?) {
         let nc = vc as? TabBarViewController
@@ -109,5 +115,9 @@ extension EditProfilePresenter: InteractorToPresenterEditProfileProtocol {
     func updateUserFailed(with error: Error) {
         router?.showErrorAlert(on: view!, title: "Ошибка", message: error.localizedDescription)
         Vibration.error.vibrate()
+    }
+    
+    func goToSignIn() {
+        router?.exitApp(on: view!)
     }
 }

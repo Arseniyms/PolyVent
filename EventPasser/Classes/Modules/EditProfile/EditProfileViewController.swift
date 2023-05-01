@@ -148,6 +148,18 @@ class EditProfileViewController: ScrollableViewController {
         
         return textField
     } ()
+    
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Удалить аккаунт", for: .normal)
+        
+        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitleColor(.systemGray, for: .disabled)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        return button
+    }()
 
     // MARK: - Functions
 
@@ -169,6 +181,10 @@ class EditProfileViewController: ScrollableViewController {
                              age: self.ageTextField.text,
                              group: self.groupTextField.text
         )
+    }
+    
+    @objc func deleteButtonTapped(_: UIButton) {
+        self.presenter?.deleteAccount()
     }
 
     func setupScrollContentView() {
@@ -210,13 +226,16 @@ class EditProfileViewController: ScrollableViewController {
     }
     
     private func updateGroupPicker(isShown: Bool) {
+        stackView.removeArrangedSubview(deleteButton)
         if isShown {
-            self.stackView.addArrangedSubview(self.groupLabel)
-            self.stackView.addArrangedSubview(self.groupTextField)
+            stackView.addArrangedSubview(self.groupLabel)
+            stackView.addArrangedSubview(self.groupTextField)
+            stackView.insertArrangedSubview(deleteButton, at: 11)
         } else {
-            self.groupLabel.removeFromSuperview()
-            self.groupTextField.removeFromSuperview()
+            groupLabel.removeFromSuperview()
+            groupTextField.removeFromSuperview()
             groupTextField.text = ""
+            stackView.insertArrangedSubview(deleteButton, at: 9)
         }
     }
     

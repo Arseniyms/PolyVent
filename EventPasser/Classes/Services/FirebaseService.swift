@@ -7,9 +7,11 @@
 
 import Firebase
 import FirebaseStorage
+import Reachability
 import UIKit
 
 class FirebaseService {
+    let reachability = try! Reachability()
     private init() { }
 
     static var shared: FirebaseService { FirebaseService() }
@@ -73,6 +75,10 @@ class FirebaseService {
     }
 
     func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, group: String, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         let db = Firestore.firestore()
         db.collection(Constants.FireCollections.users).document(id).updateData([
             "first_name": first_name,
@@ -98,7 +104,10 @@ class FirebaseService {
     }
 
     func loadUsersToCoreData(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-        DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.userEntityName)
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         let db = Firestore.firestore()
 
         db.collection("users").getDocuments { snapshot, error in
@@ -109,7 +118,7 @@ class FirebaseService {
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-
+            DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.userEntityName)
             let decoder = JSONDecoder()
             decoder.userInfo[CodingUserInfoKey.context] = DataService.context
 
@@ -121,11 +130,47 @@ class FirebaseService {
             completion(.success(users))
         }
     }
-
+    
+    func deleteUser(id: String, completion: @escaping ((Error?) -> Void)) {
+        if reachability.connection == .unavailable {
+            return completion(NetworkErrors.serverError)
+        }
+        
+        let db = Firestore.firestore()
+        let docRef = db.collection(Constants.FireCollections.users).document(id)
+        
+        docRef.delete { error in
+            if let error {
+                return completion(error)
+            }
+            
+            let user = DataService.shared.getUser(predicate: NSPredicate(format: "id = %@", id))
+            let events = user?.eventsArray ?? [EventEntity]()
+            let dispatchGroup = DispatchGroup()
+            for event in events {
+                dispatchGroup.enter()
+                self.deleteTicket(of: id, to: event.wrappedId) { _ in
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                let user = Auth.auth().currentUser
+                user?.delete(completion: { error in
+                    completion(error) // если ошибки нет то вернется nil
+                })
+            }
+        }
+    }
+    
     // MARK: Events
 
     func loadEventsToCoreData(completion: @escaping (Result<[EventEntity], Error>) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
         DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.eventEntityName)
+
         let db = Firestore.firestore()
 
         db.collection("events").getDocuments { snapshot, error in
@@ -136,7 +181,6 @@ class FirebaseService {
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-
             let decoder = JSONDecoder()
             decoder.userInfo[CodingUserInfoKey.context] = DataService.context
 
@@ -235,6 +279,10 @@ class FirebaseService {
     }
 
     func loadImagesToCoreData(completion: @escaping (Error?) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(NetworkErrors.serverError)
+        }
+        
         let events = DataService.shared.getEvents()
 
         let dispatchGroup = DispatchGroup()
@@ -261,6 +309,10 @@ class FirebaseService {
     // MARK: Tickets
 
     func createTicket(of userId: String, to eventId: String, completion: @escaping (Result<String, Error>) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         loadEventsToCoreData { result in
             switch result {
             case .success:
@@ -292,6 +344,10 @@ class FirebaseService {
     }
 
     func deleteTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(NetworkErrors.serverError)
+        }
+        
         let db = Firestore.firestore()
 
         let ticketId = (try? DataService.shared.getTicketID(of: userId, to: eventId)) ?? ""
@@ -307,7 +363,10 @@ class FirebaseService {
     }
 
     func loadTicketsToCoreData(completion: @escaping (Result<[TicketEntity], Error>) -> Void) {
-        DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.ticketEntityName)
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         let db = Firestore.firestore()
 
         db.collection(Constants.FireCollections.tickets).getDocuments { snapshot, error in
@@ -318,7 +377,7 @@ class FirebaseService {
             guard let snapshot else {
                 return completion(.failure(NetworkErrors.dataError))
             }
-
+            DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.ticketEntityName)
             let decoder = JSONDecoder()
             decoder.userInfo[CodingUserInfoKey.context] = DataService.context
 
@@ -333,6 +392,10 @@ class FirebaseService {
     }
 
     func getEventPassword(by id: String, completion: @escaping (Result<String, Error>) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         let db = Firestore.firestore()
 
         let docRef = db.collection(Constants.FireCollections.events).document(id)
@@ -352,6 +415,10 @@ class FirebaseService {
     }
 
     func userGoInside(_ userId: String, to eventId: String, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
+        if reachability.connection == .unavailable {
+            return completion(.failure(NetworkErrors.serverError))
+        }
+        
         var id = ""
         do {
             id = try DataService.shared.getTicketID(of: userId, to: eventId) ?? ""

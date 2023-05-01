@@ -24,6 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = navViewController
             self.window = window
             window.makeKeyAndVisible()
+            subscribeUser()
+        }
+    }
+    
+    private func subscribeUser() {
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if user != nil {
+                print("User in")
+            } else {
+                print("No user")
+            }
         }
     }
 

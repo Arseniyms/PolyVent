@@ -23,7 +23,6 @@ class ProfilePresenter: ViewToPresenterProfileProtocol {
         router?.presentEditProfile(on: view!)
     }
     
-    
     func viewDidLoad() {
         interactor?.getUser()
     }

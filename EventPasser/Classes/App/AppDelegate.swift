@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  temp
+//  PolyVent
 //
 //  Created by Arseniy Matus on 06.11.2022.
 //
