@@ -176,12 +176,14 @@ extension ProfileViewController: PresenterToViewProfileProtocol {
         ageLabel.text = "\(user.wrappedAge)"
         groupLabel.text = user.group
         
-        self.nameLabel.shimmerStopAnimate()
-        self.ageLabel.shimmerStopAnimate()
-        self.lastNameLabel.shimmerStopAnimate()
-        self.emailLabel.shimmerStopAnimate()
-        self.groupLabel.shimmerStopAnimate()
-        
+        DispatchQueue.main.async {
+            self.nameLabel.shimmerStopAnimate()
+            self.ageLabel.shimmerStopAnimate()
+            self.lastNameLabel.shimmerStopAnimate()
+            self.emailLabel.shimmerStopAnimate()
+            self.groupLabel.shimmerStopAnimate()
+        }
+
         let transition = CATransition()
         transition.duration = 1
         transition.type = .fade
