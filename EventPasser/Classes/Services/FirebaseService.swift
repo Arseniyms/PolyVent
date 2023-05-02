@@ -76,7 +76,7 @@ class FirebaseService {
 
     func updateUserInfo(id: String, email: String, first_name: String, last_name: String, age: Int, group: String, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         let db = Firestore.firestore()
@@ -105,7 +105,7 @@ class FirebaseService {
 
     func loadUsersToCoreData(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         let db = Firestore.firestore()
@@ -133,7 +133,7 @@ class FirebaseService {
     
     func deleteUser(id: String, completion: @escaping ((Error?) -> Void)) {
         if reachability.connection == .unavailable {
-            return completion(NetworkErrors.serverError)
+            return completion(NetworkErrors.noInternet)
         }
         
         let db = Firestore.firestore()
@@ -167,7 +167,7 @@ class FirebaseService {
 
     func loadEventsToCoreData(completion: @escaping (Result<[EventEntity], Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         DataService.shared.deleteFromCoreData(entityName: Constants.CoreDataEntities.eventEntityName)
 
@@ -280,7 +280,7 @@ class FirebaseService {
 
     func loadImagesToCoreData(completion: @escaping (Error?) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(NetworkErrors.serverError)
+            return completion(NetworkErrors.noInternet)
         }
         
         let events = DataService.shared.getEvents()
@@ -310,7 +310,7 @@ class FirebaseService {
 
     func createTicket(of userId: String, to eventId: String, completion: @escaping (Result<String, Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         loadEventsToCoreData { result in
@@ -345,7 +345,7 @@ class FirebaseService {
 
     func deleteTicket(of userId: String, to eventId: String, completion: @escaping (Error?) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(NetworkErrors.serverError)
+            return completion(NetworkErrors.noInternet)
         }
         
         let db = Firestore.firestore()
@@ -364,7 +364,7 @@ class FirebaseService {
 
     func loadTicketsToCoreData(completion: @escaping (Result<[TicketEntity], Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         let db = Firestore.firestore()
@@ -393,7 +393,7 @@ class FirebaseService {
 
     func getEventPassword(by id: String, completion: @escaping (Result<String, Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         let db = Firestore.firestore()
@@ -416,7 +416,7 @@ class FirebaseService {
 
     func userGoInside(_ userId: String, to eventId: String, isInside: Bool, completion: @escaping (Result<ResponseStatus, Error>) -> Void) {
         if reachability.connection == .unavailable {
-            return completion(.failure(NetworkErrors.serverError))
+            return completion(.failure(NetworkErrors.noInternet))
         }
         
         var id = ""

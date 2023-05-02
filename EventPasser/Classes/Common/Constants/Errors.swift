@@ -89,7 +89,7 @@ extension TicketErrors: LocalizedError {
 }
 
 enum NetworkErrors: Error {
-    case wrongBaseURL, dataError, serverError, wrongParameters
+    case wrongBaseURL, dataError, serverError, wrongParameters, noInternet
 }
 
 extension NetworkErrors: LocalizedError {
@@ -103,6 +103,8 @@ extension NetworkErrors: LocalizedError {
             return NSLocalizedString("Ошибка сервера", comment: "")
         case .wrongParameters:
             return NSLocalizedString("Некорректные параметры при запросе", comment: "")
+        case .noInternet:
+            return NSLocalizedString("Отсутствует подключение к интернету", comment: "")
         }
     }
 }
